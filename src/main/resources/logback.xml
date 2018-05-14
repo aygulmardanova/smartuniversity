@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<configuration>
+
+    <!--<appender name="FILE" class="ch.qos.logback.core.FileAppender">-->
+        <!--<file>${catalina.home}/logs/smartuniversity.log</file>-->
+        <!--<param name="immediateFlush" value="true"/>-->
+        <!--<param name="append" value="false"/>-->
+
+        <!--<encoder>-->
+            <!--<pattern>%date %level [%thread] %logger{10} [%file:%line] %msg%n</pattern>-->
+        <!--</encoder>-->
+    <!--</appender>-->
+    <!--<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">-->
+        <!--<encoder>-->
+            <!--<pattern>%date %level [%thread] %logger{10} [%file:%line] %msg%n</pattern>-->
+        <!--</encoder>-->
+    <!--</appender>-->
+
+    <!--<root level="info">-->
+        <!--<appender-ref ref="FILE"/>-->
+        <!--<appender-ref ref="STDOUT"/>-->
+    <!--</root>-->
+
+
+    <property name="log_directory" value="${catalina.home}/logs"/>
+    <property name="charset" value="UTF-8"/>
+    <property name="maxHistory" value="7"/>
+    <property name="log_pattern" value="%date{yyyy-MM-dd'T'HH:mm:ss.SSSXXX} [%thread] %-5level %logger{36} - %msg%n"/>
+    <property name="log_size" value="256MB"/>
+    <property name="file_name_pattern_suffix" value=".%d{yyyy-MM-dd}.%i.log.gz"/>
+
+    <appender name="server-appender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${log_directory}/server${file_name_pattern_suffix}</fileNamePattern>
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>${log_size}</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+            <maxHistory>${maxHistory}</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <charset>${charset}</charset>
+            <pattern>${log_pattern}</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="liquibase-appender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${log_directory}/liquibase${file_name_pattern_suffix}</fileNamePattern>
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>${log_size}</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+            <maxHistory>${maxHistory}</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <charset>${charset}</charset>
+            <pattern>${log_pattern}</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="emdr-integration-appender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${log_directory}/emdr_int${file_name_pattern_suffix}</fileNamePattern>
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>${log_size}</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+            <maxHistory>${maxHistory}</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <charset>${charset}</charset>
+            <pattern>${log_pattern}</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="cxf-appender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${log_directory}/cxf${file_name_pattern_suffix}</fileNamePattern>
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>${log_size}</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+            <maxHistory>${maxHistory}</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <charset>${charset}</charset>
+            <pattern>${log_pattern}</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="spring-appender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${log_directory}/spring${file_name_pattern_suffix}</fileNamePattern>
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>${log_size}</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+            <maxHistory>${maxHistory}</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <charset>${charset}</charset>
+            <pattern>${log_pattern}</pattern>
+        </encoder>
+    </appender>
+
+    <root level="info">
+        <appender-ref ref="server-appender"/>
+    </root>
+
+
+    <logger name="org.springframework" level="info" additivity="false" >
+        <appender-ref ref="spring-appender"/>
+    </logger>
+
+    <logger name="org.jasig.cas" level="warn"/>
+
+    <logger name="org.hibernate" level="warn"/>
+    <logger name="org.hibernate.SQL" level="off" />
+    <logger name="org.hibernate.ejb.metamodel.MetadataContext" level="off"/>
+    <logger name="org.hibernate.engine.StatefulPersistenceContext.ProxyWarnLog" level="error"/>
+    <logger name="org.jasig.cas.client.util.CommonUtils" level="error"/>
+    <logger name="org.apache.tomcat.util.digester.Digester" level="off"/>
+    <logger name="ch.qos.logback.core" level="off"/>
+
+    <logger name="liquibase" level="info" additivity="false">
+        <appender-ref ref="liquibase-appender"/>
+    </logger>
+
+    <!--<logger name="ru.i_novus.ffoms.nsi.impl.config.DbUpdaterConfig" level="info">-->
+        <!--<appender-ref ref="liquibase-appender"/>-->
+    <!--</logger>-->
+
+    <logger name="ru.kpfu.itis" level="info"/>
+
+
+    <logger name="org.apache.cxf" level="info" additivity="false">
+        <appender-ref ref="cxf-appender"/>
+    </logger>
+
+</configuration>
