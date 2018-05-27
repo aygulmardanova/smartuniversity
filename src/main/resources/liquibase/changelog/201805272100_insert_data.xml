@@ -1,0 +1,496 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+
+    <changeSet id="1_insert_user_roles" author="amardanova" dbms="postgresql">
+        <preConditions onFail="CONTINUE">
+            <tableExists schemaName="uni" tableName="user_role"/>
+        </preConditions>
+        <comment>Пользовательские роли</comment>
+        <sql>
+            INSERT INTO uni.user_role (id, code, name)
+            VALUES
+            (1, 'STUDENT', 'Студент'),
+            (2, 'TEACHER', 'Преподаватель'),
+            (3, 'EXPERT', 'Эксперт');
+        </sql>
+    </changeSet>
+
+    <changeSet id="2_insert_wish_status" author="amardanova" dbms="postgresql">
+        <preConditions onFail="CONTINUE">
+            <tableExists schemaName="uni" tableName="wish_status"/>
+        </preConditions>
+        <comment>Типы пожеланий</comment>
+        <sql>
+            INSERT INTO uni.wish_status (id, name)
+            VALUES
+            (1, 'SYSTEM'),
+            (2, 'AUTO'),
+            (3, 'STUDENT'),
+            (4, 'REQUIRED'),
+            (5, 'TEACHER');
+        </sql>
+    </changeSet>
+
+    <changeSet id="3_insert_equipment" author="amardanova" dbms="postgresql">
+        <preConditions onFail="CONTINUE">
+            <tableExists schemaName="uni" tableName="equipment"/>
+        </preConditions>
+        <comment>Оборудование аудитории</comment>
+        <sql>
+            INSERT INTO uni.equipment (name)
+            VALUES
+            ('Проектор'),
+            ('Доска'),
+            ('Интерактивная доска'),
+            ('Компьютер'),
+            ('Трибуна'),
+            ('Круглый стол'),
+            ('Роботы');
+        </sql>
+    </changeSet>
+
+    <changeSet id="4_insert_auditory" author="amardanova" dbms="postgresql">
+        <preConditions onFail="CONTINUE">
+            <tableExists schemaName="uni" tableName="auditory"/>
+        </preConditions>
+        <comment>Аудитории</comment>
+        <sql>
+            INSERT INTO uni.auditory (name, capacity, bulk, floor)
+            VALUES ('1301', 25, 2, 13),
+            ('1302', 25, 2, 13),
+            ('1310', 100, 2, 13),
+            ('1408', 30, 2, 14),
+            ('1409', 15, 2, 14),
+            ('1503', 20, 2, 15),
+            ('1203', 25, 3, 12),
+            ('1220', 25, 3, 12),
+            ('900', 30, 3, 9),
+            ('902', 10, 3, 9),
+            ('108', 200, 2, 1),
+            ('109', 200, 2, 1),
+            ('1102', 25, 2, 11);
+        </sql>
+    </changeSet>
+
+    <changeSet id="5_insert_aud_equip" author="amardanova" dbms="postgresql">
+        <preConditions onFail="CONTINUE">
+            <tableExists schemaName="uni" tableName="aud_equip"/>
+        </preConditions>
+        <comment>Оборудование в аудитории</comment>
+        <sql>
+            INSERT INTO uni.aud_equip (aud_id, equip_id)
+            VALUES ((SELECT id FROM uni.auditory where name = '1301'), (SELECT id FROM uni.equipment WHERE name = 'Проектор')),
+            ((SELECT id FROM uni.auditory where name = '1301'), (SELECT id FROM uni.equipment WHERE name = 'Интерактивная доска')),
+            ((SELECT id FROM uni.auditory where name = '1302'), (SELECT id FROM uni.equipment WHERE name = 'Интерактивная доска')),
+            ((SELECT id FROM uni.auditory where name = '1302'), (SELECT id FROM uni.equipment WHERE name = 'Компьютер')),
+            ((SELECT id FROM uni.auditory where name = '1102'), (SELECT id FROM uni.equipment WHERE name = 'Трибуна')),
+            ((SELECT id FROM uni.auditory where name = '1102'), (SELECT id FROM uni.equipment WHERE name = 'Круглый стол')),
+            ((SELECT id FROM uni.auditory where name = '108'), (SELECT id FROM uni.equipment WHERE name = 'Доска')),
+            ((SELECT id FROM uni.auditory where name = '108'), (SELECT id FROM uni.equipment WHERE name = 'Интерактивная доска')),
+            ((SELECT id FROM uni.auditory where name = '108'), (SELECT id FROM uni.equipment WHERE name = 'Проектор')),
+            ((SELECT id FROM uni.auditory where name = '108'), (SELECT id FROM uni.equipment WHERE name = 'Трибуна')),
+            ((SELECT id FROM uni.auditory where name = '109'), (SELECT id FROM uni.equipment WHERE name = 'Доска')),
+            ((SELECT id FROM uni.auditory where name = '109'), (SELECT id FROM uni.equipment WHERE name = 'Интерактивная доска')),
+            ((SELECT id FROM uni.auditory where name = '109'), (SELECT id FROM uni.equipment WHERE name = 'Проектор')),
+            ((SELECT id FROM uni.auditory where name = '109'), (SELECT id FROM uni.equipment WHERE name = 'Трибуна')),
+            ((SELECT id FROM uni.auditory where name = '900'), (SELECT id FROM uni.equipment WHERE name = 'Интерактивная доска')),
+            ((SELECT id FROM uni.auditory where name = '900'), (SELECT id FROM uni.equipment WHERE name = 'Компьютер')),
+            ((SELECT id FROM uni.auditory where name = '902'), (SELECT id FROM uni.equipment WHERE name = 'Интерактивная доска')),
+            ((SELECT id FROM uni.auditory where name = '902'), (SELECT id FROM uni.equipment WHERE name = 'Компьютер')),
+            ((SELECT id FROM uni.auditory where name = '902'), (SELECT id FROM uni.equipment WHERE name = 'Роботы')),
+            ((SELECT id FROM uni.auditory where name = '1310'), (SELECT id FROM uni.equipment WHERE name = 'Интерактивная доска')),
+            ((SELECT id FROM uni.auditory where name = '1310'), (SELECT id FROM uni.equipment WHERE name = 'Проектор')),
+            ((SELECT id FROM uni.auditory where name = '1310'), (SELECT id FROM uni.equipment WHERE name = 'Трибуна')),
+            ((SELECT id FROM uni.auditory where name = '1408'), (SELECT id FROM uni.equipment WHERE name = 'Круглый стол')),
+            ((SELECT id FROM uni.auditory where name = '1408'), (SELECT id FROM uni.equipment WHERE name = 'Роботы')),
+            ((SELECT id FROM uni.auditory where name = '1408'), (SELECT id FROM uni.equipment WHERE name = 'Компьютер')),
+            ((SELECT id FROM uni.auditory where name = '1409'), (SELECT id FROM uni.equipment WHERE name = 'Компьютер')),
+            ((SELECT id FROM uni.auditory where name = '1203'), (SELECT id FROM uni.equipment WHERE name = 'Доска')),
+            ((SELECT id FROM uni.auditory where name = '1220'), (SELECT id FROM uni.equipment WHERE name = 'Круглый стол')),
+            ((SELECT id FROM uni.auditory where name = '1503'), (SELECT id FROM uni.equipment WHERE name = 'Роботы')),
+            ((SELECT id FROM uni.auditory where name = '1503'), (SELECT id FROM uni.equipment WHERE name = 'Проектор'));
+        </sql>
+    </changeSet>
+
+    <changeSet id="6_insert_competence" author="amardanova" dbms="postgresql">
+        <preConditions onFail="CONTINUE">
+            <tableExists schemaName="uni" tableName="competence"/>
+        </preConditions>
+        <comment>Компетенции</comment>
+        <sql>
+            INSERT INTO uni.competence (name)
+            VALUES ('Аналитическое мышление'),
+            ('Управление проектами'),
+            ('Работа в команде'),
+            ('Коммуникативность'),
+            ('Устная речь'),
+            ('Устная презентация'),
+            ('Умение публично выступать'),
+            ('Написание статей'),
+            ('Оформление презентаций'),
+            ('Выступление с докладом'),
+            ('Умение отстаивать свое мнение'),
+            ('Умение задавать вопросы'),
+            ('Программирование на Java'),
+            ('Параллельное программирование'),
+            ('C++'),
+            ('3D-моделирование'),
+            ('3D-анимация'),
+            ('Программирование на PHP'),
+            ('Программирование на Python'),
+            ('Разработка клиент-серверных прложений'),
+            ('Разработка CRM-систем'),
+            ('Разработка web-приложений'),
+            ('Знание SQL'),
+            ('Знание SQL на продвинутом уровне'),
+            ('Знание PostgreSQL'),
+            ('Знание MSSQL'),
+            ('Знание JUnit'),
+            ('Знание Паскаль'),
+            ('Фреймворк Spring MVC'),
+            ('Знание фреймворка Spring'),
+            ('Основы мобильной разработки'),
+            ('Разработка приложений для платформы IOS'),
+            ('Разработка приложений для платформы Android'),
+            ('Проектирование интерфейсов для мобильных приложений'),
+            ('Ручное тестирование'),
+            ('Основы автотестирования'),
+            ('Selenium'),
+            ('Написание документации для тестирования'),
+            ('Основы ОС Linux'),
+            ('Основы ОС Windows'),
+            ('Основы ОС MacOS'),
+            ('Администрирование Linux'),
+            ('Установка Linux'),
+            ('Администрирование Windows'),
+            ('Установка Windows'),
+            ('Написание скриптов bash'),
+            ('Написание скриптов PowerShell'),
+            ('Изучение консоли Ubuntu'),
+            ('Понимание принципов облачных технологий'),
+            ('Алгебра'),
+            ('Физика. Механика'),
+            ('Физика. Молекулярная физика'),
+            ('Физика. Основы термодинамики'),
+            ('Геометрия'),
+            ('Решение дифференциальных уравнений'),
+            ('Написание технической документации'),
+            ('Сбор требований');
+        </sql>
+    </changeSet>
+
+    <changeSet id="7_insert_subject" author="amardanova" dbms="postgresql">
+        <preConditions onFail="CONTINUE">
+            <tableExists schemaName="uni" tableName="subject"/>
+        </preConditions>
+        <comment>Компетенции</comment>
+        <sql>
+            INSERT INTO uni.subject (name)
+            VALUES ('Программирование на Java'),
+            ('3D-моделирование'),
+            ('Основы тестирования'),
+            ('Управление проектами'),
+            ('Параллельное программирование'),
+            ('Математический анализ'),
+            ('Линейная алгебра'),
+            ('Аналитическая геометрия'),
+            ('Информационная безопасность'),
+            ('Операционные системы ОС'),
+            ('Физика'),
+            ('История'),
+            ('Философия'),
+            ('Иностранный язык'),
+            ('Физкультура'),
+            ('Методология научных исследований'),
+            ('Управление качеством разработки информационных систем'),
+            ('Основы написания технической документации'),
+            ('Механизмы защиты удаленного доступа'),
+            ('Основы информационного поиска'),
+            ('Теория систем и системный анализ'),
+            ('Разработка API для мобильных приложений'),
+            ('Системы управления хранилищами данных'),
+            ('Информатика');
+        </sql>
+    </changeSet>
+
+    <changeSet id="8_insert_subj_comp" author="amardanova" dbms="postgresql">
+        <preConditions onFail="CONTINUE">
+            <tableExists schemaName="uni" tableName="subject"/>
+        </preConditions>
+        <comment>Компетенции по предметам</comment>
+        <sql>
+            INSERT INTO uni.subj_comp (subj_id, comp_id)
+            VALUES ((SELECT id FROM uni.subject where name = 'Методология научных исследований'), (SELECT id FROM uni.competence WHERE name = 'Аналитическое мышление')),
+            ((SELECT id FROM uni.subject where name = 'Методология научных исследований'), (SELECT id FROM uni.competence WHERE name = 'Устная презентация')),
+            ((SELECT id FROM uni.subject where name = 'Методология научных исследований'), (SELECT id FROM uni.competence WHERE name = 'Умение публично выступать')),
+            ((SELECT id FROM uni.subject where name = 'Методология научных исследований'), (SELECT id FROM uni.competence WHERE name = 'Написание статей')),
+            ((SELECT id FROM uni.subject where name = 'Методология научных исследований'), (SELECT id FROM uni.competence WHERE name = 'Оформление презентаций')),
+            ((SELECT id FROM uni.subject where name = 'Методология научных исследований'), (SELECT id FROM uni.competence WHERE name = 'Выступление с докладом')),
+            ((SELECT id FROM uni.subject where name = 'Методология научных исследований'), (SELECT id FROM uni.competence WHERE name = 'Умение задавать вопросы')),
+            ((SELECT id FROM uni.subject where name = 'Программирование на Java'), (SELECT id FROM uni.competence WHERE name = 'Программирование на Java')),
+            ((SELECT id FROM uni.subject where name = 'Программирование на Java'), (SELECT id FROM uni.competence WHERE name = 'Разработка клиент-серверных прложений')),
+            ((SELECT id FROM uni.subject where name = 'Программирование на Java'), (SELECT id FROM uni.competence WHERE name = 'Разработка CRM-систем')),
+            ((SELECT id FROM uni.subject where name = 'Программирование на Java'), (SELECT id FROM uni.competence WHERE name = 'Разработка web-приложений')),
+            ((SELECT id FROM uni.subject where name = 'Программирование на Java'), (SELECT id FROM uni.competence WHERE name = 'Знание фреймворка Spring')),
+            ((SELECT id FROM uni.subject where name = 'Программирование на Java'), (SELECT id FROM uni.competence WHERE name = 'Фреймворк Spring MVC')),
+            ((SELECT id FROM uni.subject where name = 'Программирование на Java'), (SELECT id FROM uni.competence WHERE name = 'Знание JUnit')),
+            ((SELECT id FROM uni.subject where name = 'Программирование на Java'), (SELECT id FROM uni.competence WHERE name = 'Знание SQL')),
+            ((SELECT id FROM uni.subject where name = 'Управление качеством разработки информационных систем'), (SELECT id FROM uni.competence WHERE name = 'Знание JUnit')),
+            ((SELECT id FROM uni.subject where name = 'Управление качеством разработки информационных систем'), (SELECT id FROM uni.competence WHERE name = 'Аналитическое мышление')),
+            ((SELECT id FROM uni.subject where name = 'Управление качеством разработки информационных систем'), (SELECT id FROM uni.competence WHERE name = 'Знание SQL')),
+            ((SELECT id FROM uni.subject where name = 'Управление качеством разработки информационных систем'), (SELECT id FROM uni.competence WHERE name = 'Знание JUnit')),
+            ((SELECT id FROM uni.subject where name = 'Управление качеством разработки информационных систем'), (SELECT id FROM uni.competence WHERE name = 'Ручное тестирование')),
+            ((SELECT id FROM uni.subject where name = 'Управление качеством разработки информационных систем'), (SELECT id FROM uni.competence WHERE name = 'Основы автотестирования')),
+            ((SELECT id FROM uni.subject where name = 'Управление качеством разработки информационных систем'), (SELECT id FROM uni.competence WHERE name = 'Selenium')),
+            ((SELECT id FROM uni.subject where name = 'Управление качеством разработки информационных систем'), (SELECT id FROM uni.competence WHERE name = 'Написание документации для тестирования')),
+            ((SELECT id FROM uni.subject where name = 'Информационная безопасность'), (SELECT id FROM uni.competence WHERE name = 'Основы ОС Linux')),
+            ((SELECT id FROM uni.subject where name = 'Информационная безопасность'), (SELECT id FROM uni.competence WHERE name = 'Основы ОС Windows')),
+            ((SELECT id FROM uni.subject where name = 'Информационная безопасность'), (SELECT id FROM uni.competence WHERE name = 'Основы ОС MacOS')),
+            ((SELECT id FROM uni.subject where name = 'Информационная безопасность'), (SELECT id FROM uni.competence WHERE name = 'Администрирование Linux')),
+            ((SELECT id FROM uni.subject where name = 'Информационная безопасность'), (SELECT id FROM uni.competence WHERE name = 'Администрирование Windows')),
+            ((SELECT id FROM uni.subject where name = 'Операционные системы ОС'), (SELECT id FROM uni.competence WHERE name = 'Понимание принципов облачных технологий')),
+            ((SELECT id FROM uni.subject where name = 'Операционные системы ОС'), (SELECT id FROM uni.competence WHERE name = 'Основы ОС Linux')),
+            ((SELECT id FROM uni.subject where name = 'Операционные системы ОС'), (SELECT id FROM uni.competence WHERE name = 'Основы ОС Windows')),
+            ((SELECT id FROM uni.subject where name = 'Операционные системы ОС'), (SELECT id FROM uni.competence WHERE name = 'Основы ОС MacOS')),
+            ((SELECT id FROM uni.subject where name = 'Операционные системы ОС'), (SELECT id FROM uni.competence WHERE name = 'Установка Linux')),
+            ((SELECT id FROM uni.subject where name = 'Операционные системы ОС'), (SELECT id FROM uni.competence WHERE name = 'Установка Windows')),
+            ((SELECT id FROM uni.subject where name = 'Операционные системы ОС'), (SELECT id FROM uni.competence WHERE name = 'Написание скриптов bash')),
+            ((SELECT id FROM uni.subject where name = 'Операционные системы ОС'), (SELECT id FROM uni.competence WHERE name = 'Написание скриптов PowerShell')),
+            ((SELECT id FROM uni.subject where name = 'Операционные системы ОС'), (SELECT id FROM uni.competence WHERE name = 'Изучение консоли Ubuntu')),
+            ((SELECT id FROM uni.subject where name = 'Управление проектами'), (SELECT id FROM uni.competence WHERE name = 'Сбор требований')),
+            ((SELECT id FROM uni.subject where name = 'Управление проектами'), (SELECT id FROM uni.competence WHERE name = 'Управление проектами')),
+            ((SELECT id FROM uni.subject where name = 'Управление проектами'), (SELECT id FROM uni.competence WHERE name = 'Работа в команде')),
+            ((SELECT id FROM uni.subject where name = 'Управление проектами'), (SELECT id FROM uni.competence WHERE name = 'Коммуникативность')),
+            ((SELECT id FROM uni.subject where name = 'Управление проектами'), (SELECT id FROM uni.competence WHERE name = 'Устная речь')),
+            ((SELECT id FROM uni.subject where name = 'Управление проектами'), (SELECT id FROM uni.competence WHERE name = 'Умение публично выступать')),
+            ((SELECT id FROM uni.subject where name = 'Управление проектами'), (SELECT id FROM uni.competence WHERE name = 'Умение отстаивать свое мнение')),
+            ((SELECT id FROM uni.subject where name = 'Управление проектами'), (SELECT id FROM uni.competence WHERE name = 'Умение задавать вопросы')),
+            ((SELECT id FROM uni.subject where name = 'Системы управления хранилищами данных'), (SELECT id FROM uni.competence WHERE name = 'Знание SQL на продвинутом уровне')),
+            ((SELECT id FROM uni.subject where name = 'Системы управления хранилищами данных'), (SELECT id FROM uni.competence WHERE name = 'Знание PostgreSQL')),
+            ((SELECT id FROM uni.subject where name = 'Системы управления хранилищами данных'), (SELECT id FROM uni.competence WHERE name = 'Знание MSSQL')),
+            ((SELECT id FROM uni.subject where name = 'Физика'), (SELECT id FROM uni.competence WHERE name = 'Физика. Механика')),
+            ((SELECT id FROM uni.subject where name = 'Физика'), (SELECT id FROM uni.competence WHERE name = 'Физика. Молекулярная физика')),
+            ((SELECT id FROM uni.subject where name = 'Физика'), (SELECT id FROM uni.competence WHERE name = 'Физика. Основы термодинамики')),
+            ((SELECT id FROM uni.subject where name = 'Физика'), (SELECT id FROM uni.competence WHERE name = 'Физика. Основы термодинамики')),
+            ((SELECT id FROM uni.subject where name = 'Физика'), (SELECT id FROM uni.competence WHERE name = 'Решение дифференциальных уравнений')),
+            ((SELECT id FROM uni.subject where name = 'Физика'), (SELECT id FROM uni.competence WHERE name = 'Аналитическое мышление'));
+        </sql>
+    </changeSet>
+
+    <changeSet id="9_insert_wish" author="amardanova" dbms="postgresql">
+        <preConditions onFail="CONTINUE">
+            <tableExists schemaName="uni" tableName="wish"/>
+        </preConditions>
+        <comment>Типы пожеланий</comment>
+        <sql>
+            INSERT INTO uni.wish (id, type, name)
+            VALUES
+            (1, 'STUD_TO_STUD', 'Пожелание студента к студенту'),
+            (2, 'STUD_TO_STUD_ON_SUBJ', 'Пожелание студента к студенту для определенного предмета'),
+            (3, 'STUD_TO_TEACH', 'Пожелание студента к преподавателю'),
+            (4, 'STUD_TO_TEACH_ON_SUBJ', 'Пожелание студента к преподавателю для определенного предмета'),
+            (5, 'TEACH_TO_STUD', 'Пожелание преподавателя к студенту'),
+            (6, 'TEACH_TO_STUD_ON_SUBJ', 'Пожелание преподавателя к студенту для определенного предмета'),
+            (7, 'USER_START_TIME', 'Пожелание ко времени первой пары (не раньше, чем)'),
+            (8, 'USER_START_TIME_ON_SUBJ', 'Пожелание ко времени первой пары (не раньше, чем) для определенного предмета'),
+            (9, 'USER_END_TIME', 'Пожелание ко времени последней пары (не позже, чем)'),
+            (10, 'USER_END_TIME_ON_SUBJ', 'Пожелание ко времени последней пары (не позже, чем) для определенного предмета'),
+            (11, 'TEACH_SUBJ_AUD', 'Пожелание преподавателя к аудитории для определенного предмета'),
+            (12, 'TEACH_SUBJ_AUD_EQUIP', 'Пожелание преподавателя к наличию оборудования в аудитории для определенного предмета');
+        </sql>
+    </changeSet>
+
+    <changeSet id="10_insert_interest" author="amardanova" dbms="postgresql">
+        <preConditions onFail="CONTINUE">
+            <tableExists schemaName="uni" tableName="interest"/>
+        </preConditions>
+        <comment>Интересы</comment>
+        <sql>
+            INSERT INTO uni.interest (name)
+            VALUES ('Робототехника'),
+            ('Конференции'),
+            ('Олимпиады'),
+            ('Хакатоны'),
+            ('Публикация статей'),
+            ('Нейробиология'),
+            ('Биоинформатика'),
+            ('Разработка сайтов'),
+            ('3D-моделинг'),
+            ('Разработка игр'),
+            ('Информационная безопасность'),
+            ('Администрирование серверов'),
+            ('Дизайн'),
+            ('Проектирование сайтов'),
+            ('UI,UX-дизайн'),
+            ('Спорт'),
+            ('Путешествия'),
+            ('Фронтенд'),
+            ('Фриланс');
+        </sql>
+    </changeSet>
+
+    <changeSet id="11_insert_user" author="amardanova" dbms="postgresql">
+        <preConditions onFail="CONTINUE">
+            <tableExists schemaName="uni" tableName="user"/>
+        </preConditions>
+        <comment>Пользователи</comment>
+        <sql>
+            INSERT INTO uni.user (surname, name, patronymic, role_id)
+            VALUES ('Мирзалялов', 'Рушан', 'Айдарович', 3),
+            ('Петров', 'Геннадий', 'Васильевич', 2),
+            ('Мамошин', 'Артур', 'Витальевич', 2),
+            ('Малинина', 'Мария', 'Ивановна', 2),
+            ('Совенок', 'Светлана', 'Александровна', 2),
+            ('Форсенко', 'Арина', 'Андреевна', 2),
+            ('Иванов', 'Иван', 'Иванович', 1),
+            ('Ионов', 'Вячеслав', 'Викторович', 1),
+            ('Мальков', 'Вадим', 'Рубенович', 1),
+            ('Акмалов', 'Иннокентий', 'Юрьевич', 1),
+            ('Махмутов', 'Руслан', 'Ришатович', 1),
+            ('Исмаилов', 'Юнус', 'Петрович', 1),
+            ('Большова', 'Валерия', 'Сергеевна', 1),
+            ('Зайнуллина', 'Альфия', 'Айратовна', 1),
+            ('Габдрахманова', 'Аделина', 'Ильфаровна', 1),
+            ('Михальчук', 'Альбина', 'Амировна', 1);
+        </sql>
+    </changeSet>
+
+    <changeSet id="12_insert_user_interest" author="amardanova" dbms="postgresql">
+        <preConditions onFail="CONTINUE">
+            <tableExists schemaName="uni" tableName="user_interest"/>
+        </preConditions>
+        <comment>Интересы пользователей</comment>
+        <sql>
+            INSERT INTO uni.user_interest (user_id, interest_id)
+            VALUES ((SELECT id FROM uni.user where surname = 'Большова'), (SELECT id FROM uni.interest WHERE name = '3D-моделинг')),
+            ((SELECT id FROM uni.user where surname = 'Мамошин'), (SELECT id FROM uni.interest WHERE name = 'Администрирование серверов')),
+            ((SELECT id FROM uni.user where surname = 'Михальчук'), (SELECT id FROM uni.interest WHERE name = 'Администрирование серверов')),
+            ((SELECT id FROM uni.user where surname = 'Совенок'), (SELECT id FROM uni.interest WHERE name = 'Администрирование серверов')),
+            ((SELECT id FROM uni.user where surname = 'Габдрахманова'), (SELECT id FROM uni.interest WHERE name = 'Администрирование серверов')),
+            ((SELECT id FROM uni.user where surname = 'Зайнуллина'), (SELECT id FROM uni.interest WHERE name = 'Разработка игр')),
+            ((SELECT id FROM uni.user where surname = 'Мамошин'), (SELECT id FROM uni.interest WHERE name = 'Разработка сайтов')),
+            ((SELECT id FROM uni.user where surname = 'Петров'), (SELECT id FROM uni.interest WHERE name = 'Разработка сайтов')),
+            ((SELECT id FROM uni.user where surname = 'Ионов'), (SELECT id FROM uni.interest WHERE name = 'Разработка сайтов')),
+            ((SELECT id FROM uni.user where surname = 'Форсенко'), (SELECT id FROM uni.interest WHERE name = 'Конференции')),
+            ((SELECT id FROM uni.user where surname = 'Иванов'), (SELECT id FROM uni.interest WHERE name = 'Конференции')),
+            ((SELECT id FROM uni.user where surname = 'Акмалов'), (SELECT id FROM uni.interest WHERE name = 'Конференции')),
+            ((SELECT id FROM uni.user where surname = 'Ионов'), (SELECT id FROM uni.interest WHERE name = 'Конференции')),
+            ((SELECT id FROM uni.user where surname = 'Форсенко'), (SELECT id FROM uni.interest WHERE name = 'Публикация статей')),
+            ((SELECT id FROM uni.user where surname = 'Исмаилов'), (SELECT id FROM uni.interest WHERE name = 'Публикация статей')),
+            ((SELECT id FROM uni.user where surname = 'Габдрахманова'), (SELECT id FROM uni.interest WHERE name = 'Олимпиады')),
+            ((SELECT id FROM uni.user where surname = 'Махмутов'), (SELECT id FROM uni.interest WHERE name = 'Олимпиады')),
+            ((SELECT id FROM uni.user where surname = 'Иванов'), (SELECT id FROM uni.interest WHERE name = 'Робототехника')),
+            ((SELECT id FROM uni.user where surname = 'Акмалов'), (SELECT id FROM uni.interest WHERE name = 'Робототехника')),
+            ((SELECT id FROM uni.user where surname = 'Мамошин'), (SELECT id FROM uni.interest WHERE name = 'Робототехника')),
+            ((SELECT id FROM uni.user where surname = 'Михальчук'), (SELECT id FROM uni.interest WHERE name = 'Робототехника'));
+        </sql>
+    </changeSet>
+
+    <changeSet id="13_insert_user_comp" author="amardanova" dbms="postgresql">
+        <preConditions onFail="CONTINUE">
+            <tableExists schemaName="uni" tableName="user_comp"/>
+        </preConditions>
+        <comment>Компетенции пользователей</comment>
+        <sql>
+            INSERT INTO uni.user_comp (user_id, comp_id)
+            VALUES ((SELECT id FROM uni.user where surname = 'Петров'), (SELECT id FROM uni.competence WHERE name = 'Аналитическое мышление')),
+            ((SELECT id FROM uni.user where surname = 'Петров'), (SELECT id FROM uni.competence WHERE name = 'Устная презентация')),
+            ((SELECT id FROM uni.user where surname = 'Петров'), (SELECT id FROM uni.competence WHERE name = 'Умение публично выступать')),
+            ((SELECT id FROM uni.user where surname = 'Петров'), (SELECT id FROM uni.competence WHERE name = 'Написание статей')),
+            ((SELECT id FROM uni.user where surname = 'Петров'), (SELECT id FROM uni.competence WHERE name = 'Оформление презентаций')),
+            ((SELECT id FROM uni.user where surname = 'Петров'), (SELECT id FROM uni.competence WHERE name = 'Выступление с докладом')),
+            ((SELECT id FROM uni.user where surname = 'Петров'), (SELECT id FROM uni.competence WHERE name = 'Умение задавать вопросы')),
+            ((SELECT id FROM uni.user where surname = 'Мамошин'), (SELECT id FROM uni.competence WHERE name = 'Программирование на Java')),
+            ((SELECT id FROM uni.user where surname = 'Мамошин'), (SELECT id FROM uni.competence WHERE name = 'Разработка клиент-серверных прложений')),
+            ((SELECT id FROM uni.user where surname = 'Мамошин'), (SELECT id FROM uni.competence WHERE name = 'Разработка CRM-систем')),
+            ((SELECT id FROM uni.user where surname = 'Мамошин'), (SELECT id FROM uni.competence WHERE name = 'Разработка web-приложений')),
+            ((SELECT id FROM uni.user where surname = 'Мамошин'), (SELECT id FROM uni.competence WHERE name = 'Знание фреймворка Spring')),
+            ((SELECT id FROM uni.user where surname = 'Мамошин'), (SELECT id FROM uni.competence WHERE name = 'Фреймворк Spring MVC')),
+            ((SELECT id FROM uni.user where surname = 'Мамошин'), (SELECT id FROM uni.competence WHERE name = 'Знание JUnit')),
+            ((SELECT id FROM uni.user where surname = 'Мамошин'), (SELECT id FROM uni.competence WHERE name = 'Знание SQL')),
+            ((SELECT id FROM uni.user where surname = 'Малинина'), (SELECT id FROM uni.competence WHERE name = 'Знание JUnit')),
+            ((SELECT id FROM uni.user where surname = 'Малинина'), (SELECT id FROM uni.competence WHERE name = 'Аналитическое мышление')),
+            ((SELECT id FROM uni.user where surname = 'Малинина'), (SELECT id FROM uni.competence WHERE name = 'Знание SQL')),
+            ((SELECT id FROM uni.user where surname = 'Малинина'), (SELECT id FROM uni.competence WHERE name = 'Знание JUnit')),
+            ((SELECT id FROM uni.user where surname = 'Малинина'), (SELECT id FROM uni.competence WHERE name = 'Ручное тестирование')),
+            ((SELECT id FROM uni.user where surname = 'Малинина'), (SELECT id FROM uni.competence WHERE name = 'Основы автотестирования')),
+            ((SELECT id FROM uni.user where surname = 'Мамошин'), (SELECT id FROM uni.competence WHERE name = 'Selenium')),
+            ((SELECT id FROM uni.user where surname = 'Мамошин'), (SELECT id FROM uni.competence WHERE name = 'Написание документации для тестирования')),
+            ((SELECT id FROM uni.user where surname = 'Мамошин'), (SELECT id FROM uni.competence WHERE name = 'Основы ОС Linux')),
+            ((SELECT id FROM uni.user where surname = 'Мамошин'), (SELECT id FROM uni.competence WHERE name = 'Основы ОС Windows')),
+            ((SELECT id FROM uni.user where surname = 'Мамошин'), (SELECT id FROM uni.competence WHERE name = 'Основы ОС MacOS')),
+            ((SELECT id FROM uni.user where surname = 'Мамошин'), (SELECT id FROM uni.competence WHERE name = 'Администрирование Linux')),
+            ((SELECT id FROM uni.user where surname = 'Мамошин'), (SELECT id FROM uni.competence WHERE name = 'Администрирование Windows')),
+            ((SELECT id FROM uni.user where surname = 'Мамошин'), (SELECT id FROM uni.competence WHERE name = 'Понимание принципов облачных технологий')),
+            ((SELECT id FROM uni.user where surname = 'Габдрахманова'), (SELECT id FROM uni.competence WHERE name = 'Основы ОС Linux')),
+            ((SELECT id FROM uni.user where surname = 'Габдрахманова'), (SELECT id FROM uni.competence WHERE name = 'Основы ОС Windows')),
+            ((SELECT id FROM uni.user where surname = 'Большова'), (SELECT id FROM uni.competence WHERE name = 'Основы ОС MacOS')),
+            ((SELECT id FROM uni.user where surname = 'Ионов'), (SELECT id FROM uni.competence WHERE name = 'Установка Linux')),
+            ((SELECT id FROM uni.user where surname = 'Большова'), (SELECT id FROM uni.competence WHERE name = 'Установка Linux')),
+            ((SELECT id FROM uni.user where surname = 'Михальчук'), (SELECT id FROM uni.competence WHERE name = 'Установка Windows')),
+            ((SELECT id FROM uni.user where surname = 'Михальчук'), (SELECT id FROM uni.competence WHERE name = 'Написание скриптов bash')),
+            ((SELECT id FROM uni.user where surname = 'Михальчук'), (SELECT id FROM uni.competence WHERE name = 'Написание скриптов PowerShell')),
+            ((SELECT id FROM uni.user where surname = 'Мамошин'), (SELECT id FROM uni.competence WHERE name = 'Изучение консоли Ubuntu')),
+            ((SELECT id FROM uni.user where surname = 'Иванов'), (SELECT id FROM uni.competence WHERE name = 'Изучение консоли Ubuntu')),
+            ((SELECT id FROM uni.user where surname = 'Мальков'), (SELECT id FROM uni.competence WHERE name = 'Изучение консоли Ubuntu')),
+            ((SELECT id FROM uni.user where surname = 'Форсенко'), (SELECT id FROM uni.competence WHERE name = 'Сбор требований')),
+            ((SELECT id FROM uni.user where surname = 'Форсенко'), (SELECT id FROM uni.competence WHERE name = 'Управление проектами')),
+            ((SELECT id FROM uni.user where surname = 'Форсенко'), (SELECT id FROM uni.competence WHERE name = 'Работа в команде')),
+            ((SELECT id FROM uni.user where surname = 'Форсенко'), (SELECT id FROM uni.competence WHERE name = 'Коммуникативность')),
+            ((SELECT id FROM uni.user where surname = 'Форсенко'), (SELECT id FROM uni.competence WHERE name = 'Устная речь')),
+            ((SELECT id FROM uni.user where surname = 'Форсенко'), (SELECT id FROM uni.competence WHERE name = 'Умение публично выступать')),
+            ((SELECT id FROM uni.user where surname = 'Совенок'), (SELECT id FROM uni.competence WHERE name = 'Основы ОС Linux')),
+            ((SELECT id FROM uni.user where surname = 'Совенок'), (SELECT id FROM uni.competence WHERE name = 'Основы ОС Windows')),
+            ((SELECT id FROM uni.user where surname = 'Совенок'), (SELECT id FROM uni.competence WHERE name = 'Основы ОС MacOS')),
+            ((SELECT id FROM uni.user where surname = 'Ионов'), (SELECT id FROM uni.competence WHERE name = 'Основы ОС MacOS')),
+            ((SELECT id FROM uni.user where surname = 'Совенок'), (SELECT id FROM uni.competence WHERE name = 'Установка Linux')),
+            ((SELECT id FROM uni.user where surname = 'Совенок'), (SELECT id FROM uni.competence WHERE name = 'Установка Windows')),
+            ((SELECT id FROM uni.user where surname = 'Ионов'), (SELECT id FROM uni.competence WHERE name = 'Установка Windows')),
+            ((SELECT id FROM uni.user where surname = 'Совенок'), (SELECT id FROM uni.competence WHERE name = 'Написание скриптов bash')),
+            ((SELECT id FROM uni.user where surname = 'Совенок'), (SELECT id FROM uni.competence WHERE name = 'Написание скриптов PowerShell')),
+            ((SELECT id FROM uni.user where surname = 'Ионов'), (SELECT id FROM uni.competence WHERE name = 'Написание скриптов PowerShell')),
+            ((SELECT id FROM uni.user where surname = 'Совенок'), (SELECT id FROM uni.competence WHERE name = 'Изучение консоли Ubuntu')),
+            ((SELECT id FROM uni.user where surname = 'Петров'), (SELECT id FROM uni.competence WHERE name = 'Сбор требований')),
+            ((SELECT id FROM uni.user where surname = 'Петров'), (SELECT id FROM uni.competence WHERE name = 'Управление проектами')),
+            ((SELECT id FROM uni.user where surname = 'Петров'), (SELECT id FROM uni.competence WHERE name = 'Работа в команде')),
+            ((SELECT id FROM uni.user where surname = 'Ионов'), (SELECT id FROM uni.competence WHERE name = 'Работа в команде')),
+            ((SELECT id FROM uni.user where surname = 'Петров'), (SELECT id FROM uni.competence WHERE name = 'Коммуникативность')),
+            ((SELECT id FROM uni.user where surname = 'Ионов'), (SELECT id FROM uni.competence WHERE name = 'Коммуникативность')),
+            ((SELECT id FROM uni.user where surname = 'Иванов'), (SELECT id FROM uni.competence WHERE name = 'Устная речь')),
+            ((SELECT id FROM uni.user where surname = 'Исмаилов'), (SELECT id FROM uni.competence WHERE name = 'Умение публично выступать')),
+            ((SELECT id FROM uni.user where surname = 'Акмалов'), (SELECT id FROM uni.competence WHERE name = 'Умение публично выступать')),
+            ((SELECT id FROM uni.user where surname = 'Ионов'), (SELECT id FROM uni.competence WHERE name = 'Умение отстаивать свое мнение')),
+            ((SELECT id FROM uni.user where surname = 'Исмаилов'), (SELECT id FROM uni.competence WHERE name = 'Умение отстаивать свое мнение')),
+            ((SELECT id FROM uni.user where surname = 'Акмалов'), (SELECT id FROM uni.competence WHERE name = 'Умение отстаивать свое мнение')),
+            ((SELECT id FROM uni.user where surname = 'Иванов'), (SELECT id FROM uni.competence WHERE name = 'Умение задавать вопросы')),
+            ((SELECT id FROM uni.user where surname = 'Габдрахманова'), (SELECT id FROM uni.competence WHERE name = 'Знание SQL на продвинутом уровне')),
+            ((SELECT id FROM uni.user where surname = 'Иванов'), (SELECT id FROM uni.competence WHERE name = 'Знание PostgreSQL')),
+            ((SELECT id FROM uni.user where surname = 'Габдрахманова'), (SELECT id FROM uni.competence WHERE name = 'Знание MSSQL')),
+            ((SELECT id FROM uni.user where surname = 'Зайнуллина'), (SELECT id FROM uni.competence WHERE name = 'Знание MSSQL')),
+            ((SELECT id FROM uni.user where surname = 'Иванов'), (SELECT id FROM uni.competence WHERE name = 'Физика. Механика')),
+            ((SELECT id FROM uni.user where surname = 'Акмалов'), (SELECT id FROM uni.competence WHERE name = 'Физика. Механика')),
+            ((SELECT id FROM uni.user where surname = 'Петров'), (SELECT id FROM uni.competence WHERE name = 'Физика. Молекулярная физика')),
+            ((SELECT id FROM uni.user where surname = 'Акмалов'), (SELECT id FROM uni.competence WHERE name = 'Физика. Основы термодинамики')),
+            ((SELECT id FROM uni.user where surname = 'Махмутов'), (SELECT id FROM uni.competence WHERE name = 'Физика. Основы термодинамики')),
+            ((SELECT id FROM uni.user where surname = 'Исмаилов'), (SELECT id FROM uni.competence WHERE name = 'Физика. Основы термодинамики')),
+            ((SELECT id FROM uni.user where surname = 'Иванов'), (SELECT id FROM uni.competence WHERE name = 'Решение дифференциальных уравнений')),
+            ((SELECT id FROM uni.user where surname = 'Мамошин'), (SELECT id FROM uni.competence WHERE name = 'Физика. Механика')),
+            ((SELECT id FROM uni.user where surname = 'Мамошин'), (SELECT id FROM uni.competence WHERE name = 'Физика. Молекулярная физика')),
+            ((SELECT id FROM uni.user where surname = 'Мамошин'), (SELECT id FROM uni.competence WHERE name = 'Физика. Основы термодинамики')),
+            ((SELECT id FROM uni.user where surname = 'Махмутов'), (SELECT id FROM uni.competence WHERE name = 'Физика. Основы термодинамики')),
+            ((SELECT id FROM uni.user where surname = 'Иванов'), (SELECT id FROM uni.competence WHERE name = 'Физика. Основы термодинамики')),
+            ((SELECT id FROM uni.user where surname = 'Мамошин'), (SELECT id FROM uni.competence WHERE name = 'Физика. Основы термодинамики')),
+            ((SELECT id FROM uni.user where surname = 'Мамошин'), (SELECT id FROM uni.competence WHERE name = 'Решение дифференциальных уравнений')),
+            ((SELECT id FROM uni.user where surname = 'Петров'), (SELECT id FROM uni.competence WHERE name = 'Решение дифференциальных уравнений')),
+            ((SELECT id FROM uni.user where surname = 'Михальчук'), (SELECT id FROM uni.competence WHERE name = 'Решение дифференциальных уравнений')),
+            ((SELECT id FROM uni.user where surname = 'Большова'), (SELECT id FROM uni.competence WHERE name = 'Аналитическое мышление')),
+            ((SELECT id FROM uni.user where surname = 'Габдрахманова'), (SELECT id FROM uni.competence WHERE name = 'Аналитическое мышление')),
+            ((SELECT id FROM uni.user where surname = 'Большова'), (SELECT id FROM uni.competence WHERE name = 'Аналитическое мышление')),
+            ((SELECT id FROM uni.user where surname = 'Махмутов'), (SELECT id FROM uni.competence WHERE name = 'Аналитическое мышление'));
+        </sql>
+    </changeSet>
+</databaseChangeLog>

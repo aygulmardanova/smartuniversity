@@ -1,4 +1,4 @@
-§<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:security="http://www.springframework.org/schema/security"
@@ -7,7 +7,7 @@
        http://www.springframework.org/schema/security
        http://www.springframework.org/schema/security/spring-security.xsd">
 
-    <security:http auto-config="true" use-expressions="true">
+    <!--<security:http auto-config="true" use-expressions="true">
         <security:access-denied-handler error-page="/errors"/>
         <security:form-login login-page="/login"
                              login-processing-url="/j_spring_security_check"
@@ -20,19 +20,19 @@
         <security:logout logout-url="/logout" logout-success-url="/main"/>
         <security:anonymous username="guest" granted-authority="ROLE_ANONYMOUS"/>
         <security:remember-me token-validity-seconds="1209600"/>
-        <!--<security:csrf/>-->
+        &lt;!&ndash;<security:csrf/>&ndash;&gt;
     </security:http>
 
     <security:authentication-manager>
         <security:authentication-provider user-service-ref="authProvider">
-            <!--<security:password-encoder hash="md5"/>-->
+            &lt;!&ndash;<security:password-encoder hash="md5"/>&ndash;&gt;
         </security:authentication-provider>
     </security:authentication-manager>
 
-    <bean id="authProvider" class="ru.kpfu.itis.security.UserDetailsServiceImpl"/>
+    &lt;!&ndash;<bean id="authProvider" class="ru.kpfu.itis.security.UserDetailsServiceImpl"/>&ndash;&gt;
 
     <bean id="myAccessDeniedHandler" class="ru.kpfu.itis.security.MyAccessDeniedHandler">
         <constructor-arg name="errorPage" value="/403"/>
-    </bean>
+    </bean>-->
 
 </beans>

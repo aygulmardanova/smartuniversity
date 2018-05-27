@@ -1,0 +1,15 @@
+DROP TABLE uni.user_wish;
+DROP TABLE uni.wish;
+DROP TABLE uni.wish_status;
+DROP TABLE uni.iup_subj;
+DROP TABLE uni.subj_comp;
+DROP TABLE uni.subject;
+DROP TABLE uni.user_comp;
+DROP TABLE uni.user_interest;
+DROP TABLE uni.competence;
+DROP TABLE uni.interest;
+DROP TABLE uni.user;
+DROP TABLE uni.aud_equip;
+DROP TABLE uni.equipment;
+DROP TABLE uni.auditory;
+DROP TABLE uni.user_role;

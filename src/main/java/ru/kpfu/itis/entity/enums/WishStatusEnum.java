@@ -1,6 +1,6 @@
 package ru.kpfu.itis.entity.enums;
 
-public enum WishTypeEnum {
+public enum WishStatusEnum {
 
     SYSTEM(1),
     AUTO(2),
@@ -11,7 +11,7 @@ public enum WishTypeEnum {
 
     private Integer id;
 
-    WishTypeEnum(Integer id) {
+    WishStatusEnum(Integer id) {
         this.id = id;
     }
 
@@ -19,10 +19,10 @@ public enum WishTypeEnum {
         return id;
     }
 
-    public static WishTypeEnum valueOf(Integer id) {
-        for (WishTypeEnum wishTypeEnum : WishTypeEnum.values()){
-            if(wishTypeEnum.getId().equals(id)) {
-                return wishTypeEnum;
+    public static WishStatusEnum valueOf(Integer id) {
+        for (WishStatusEnum wishStatusEnum : WishStatusEnum.values()){
+            if(wishStatusEnum.getId().equals(id)) {
+                return wishStatusEnum;
             }
         }
         return null;

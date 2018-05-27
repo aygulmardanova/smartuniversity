@@ -23,15 +23,244 @@
                 <tableExists schemaName="uni" tableName="user_role"/>
             </not>
         </preConditions>
-        <comment>Схема для пользовательских ролей</comment>
+        <comment>Таблица для пользовательских ролей</comment>
         <sql>
-            CREATE TABLE uni.user_role(
-            "id" SERIAL NOT NULL,
-            "code" VARCHAR COLLATE "default",
-            "name" VARCHAR COLLATE "default" NOT NULL,
-            CONSTRAINT "user_role_pkey" PRIMARY KEY ("id")
+            CREATE TABLE uni.user_role (
+            "id"   BIGINT PRIMARY KEY,
+            "code" VARCHAR,
+            "name" VARCHAR
             )
         </sql>
     </changeSet>
 
+    <changeSet id="3_create_user_table" author="amardanova" dbms="postgresql">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists schemaName="uni" tableName="user"/>
+            </not>
+        </preConditions>
+        <comment>Таблица для пользователей</comment>
+        <sql>
+            CREATE TABLE uni.user (
+            id         SERIAL PRIMARY KEY,
+            surname    VARCHAR,
+            name       VARCHAR,
+            patronymic VARCHAR,
+            role_id    INTEGER REFERENCES uni.user_role ("id")
+            )
+        </sql>
+    </changeSet>
+
+    <changeSet id="4_create_auditory_table" author="amardanova" dbms="postgresql">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists schemaName="uni" tableName="auditory"/>
+            </not>
+        </preConditions>
+        <comment>Таблица для аудиторий</comment>
+        <sql>
+            CREATE TABLE uni.auditory (
+            id       SERIAL PRIMARY KEY,
+            name     VARCHAR,
+            capacity INTEGER,
+            bulk     INTEGER,
+            floor    INTEGER
+            )
+        </sql>
+    </changeSet>
+
+    <changeSet id="5_create_equipment_table" author="amardanova" dbms="postgresql">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists schemaName="uni" tableName="equipment"/>
+            </not>
+        </preConditions>
+        <comment>Таблица для оборудования</comment>
+        <sql>
+            CREATE TABLE uni.equipment (
+            id   SERIAL PRIMARY KEY,
+            name VARCHAR
+            )
+        </sql>
+    </changeSet>
+
+    <changeSet id="6_create_aud_equip_table" author="amardanova" dbms="postgresql">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists schemaName="uni" tableName="aud_equip"/>
+            </not>
+        </preConditions>
+        <comment>Таблица для аудитория-оборудование</comment>
+        <sql>
+            CREATE TABLE uni.aud_equip (
+            id       SERIAL PRIMARY KEY,
+            aud_id   INTEGER REFERENCES uni.auditory ("id"),
+            equip_id INTEGER REFERENCES uni.equipment ("id")
+            )
+        </sql>
+    </changeSet>
+
+    <changeSet id="7_create_competence_table" author="amardanova" dbms="postgresql">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists schemaName="uni" tableName="competence"/>
+            </not>
+        </preConditions>
+        <comment>Таблица для компетенций</comment>
+        <sql>
+            CREATE TABLE uni.competence (
+            id   SERIAL PRIMARY KEY,
+            name VARCHAR
+            )
+        </sql>
+    </changeSet>
+
+    <changeSet id="8_create_subject_table" author="amardanova" dbms="postgresql">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists schemaName="uni" tableName="subject"/>
+            </not>
+        </preConditions>
+        <comment>Таблица для предметов</comment>
+        <sql>
+            CREATE TABLE uni.subject (
+            id   SERIAL PRIMARY KEY,
+            name VARCHAR
+            )
+        </sql>
+    </changeSet>
+
+    <changeSet id="9_create_subj_comp_table" author="amardanova" dbms="postgresql">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists schemaName="uni" tableName="subj_comp"/>
+            </not>
+        </preConditions>
+        <comment>Таблица для компетенций предметов</comment>
+        <sql>
+            CREATE TABLE uni.subj_comp (
+            id      SERIAL PRIMARY KEY,
+            subj_id INTEGER REFERENCES uni.subject ("id"),
+            comp_id INTEGER REFERENCES uni.competence ("id")
+            )
+        </sql>
+    </changeSet>
+
+    <changeSet id="10_create_iup_subj_table" author="amardanova" dbms="postgresql">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists schemaName="uni" tableName="iup_subj"/>
+            </not>
+        </preConditions>
+        <comment>Таблица для предметов ИУП</comment>
+        <sql>
+            CREATE TABLE uni.iup_subj (
+            id      SERIAL PRIMARY KEY,
+            user_id INTEGER REFERENCES uni.user ("id"),
+            subj_id INTEGER REFERENCES uni.subject ("id")
+            )
+        </sql>
+    </changeSet>
+
+    <changeSet id="11_create_wish_status_table" author="amardanova" dbms="postgresql">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists schemaName="uni" tableName="wish_status"/>
+            </not>
+        </preConditions>
+        <comment>Таблица для статуса пожеланий</comment>
+        <sql>
+            CREATE TABLE uni.wish_status (
+            id   BIGINT PRIMARY KEY,
+            name VARCHAR
+            )
+        </sql>
+    </changeSet>
+
+    <changeSet id="12_create_wish_table" author="amardanova" dbms="postgresql">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists schemaName="uni" tableName="wish"/>
+            </not>
+        </preConditions>
+        <comment>Таблица для информации о пожелании</comment>
+        <sql>
+            CREATE TABLE uni.wish (
+            id   BIGINT PRIMARY KEY,
+            type VARCHAR,
+            name VARCHAR
+            )
+        </sql>
+    </changeSet>
+
+    <changeSet id="13_create_user_wish_table" author="amardanova" dbms="postgresql">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists schemaName="uni" tableName="user_wish"/>
+            </not>
+        </preConditions>
+        <comment>Таблица для пользовательских пожеланий</comment>
+        <sql>
+            CREATE TABLE uni.user_wish (
+            id           SERIAL PRIMARY KEY,
+            from_id      INTEGER REFERENCES uni.user ("id"),
+            stud_id      INTEGER REFERENCES uni.user ("id"),
+            teach_id     INTEGER REFERENCES uni.user ("id"),
+            subj_id      INTEGER REFERENCES uni.subject ("id"),
+            aud_id       INTEGER REFERENCES uni.auditory ("id"),
+            week_day     INTEGER,
+            pair_st_num  INTEGER,
+            pair_end_num INTEGER,
+            wish_id      INTEGER REFERENCES uni.wish ("id"),
+            equip_id     INTEGER REFERENCES uni.equipment ("id")
+            )
+        </sql>
+    </changeSet>
+
+    <changeSet id="14_create_user_comp_table" author="amardanova" dbms="postgresql">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists schemaName="uni" tableName="user_comp"/>
+            </not>
+        </preConditions>
+        <comment>Таблица для пользовательских компетенций</comment>
+        <sql>
+            CREATE TABLE uni.user_comp (
+            id           SERIAL PRIMARY KEY,
+            user_id      INTEGER REFERENCES uni.user ("id"),
+            comp_id      INTEGER REFERENCES uni.competence ("id")
+            )
+        </sql>
+    </changeSet>
+
+    <changeSet id="15_create_interest_table" author="amardanova" dbms="postgresql">
+        <preConditions onFail="CONTINUE">
+            <not>
+                <tableExists schemaName="uni" tableName="interest"/>
+            </not>
+        </preConditions>
+        <comment>Таблица для интересов</comment>
+        <sql>
+            CREATE TABLE uni.interest (
+            id        SERIAL PRIMARY KEY,
+            name      VARCHAR
+            )
+        </sql>
+    </changeSet>
+
+    <changeSet id="16_create_user_interest_table" author="amardanova" dbms="postgresql">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists schemaName="uni" tableName="user_interest"/>
+            </not>
+        </preConditions>
+        <comment>Таблица для пользовательских интересов</comment>
+        <sql>
+            CREATE TABLE uni.user_interest (
+            id           SERIAL PRIMARY KEY,
+            user_id      INTEGER REFERENCES uni.user ("id"),
+            interest_id  INTEGER REFERENCES uni.interest ("id")
+            )
+        </sql>
+    </changeSet>
 </databaseChangeLog>

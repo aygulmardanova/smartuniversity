@@ -1,0 +1,27 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-configuration PUBLIC
+    "-//Hibernate/Hibernate Configuration DTD//EN"
+    "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+  <session-factory>
+    <property name="hibernate.connection.url">jdbc:postgresql://localhost:5432/smartuniversity</property>
+    <property name="connection.driver_class">org.postgresql.Driver</property>
+    <mapping class="ru.kpfu.itis.entity.AudEquipEntity"/>
+    <mapping class="ru.kpfu.itis.entity.AuditoryEntity"/>
+    <mapping class="ru.kpfu.itis.entity.CompetenceEntity"/>
+    <mapping class="ru.kpfu.itis.entity.EquipmentEntity"/>
+    <mapping class="ru.kpfu.itis.entity.InterestEntity"/>
+    <mapping class="ru.kpfu.itis.entity.IupSubjEntity"/>
+    <mapping class="ru.kpfu.itis.entity.SubjCompEntity"/>
+    <mapping class="ru.kpfu.itis.entity.SubjectEntity"/>
+    <mapping class="ru.kpfu.itis.entity.UserEntity"/>
+    <mapping class="ru.kpfu.itis.entity.UserCompEntity"/>
+    <mapping class="ru.kpfu.itis.entity.UserInterestEntity"/>
+    <mapping class="ru.kpfu.itis.entity.UserRoleEntity"/>
+    <mapping class="ru.kpfu.itis.entity.UserWishEntity"/>
+    <mapping class="ru.kpfu.itis.entity.WishEntity"/>
+    <mapping class="ru.kpfu.itis.entity.WishStatusEntity"/>
+    <!-- DB schema will be updated if needed -->
+    <!-- <property name="hbm2ddl.auto">update</property> -->
+  </session-factory>
+</hibernate-configuration>
