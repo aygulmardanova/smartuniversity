@@ -5,37 +5,29 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "user_comp", schema = "uni", catalog = "smartuniversity")
-public class UserCompEntity {
-    private Integer id;
+public class UserCompEntity extends IdObject<Long> {
+
+    @ManyToOne
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
     private UserEntity userBy;
+
+    @ManyToOne
+    @JoinColumn(name = "comp_id", referencedColumnName = "id")
     private CompetenceEntity competence;
-
-    @Id
-    @Column(name = "id", nullable = false)
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         UserCompEntity that = (UserCompEntity) o;
-        return Objects.equals(id, that.id);
+        return Objects.equals(getId(), that.getId());
     }
 
     @Override
     public int hashCode() {
-
-        return Objects.hash(id);
+        return Objects.hash(getId());
     }
 
-    @ManyToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
     public UserEntity getUserBy() {
         return userBy;
     }
@@ -44,8 +36,6 @@ public class UserCompEntity {
         this.userBy = userBy;
     }
 
-    @ManyToOne
-    @JoinColumn(name = "comp_id", referencedColumnName = "id")
     public CompetenceEntity getCompetence() {
         return competence;
     }

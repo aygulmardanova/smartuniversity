@@ -5,31 +5,48 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "user_wish", schema = "uni", catalog = "smartuniversity")
-public class UserWishEntity {
-    private Long id;
-    private Integer weekDay;
-    private Integer pairStNum;
-    private Integer pairEndNum;
-    private UserEntity fromUser;
-    private UserEntity studUser;
-    private UserEntity teachUser;
-    private SubjectEntity subjectBySubjId;
-    private AuditoryEntity auditoryByAudId;
-    private WishEntity wish;
-    private EquipmentEntity equipmentByEquipId;
-
-    @Id
-    @Column(name = "id", nullable = false)
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
+public class UserWishEntity extends IdObject<Long> {
 
     @Basic
     @Column(name = "week_day", nullable = true)
+    private Integer weekDay;
+
+    @Basic
+    @Column(name = "pair_st_num", nullable = true)
+    private Integer pairStNum;
+
+    @Basic
+    @Column(name = "pair_end_num", nullable = true)
+    private Integer pairEndNum;
+
+    @ManyToOne
+    @JoinColumn(name = "from_id", referencedColumnName = "id")
+    private UserEntity fromUser;
+
+    @ManyToOne
+    @JoinColumn(name = "stud_id", referencedColumnName = "id")
+    private UserEntity studUser;
+
+    @ManyToOne
+    @JoinColumn(name = "teach_id", referencedColumnName = "id")
+    private UserEntity teachUser;
+
+    @ManyToOne
+    @JoinColumn(name = "subj_id", referencedColumnName = "id")
+    private SubjectEntity subject;
+
+    @ManyToOne
+    @JoinColumn(name = "aud_id", referencedColumnName = "id")
+    private AuditoryEntity auditory;
+
+    @ManyToOne
+    @JoinColumn(name = "wish_id", referencedColumnName = "id")
+    private WishEntity wish;
+
+    @ManyToOne
+    @JoinColumn(name = "equip_id", referencedColumnName = "id")
+    private EquipmentEntity equipment;
+
     public Integer getWeekDay() {
         return weekDay;
     }
@@ -38,8 +55,6 @@ public class UserWishEntity {
         this.weekDay = weekDay;
     }
 
-    @Basic
-    @Column(name = "pair_st_num", nullable = true)
     public Integer getPairStNum() {
         return pairStNum;
     }
@@ -48,8 +63,6 @@ public class UserWishEntity {
         this.pairStNum = pairStNum;
     }
 
-    @Basic
-    @Column(name = "pair_end_num", nullable = true)
     public Integer getPairEndNum() {
         return pairEndNum;
     }
@@ -63,7 +76,7 @@ public class UserWishEntity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         UserWishEntity that = (UserWishEntity) o;
-        return Objects.equals(id, that.id) &&
+        return Objects.equals(getId(), that.getId()) &&
                 Objects.equals(weekDay, that.weekDay) &&
                 Objects.equals(pairStNum, that.pairStNum) &&
                 Objects.equals(pairEndNum, that.pairEndNum);
@@ -71,12 +84,9 @@ public class UserWishEntity {
 
     @Override
     public int hashCode() {
-
-        return Objects.hash(id, weekDay, pairStNum, pairEndNum);
+        return Objects.hash(getId(), weekDay, pairStNum, pairEndNum);
     }
 
-    @ManyToOne
-    @JoinColumn(name = "from_id", referencedColumnName = "id")
     public UserEntity getFromUser() {
         return fromUser;
     }
@@ -85,8 +95,6 @@ public class UserWishEntity {
         this.fromUser = fromUser;
     }
 
-    @ManyToOne
-    @JoinColumn(name = "stud_id", referencedColumnName = "id")
     public UserEntity getStudUser() {
         return studUser;
     }
@@ -95,8 +103,6 @@ public class UserWishEntity {
         this.studUser = studUser;
     }
 
-    @ManyToOne
-    @JoinColumn(name = "teach_id", referencedColumnName = "id")
     public UserEntity getTeachUser() {
         return teachUser;
     }
@@ -105,28 +111,22 @@ public class UserWishEntity {
         this.teachUser = teachUser;
     }
 
-    @ManyToOne
-    @JoinColumn(name = "subj_id", referencedColumnName = "id")
-    public SubjectEntity getSubjectBySubjId() {
-        return subjectBySubjId;
+    public SubjectEntity getSubject() {
+        return subject;
     }
 
-    public void setSubjectBySubjId(SubjectEntity subjectBySubjId) {
-        this.subjectBySubjId = subjectBySubjId;
+    public void setSubject(SubjectEntity subject) {
+        this.subject = subject;
     }
 
-    @ManyToOne
-    @JoinColumn(name = "aud_id", referencedColumnName = "id")
-    public AuditoryEntity getAuditoryByAudId() {
-        return auditoryByAudId;
+    public AuditoryEntity getAuditory() {
+        return auditory;
     }
 
-    public void setAuditoryByAudId(AuditoryEntity auditoryByAudId) {
-        this.auditoryByAudId = auditoryByAudId;
+    public void setAuditory(AuditoryEntity auditory) {
+        this.auditory = auditory;
     }
 
-    @ManyToOne
-    @JoinColumn(name = "wish_id", referencedColumnName = "id")
     public WishEntity getWish() {
         return wish;
     }
@@ -135,13 +135,11 @@ public class UserWishEntity {
         this.wish = wish;
     }
 
-    @ManyToOne
-    @JoinColumn(name = "equip_id", referencedColumnName = "id")
-    public EquipmentEntity getEquipmentByEquipId() {
-        return equipmentByEquipId;
+    public EquipmentEntity getEquipment() {
+        return equipment;
     }
 
-    public void setEquipmentByEquipId(EquipmentEntity equipmentByEquipId) {
-        this.equipmentByEquipId = equipmentByEquipId;
+    public void setEquipment(EquipmentEntity equipment) {
+        this.equipment = equipment;
     }
 }

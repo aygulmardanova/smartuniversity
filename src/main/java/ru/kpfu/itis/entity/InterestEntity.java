@@ -5,22 +5,12 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "interest", schema = "uni", catalog = "smartuniversity")
-public class InterestEntity {
-    private Long id;
-    private String name;
-
-    @Id
-    @Column(name = "id", nullable = false)
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
+public class InterestEntity extends IdObject<Long> {
 
     @Basic
     @Column(name = "name", nullable = true, length = -1)
+    private String name;
+
     public String getName() {
         return name;
     }
@@ -34,13 +24,12 @@ public class InterestEntity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         InterestEntity that = (InterestEntity) o;
-        return Objects.equals(id, that.id) &&
+        return Objects.equals(getId(), that.getId()) &&
                 Objects.equals(name, that.name);
     }
 
     @Override
     public int hashCode() {
-
-        return Objects.hash(id, name);
+        return Objects.hash(getId(), name);
     }
 }

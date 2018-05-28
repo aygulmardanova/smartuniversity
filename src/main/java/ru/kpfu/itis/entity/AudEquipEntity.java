@@ -5,37 +5,29 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "aud_equip", schema = "uni", catalog = "smartuniversity")
-public class AudEquipEntity {
-    private Long id;
+public class AudEquipEntity extends IdObject<Long>  {
+
+    @ManyToOne
+    @JoinColumn(name = "aud_id", referencedColumnName = "id")
     private AuditoryEntity auditory;
+
+    @ManyToOne
+    @JoinColumn(name = "equip_id", referencedColumnName = "id")
     private EquipmentEntity equipment;
-
-    @Id
-    @Column(name = "id", nullable = false)
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         AudEquipEntity that = (AudEquipEntity) o;
-        return Objects.equals(id, that.id);
+        return Objects.equals(getId(), that.getId());
     }
 
     @Override
     public int hashCode() {
-
-        return Objects.hash(id);
+        return Objects.hash(getId());
     }
 
-    @ManyToOne
-    @JoinColumn(name = "aud_id", referencedColumnName = "id")
     public AuditoryEntity getAuditory() {
         return auditory;
     }
@@ -44,8 +36,6 @@ public class AudEquipEntity {
         this.auditory = auditory;
     }
 
-    @ManyToOne
-    @JoinColumn(name = "equip_id", referencedColumnName = "id")
     public EquipmentEntity getEquipment() {
         return equipment;
     }

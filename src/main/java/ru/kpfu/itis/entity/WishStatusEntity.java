@@ -6,11 +6,15 @@ import java.util.Objects;
 @Entity
 @Table(name = "wish_status", schema = "uni", catalog = "smartuniversity")
 public class WishStatusEntity {
-    private Long id;
-    private String name;
 
     @Id
     @Column(name = "id", nullable = false)
+    private Long id;
+
+    @Basic
+    @Column(name = "name", nullable = true, length = -1)
+    private String name;
+
     public Long getId() {
         return id;
     }
@@ -19,8 +23,6 @@ public class WishStatusEntity {
         this.id = id;
     }
 
-    @Basic
-    @Column(name = "name", nullable = true, length = -1)
     public String getName() {
         return name;
     }
@@ -40,7 +42,6 @@ public class WishStatusEntity {
 
     @Override
     public int hashCode() {
-
         return Objects.hash(id, name);
     }
 }

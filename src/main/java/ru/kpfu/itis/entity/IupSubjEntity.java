@@ -1,24 +1,34 @@
 package ru.kpfu.itis.entity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
 @Table(name = "iup_subj", schema = "uni", catalog = "smartuniversity")
-public class IupSubjEntity {
-    private Integer id;
+public class IupSubjEntity extends IdObject<Long> {
 
-    @Id
-    @Column(name = "id", nullable = false)
-    public Integer getId() {
-        return id;
+    @ManyToOne
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    private UserEntity user;
+
+    @ManyToOne
+    @JoinColumn(name = "subj_id", referencedColumnName = "id")
+    private SubjectEntity subject;
+
+    public UserEntity getUser() {
+        return user;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setUser(UserEntity user) {
+        this.user = user;
+    }
+
+    public SubjectEntity getSubject() {
+        return subject;
+    }
+
+    public void setSubject(SubjectEntity subject) {
+        this.subject = subject;
     }
 
     @Override
@@ -26,12 +36,13 @@ public class IupSubjEntity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         IupSubjEntity that = (IupSubjEntity) o;
-        return Objects.equals(id, that.id);
+        return Objects.equals(getId(), that.getId()) &&
+                Objects.equals(user, that.user) &&
+                Objects.equals(subject, that.subject);
     }
 
     @Override
     public int hashCode() {
-
-        return Objects.hash(id);
+        return Objects.hash(getId(), user, subject);
     }
 }

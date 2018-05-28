@@ -1,26 +1,49 @@
 package ru.kpfu.itis.entity;
 
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+
 import javax.persistence.*;
 import java.util.Collection;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
 @Table(schema = "uni", name = "user", catalog = "smartuniversity")
 public class UserEntity extends IdObject<Long> {
 
-    private String surname;
-    private String name;
-    private String patronym;
-    private Integer id;
-    private String patronymic;
-    private Collection<IupSubjEntity> iupSubjs;
-    private UserRoleEntity userRole;
-    private Collection<UserCompEntity> userComps;
-    private Collection<UserInterestEntity> userInterests;
-    private Collection<UserWishEntity> userWishes;
-
     @Basic
     @Column(name = "surname", nullable = true, length = -1)
+    private String surname;
+
+    @Basic
+    @Column(name = "name", nullable = true, length = -1)
+    private String name;
+
+    @Basic
+    @Column(name = "patronymic", nullable = true, length = -1)
+    private String patronymic;
+
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
+    @Fetch(value = FetchMode.SUBSELECT)
+    private List<IupSubjEntity> iupSubjs;
+
+    @ManyToOne
+    @JoinColumn(name = "role_id", referencedColumnName = "id")
+    private UserRoleEntity userRole;
+
+    @OneToMany(mappedBy = "userBy", fetch = FetchType.EAGER)
+    @Fetch(value = FetchMode.SUBSELECT)
+    private List<UserCompEntity> userComps;
+
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
+    @Fetch(value = FetchMode.SUBSELECT)
+    private List<UserInterestEntity> userInterests;
+
+    @OneToMany(mappedBy = "fromUser", fetch = FetchType.EAGER)
+    @Fetch(value = FetchMode.SUBSELECT)
+    private List<UserWishEntity> userWishes;
+
     public String getSurname() {
         return surname;
     }
@@ -29,8 +52,6 @@ public class UserEntity extends IdObject<Long> {
         this.surname = surname;
     }
 
-    @Basic
-    @Column(name = "name", nullable = true, length = -1)
     public String getName() {
         return name;
     }
@@ -39,18 +60,6 @@ public class UserEntity extends IdObject<Long> {
         this.name = name;
     }
 
-    @Id
-    @Column(name = "id", nullable = false)
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    @Basic
-    @Column(name = "patronymic", nullable = true, length = -1)
     public String getPatronymic() {
         return patronymic;
     }
@@ -66,27 +75,23 @@ public class UserEntity extends IdObject<Long> {
         UserEntity that = (UserEntity) o;
         return Objects.equals(surname, that.surname) &&
                 Objects.equals(name, that.name) &&
-                Objects.equals(id, that.id) &&
+                Objects.equals(getId(), that.getId()) &&
                 Objects.equals(patronymic, that.patronymic);
     }
 
     @Override
     public int hashCode() {
-
-        return Objects.hash(id, surname, name, patronymic);
+        return Objects.hash(getId(), surname, name, patronymic);
     }
 
-    @OneToMany(mappedBy = "user")
-    public Collection<IupSubjEntity> getIupSubjs() {
+    public List<IupSubjEntity> getIupSubjs() {
         return iupSubjs;
     }
 
-    public void setIupSubjs(Collection<IupSubjEntity> iupSubjs) {
+    public void setIupSubjs(List<IupSubjEntity> iupSubjs) {
         this.iupSubjs = iupSubjs;
     }
 
-    @ManyToOne
-    @JoinColumn(name = "role_id", referencedColumnName = "id")
     public UserRoleEntity getUserRole() {
         return userRole;
     }
@@ -95,30 +100,27 @@ public class UserEntity extends IdObject<Long> {
         this.userRole = userRole;
     }
 
-    @OneToMany(mappedBy = "userBy")
-    public Collection<UserCompEntity> getUserComps() {
+    public List<UserCompEntity> getUserComps() {
         return userComps;
     }
 
-    public void setUserComps(Collection<UserCompEntity> userComps) {
+    public void setUserComps(List<UserCompEntity> userComps) {
         this.userComps = userComps;
     }
 
-    @OneToMany(mappedBy = "user")
-    public Collection<UserInterestEntity> getUserInterests() {
+    public List<UserInterestEntity> getUserInterests() {
         return userInterests;
     }
 
-    public void setUserInterests(Collection<UserInterestEntity> userInterests) {
+    public void setUserInterests(List<UserInterestEntity> userInterests) {
         this.userInterests = userInterests;
     }
 
-    @OneToMany(mappedBy = "fromUser")
-    public Collection<UserWishEntity> getUserWishes() {
+    public List<UserWishEntity> getUserWishes() {
         return userWishes;
     }
 
-    public void setUserWishes(Collection<UserWishEntity> userWishes) {
+    public void setUserWishes(List<UserWishEntity> userWishes) {
         this.userWishes = userWishes;
     }
 }

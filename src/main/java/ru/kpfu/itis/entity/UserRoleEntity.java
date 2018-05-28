@@ -6,14 +6,17 @@ import java.util.Objects;
 
 @Entity
 @Table(schema = "uni", name = "user_role", catalog = "smartuniversity")
-public class UserRoleEntity extends IdObject<Long> implements Serializable {
+public class UserRoleEntity implements Serializable {
+
+    @Id
+    @Column(name = "id", nullable = false)
+    private Long id;
 
     @Column(name = "code")
     private String code;
 
     @Column(name = "name")
     private String name;
-    private Long id;
 
     @Basic
     @Column(name = "code", nullable = true, length = -1)
@@ -35,8 +38,6 @@ public class UserRoleEntity extends IdObject<Long> implements Serializable {
         this.name = name;
     }
 
-    @Id
-    @Column(name = "id", nullable = false)
     public Long getId() {
         return id;
     }
@@ -57,7 +58,6 @@ public class UserRoleEntity extends IdObject<Long> implements Serializable {
 
     @Override
     public int hashCode() {
-
         return Objects.hash(id, code, name);
     }
 }

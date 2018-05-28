@@ -1,31 +1,37 @@
 package ru.kpfu.itis.entity;
 
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+
 import javax.persistence.*;
 import java.util.Collection;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
 @Table(name = "auditory", schema = "uni", catalog = "smartuniversity")
-public class AuditoryEntity {
-    private Integer id;
-    private String name;
-    private Integer capacity;
-    private Integer bulk;
-    private Integer floor;
-    private Collection<AudEquipEntity> audEquips;
-
-    @Id
-    @Column(name = "id", nullable = false)
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
+public class AuditoryEntity extends IdObject<Long> {
 
     @Basic
     @Column(name = "name", nullable = true, length = -1)
+    private String name;
+
+    @Basic
+    @Column(name = "capacity", nullable = true)
+    private Integer capacity;
+
+    @Basic
+    @Column(name = "bulk", nullable = true)
+    private Integer bulk;
+
+    @Basic
+    @Column(name = "floor", nullable = true)
+    private Integer floor;
+
+    @OneToMany(mappedBy = "auditory", fetch = FetchType.EAGER)
+    @Fetch(value = FetchMode.SUBSELECT)
+    private List<AudEquipEntity> audEquips;
+
     public String getName() {
         return name;
     }
@@ -34,8 +40,6 @@ public class AuditoryEntity {
         this.name = name;
     }
 
-    @Basic
-    @Column(name = "capacity", nullable = true)
     public Integer getCapacity() {
         return capacity;
     }
@@ -44,8 +48,6 @@ public class AuditoryEntity {
         this.capacity = capacity;
     }
 
-    @Basic
-    @Column(name = "bulk", nullable = true)
     public Integer getBulk() {
         return bulk;
     }
@@ -54,8 +56,6 @@ public class AuditoryEntity {
         this.bulk = bulk;
     }
 
-    @Basic
-    @Column(name = "floor", nullable = true)
     public Integer getFloor() {
         return floor;
     }
@@ -69,7 +69,7 @@ public class AuditoryEntity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         AuditoryEntity that = (AuditoryEntity) o;
-        return Objects.equals(id, that.id) &&
+        return Objects.equals(getId(), that.getId()) &&
                 Objects.equals(name, that.name) &&
                 Objects.equals(capacity, that.capacity) &&
                 Objects.equals(bulk, that.bulk) &&
@@ -78,16 +78,14 @@ public class AuditoryEntity {
 
     @Override
     public int hashCode() {
-
-        return Objects.hash(id, name, capacity, bulk, floor);
+        return Objects.hash(getId(), name, capacity, bulk, floor);
     }
 
-    @OneToMany(mappedBy = "auditory")
-    public Collection<AudEquipEntity> getAudEquips() {
+    public List<AudEquipEntity> getAudEquips() {
         return audEquips;
     }
 
-    public void setAudEquips(Collection<AudEquipEntity> audEquips) {
+    public void setAudEquips(List<AudEquipEntity> audEquips) {
         this.audEquips = audEquips;
     }
 }

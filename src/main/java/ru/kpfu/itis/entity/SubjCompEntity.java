@@ -5,37 +5,29 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "subj_comp", schema = "uni", catalog = "smartuniversity")
-public class SubjCompEntity {
-    private Integer id;
+public class SubjCompEntity extends IdObject<Long> {
+
+    @ManyToOne
+    @JoinColumn(name = "subj_id", referencedColumnName = "id")
     private SubjectEntity subject;
+
+    @ManyToOne
+    @JoinColumn(name = "comp_id", referencedColumnName = "id")
     private CompetenceEntity competence;
-
-    @Id
-    @Column(name = "id", nullable = false)
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         SubjCompEntity that = (SubjCompEntity) o;
-        return Objects.equals(id, that.id);
+        return Objects.equals(getId(), that.getId());
     }
 
     @Override
     public int hashCode() {
-
-        return Objects.hash(id);
+        return Objects.hash(getId());
     }
 
-    @ManyToOne
-    @JoinColumn(name = "subj_id", referencedColumnName = "id")
     public SubjectEntity getSubject() {
         return subject;
     }
@@ -44,8 +36,6 @@ public class SubjCompEntity {
         this.subject = subject;
     }
 
-    @ManyToOne
-    @JoinColumn(name = "comp_id", referencedColumnName = "id")
     public CompetenceEntity getCompetence() {
         return competence;
     }
