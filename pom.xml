@@ -46,6 +46,8 @@
         <javax.mail.api.version>1.5.5</javax.mail.api.version>
         <filestorage.version>2.0-SNAPSHOT</filestorage.version>
 
+        <lombok.version>1.16.20</lombok.version>
+
         <common.lang3.version>3.4</common.lang3.version>
         <commons.io.version>2.4</commons.io.version>
         <commons.collections.version>3.2.1</commons.collections.version>
@@ -275,6 +277,13 @@
             <groupId>javax.mail</groupId>
             <artifactId>javax.mail-api</artifactId>
             <version>${javax.mail.api.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>${lombok.version}</version>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 
