@@ -4,7 +4,6 @@ import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
-import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 
@@ -42,7 +41,7 @@ public class UserEntity extends IdObject<Long> {
 
     @OneToMany(mappedBy = "fromUser", fetch = FetchType.EAGER)
     @Fetch(value = FetchMode.SUBSELECT)
-    private List<UserWishEntity> userWishes;
+    private List<WishEntity> userWishes;
 
     public String getSurname() {
         return surname;
@@ -116,11 +115,11 @@ public class UserEntity extends IdObject<Long> {
         this.userInterests = userInterests;
     }
 
-    public List<UserWishEntity> getUserWishes() {
+    public List<WishEntity> getUserWishes() {
         return userWishes;
     }
 
-    public void setUserWishes(List<UserWishEntity> userWishes) {
+    public void setUserWishes(List<WishEntity> userWishes) {
         this.userWishes = userWishes;
     }
 }

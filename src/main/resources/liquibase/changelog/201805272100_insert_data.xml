@@ -287,7 +287,7 @@
         </preConditions>
         <comment>Типы пожеланий</comment>
         <sql>
-            INSERT INTO uni.wish (id, type, name)
+            INSERT INTO uni.wish_info (id, type, name)
             VALUES
             (1, 'STUD_TO_STUD', 'Пожелание студента к студенту'),
             (2, 'STUD_TO_STUD_ON_SUBJ', 'Пожелание студента к студенту для определенного предмета'),

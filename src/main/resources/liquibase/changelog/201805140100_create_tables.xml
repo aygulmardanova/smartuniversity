@@ -185,7 +185,7 @@
         </preConditions>
         <comment>Таблица для информации о пожелании</comment>
         <sql>
-            CREATE TABLE uni.wish (
+            CREATE TABLE uni.wish_info (
             id   BIGINT PRIMARY KEY,
             type VARCHAR,
             name VARCHAR
@@ -193,7 +193,23 @@
         </sql>
     </changeSet>
 
-    <changeSet id="13_create_user_wish_table" author="amardanova" dbms="postgresql">
+    <changeSet id="13_create_pair_num_table" author="amardanova" dbms="postgresql">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists schemaName="uni" tableName="pair_num"/>
+            </not>
+        </preConditions>
+        <comment>Таблица для пользовательских интересов</comment>
+        <sql>
+            CREATE TABLE uni.pair_num (
+            id             BIGINT PRIMARY KEY,
+            pair_st_time   VARCHAR,
+            pair_end_time  VARCHAR
+            )
+        </sql>
+    </changeSet>
+
+    <changeSet id="14_create_user_wish_table" author="amardanova" dbms="postgresql">
         <preConditions onFail="MARK_RAN">
             <not>
                 <tableExists schemaName="uni" tableName="user_wish"/>
@@ -201,7 +217,7 @@
         </preConditions>
         <comment>Таблица для пользовательских пожеланий</comment>
         <sql>
-            CREATE TABLE uni.user_wish (
+            CREATE TABLE uni.wish (
             id           SERIAL PRIMARY KEY,
             from_id      INTEGER REFERENCES uni.user ("id"),
             stud_id      INTEGER REFERENCES uni.user ("id"),
@@ -209,15 +225,15 @@
             subj_id      INTEGER REFERENCES uni.subject ("id"),
             aud_id       INTEGER REFERENCES uni.auditory ("id"),
             week_day     INTEGER,
-            pair_st_num  INTEGER,
-            pair_end_num INTEGER,
-            wish_id      INTEGER REFERENCES uni.wish ("id"),
+            pair_st_num  INTEGER REFERENCES uni.pair_num ("id"),
+            pair_end_num INTEGER REFERENCES uni.pair_num ("id"),
+            wish_info_id      INTEGER REFERENCES uni.wish_info ("id"),
             equip_id     INTEGER REFERENCES uni.equipment ("id")
             )
         </sql>
     </changeSet>
 
-    <changeSet id="14_create_user_comp_table" author="amardanova" dbms="postgresql">
+    <changeSet id="15_create_user_comp_table" author="amardanova" dbms="postgresql">
         <preConditions onFail="MARK_RAN">
             <not>
                 <tableExists schemaName="uni" tableName="user_comp"/>
@@ -233,7 +249,7 @@
         </sql>
     </changeSet>
 
-    <changeSet id="15_create_interest_table" author="amardanova" dbms="postgresql">
+    <changeSet id="16_create_interest_table" author="amardanova" dbms="postgresql">
         <preConditions onFail="CONTINUE">
             <not>
                 <tableExists schemaName="uni" tableName="interest"/>
@@ -248,7 +264,7 @@
         </sql>
     </changeSet>
 
-    <changeSet id="16_create_user_interest_table" author="amardanova" dbms="postgresql">
+    <changeSet id="17_create_user_interest_table" author="amardanova" dbms="postgresql">
         <preConditions onFail="MARK_RAN">
             <not>
                 <tableExists schemaName="uni" tableName="user_interest"/>
@@ -263,4 +279,21 @@
             )
         </sql>
     </changeSet>
+
+    <changeSet id="18_create_aud_comp_table" author="amardanova" dbms="postgresql">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists schemaName="uni" tableName="aud_comp"/>
+            </not>
+        </preConditions>
+        <comment>Таблица для компетенций предметов</comment>
+        <sql>
+            CREATE TABLE uni.aud_comp (
+            id      SERIAL PRIMARY KEY,
+            aud_id INTEGER REFERENCES uni.auditory ("id"),
+            comp_id INTEGER REFERENCES uni.competence ("id")
+            )
+        </sql>
+    </changeSet>
+
 </databaseChangeLog>

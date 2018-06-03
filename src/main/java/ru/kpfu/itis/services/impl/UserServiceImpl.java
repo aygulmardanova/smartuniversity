@@ -6,6 +6,8 @@ import ru.kpfu.itis.entity.UserEntity;
 import ru.kpfu.itis.repositories.UserRepository;
 import ru.kpfu.itis.services.UserService;
 
+import java.util.List;
+
 @Service
 public class UserServiceImpl implements UserService {
 
@@ -13,7 +15,12 @@ public class UserServiceImpl implements UserService {
     UserRepository userRepository;
 
     @Override
-    public UserEntity findBySurname(String surname) {
+    public UserEntity getBySurname(String surname) {
         return userRepository.findBySurname(surname);
+    }
+
+    @Override
+    public List<UserEntity> getAllUsers() {
+        return userRepository.findAll();
     }
 }

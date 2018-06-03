@@ -1,60 +1,53 @@
 package ru.kpfu.itis.entity;
 
-import javax.persistence.*;
-import java.util.Objects;
+import lombok.*;
 
+import javax.persistence.*;
+
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Entity
 @Table(name = "wish", schema = "uni", catalog = "smartuniversity")
-public class WishEntity {
-
-    @Id
-    @Column(name = "id", nullable = false)
-    private Long id;
+public class WishEntity extends IdObject<Long> {
 
     @Basic
-    @Column(name = "type", nullable = true, length = -1)
-    private String type;
+    @Column(name = "week_day", nullable = true)
+    private @Getter @Setter Integer weekDay;
 
     @Basic
-    @Column(name = "name", nullable = true, length = -1)
-    private String name;
+    @Column(name = "pair_st_num", nullable = true)
+    private @Getter @Setter Integer pairStNum;
 
-    public Long getId() {
-        return id;
-    }
+    @Basic
+    @Column(name = "pair_end_num", nullable = true)
+    private @Getter @Setter Integer pairEndNum;
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+    @ManyToOne
+    @JoinColumn(name = "from_id", referencedColumnName = "id")
+    private @Getter @Setter UserEntity fromUser;
 
-    public String getType() {
-        return type;
-    }
+    @ManyToOne
+    @JoinColumn(name = "stud_id", referencedColumnName = "id")
+    private @Getter @Setter UserEntity studUser;
 
-    public void setType(String type) {
-        this.type = type;
-    }
+    @ManyToOne
+    @JoinColumn(name = "teach_id", referencedColumnName = "id")
+    private @Getter @Setter UserEntity teachUser;
 
-    public String getName() {
-        return name;
-    }
+    @ManyToOne
+    @JoinColumn(name = "subj_id", referencedColumnName = "id")
+    private @Getter @Setter SubjectEntity subject;
 
-    public void setName(String name) {
-        this.name = name;
-    }
+    @ManyToOne
+    @JoinColumn(name = "aud_id", referencedColumnName = "id")
+    private @Getter @Setter AuditoryEntity auditory;
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        WishEntity that = (WishEntity) o;
-        return Objects.equals(id, that.id) &&
-                Objects.equals(type, that.type) &&
-                Objects.equals(name, that.name);
-    }
+    @ManyToOne
+    @JoinColumn(name = "wish_info_id", referencedColumnName = "id")
+    private @Getter @Setter WishInfoEntity wishInfo;
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, type, name);
-    }
+    @ManyToOne
+    @JoinColumn(name = "equip_id", referencedColumnName = "id")
+    private @Getter @Setter EquipmentEntity equipment;
 }

@@ -1,5 +1,6 @@
-DROP TABLE uni.user_wish;
+DROP TABLE uni.pair_num;
 DROP TABLE uni.wish;
+DROP TABLE uni.wish_info;
 DROP TABLE uni.wish_status;
 DROP TABLE uni.iup_subj;
 DROP TABLE uni.subj_comp;
