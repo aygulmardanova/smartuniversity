@@ -12,7 +12,6 @@ import java.util.Objects;
 @Table(name = "aud_comp", schema = "uni", catalog = "smartuniversity")
 public class AudCompEntity extends IdObject<Long> {
 
-
     @ManyToOne
     @JoinColumn(name = "aud_id", referencedColumnName = "id")
     private AuditoryEntity auditory;

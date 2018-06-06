@@ -7,13 +7,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import ru.kpfu.itis.entity.UserEntity;
-import ru.kpfu.itis.services.UserService;
-import ru.kpfu.itis.services.WishInfoService;
+import ru.kpfu.itis.entity.*;
+import ru.kpfu.itis.services.*;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 public class MainController {
@@ -25,6 +25,18 @@ public class MainController {
 
     @Autowired
     UserService userService;
+
+    @Autowired
+    WishService wishService;
+
+    @Autowired
+    SubjectService subjectService;
+
+    @Autowired
+    IupService iupService;
+
+    @Autowired
+    AuditoryService auditoryService;
 
     @RequestMapping(value = "/main", method = RequestMethod.GET)
     public String returnIndex(ModelMap model) throws IOException {
@@ -38,6 +50,9 @@ public class MainController {
         users.add(userService.getBySurname("Зайнуллина"));
         users.add(userService.getBySurname("Ионов"));
         model.put("users", users);
+        List<AuditoryEntity> auditories = auditoryService.getAllAuditories();
+        List<SubjectEntity> subjects = subjectService.getAllSubjects();
+
         return "main";
     }
 

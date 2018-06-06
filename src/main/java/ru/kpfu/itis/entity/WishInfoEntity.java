@@ -1,5 +1,7 @@
 package ru.kpfu.itis.entity;
 
+import ru.kpfu.itis.entity.enums.WishTypeEnum;
+
 import javax.persistence.*;
 import java.util.Objects;
 
@@ -13,7 +15,7 @@ public class WishInfoEntity {
 
     @Basic
     @Column(name = "type", nullable = true, length = -1)
-    private String type;
+    private WishTypeEnum type;
 
     @Basic
     @Column(name = "name", nullable = true, length = -1)
@@ -27,11 +29,11 @@ public class WishInfoEntity {
         this.id = id;
     }
 
-    public String getType() {
+    public WishTypeEnum getType() {
         return type;
     }
 
-    public void setType(String type) {
+    public void setType(WishTypeEnum type) {
         this.type = type;
     }
 

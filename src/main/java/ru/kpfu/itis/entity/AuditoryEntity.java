@@ -1,13 +1,16 @@
 package ru.kpfu.itis.entity;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
-import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 
+@Getter
+@Setter
 @Entity
 @Table(name = "auditory", schema = "uni", catalog = "smartuniversity")
 public class AuditoryEntity extends IdObject<Long> {
@@ -32,37 +35,9 @@ public class AuditoryEntity extends IdObject<Long> {
     @Fetch(value = FetchMode.SUBSELECT)
     private List<AudEquipEntity> audEquips;
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Integer getCapacity() {
-        return capacity;
-    }
-
-    public void setCapacity(Integer capacity) {
-        this.capacity = capacity;
-    }
-
-    public Integer getBulk() {
-        return bulk;
-    }
-
-    public void setBulk(Integer bulk) {
-        this.bulk = bulk;
-    }
-
-    public Integer getFloor() {
-        return floor;
-    }
-
-    public void setFloor(Integer floor) {
-        this.floor = floor;
-    }
+    @OneToMany(mappedBy = "auditory", fetch = FetchType.EAGER)
+    @Fetch(value = FetchMode.SUBSELECT)
+    private List<AudCompEntity> audComps;
 
     @Override
     public boolean equals(Object o) {
@@ -81,11 +56,4 @@ public class AuditoryEntity extends IdObject<Long> {
         return Objects.hash(getId(), name, capacity, bulk, floor);
     }
 
-    public List<AudEquipEntity> getAudEquips() {
-        return audEquips;
-    }
-
-    public void setAudEquips(List<AudEquipEntity> audEquips) {
-        this.audEquips = audEquips;
-    }
 }

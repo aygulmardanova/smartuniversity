@@ -1,12 +1,10 @@
 package ru.kpfu.itis.entity;
 
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
 
-@EqualsAndHashCode
 @Getter
 @Setter
 @Entity

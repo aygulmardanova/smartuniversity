@@ -28,12 +28,22 @@ public class WishServiceImpl implements WishService {
     WishRepository wishRepository;
 
     @Override
+    public void save(WishEntity wish) {
+        wishRepository.save(wish);
+    }
+
+    @Override
     public List<EquipmentEntity> getRequiredEquipmentForSubject(SubjectEntity subject) {
-        WishInfoEntity subjectToEquipmentWishInfo = wishInfoService.getWishInfoByType(WishTypeEnum.SUBJ_EQUIP.name());
+        WishInfoEntity subjectToEquipmentWishInfo = wishInfoService.getWishInfoByType(WishTypeEnum.SUBJ_EQUIP);
         List<WishEntity> wishEntities = wishRepository.findWishEntitiesBySubjectAndWishInfo(subject, subjectToEquipmentWishInfo);
         List<EquipmentEntity> equipments = new ArrayList<>();
-//        wishEntities.forEach(wishEntity -> equipments.add(wishEntity));
-        return null;
+        wishEntities.forEach(wishEntity -> equipments.add(wishEntity.getEquipment()));
+        return equipments;
+    }
+
+    @Override
+    public List<WishEntity> getWishesForUser(UserEntity user) {
+        return wishRepository.findWishEntitiesByFromUser(user);
     }
 
     @Override
@@ -78,7 +88,8 @@ public class WishServiceImpl implements WishService {
     public void generateSubjectToAudWishes() {
 
         for (SubjectEntity subject: subjectService.getAllSubjects()) {
-            List<EquipmentEntity> equipmentForSubject = getRequiredEquipmentForSubject(subject);
+            List<EquipmentEntity> requiredEquipmentForSubject = getRequiredEquipmentForSubject(subject);
+
             List<SubjCompEntity> subjComps = subject.getSubjComps();
 //            List<>
         }

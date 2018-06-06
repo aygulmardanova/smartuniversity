@@ -1,8 +1,6 @@
 package ru.kpfu.itis.repositories;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import ru.kpfu.itis.entity.SubjectEntity;
 import ru.kpfu.itis.entity.UserEntity;
@@ -15,6 +13,8 @@ import java.util.List;
 public interface WishRepository extends JpaRepository<WishEntity, Long> {
 
     List<WishEntity> findWishEntitiesByFromUserAndWishInfo(UserEntity user, WishInfoEntity wishInfo);
+
+    List<WishEntity> findWishEntitiesByFromUser(UserEntity user);
 
     List<WishEntity> findWishEntitiesBySubjectAndWishInfo(SubjectEntity subject, WishInfoEntity wishInfo);
 }
