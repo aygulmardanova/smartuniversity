@@ -1,8 +1,14 @@
 package ru.kpfu.itis.entity;
 
+import lombok.Getter;
+import lombok.Setter;
+import ru.kpfu.itis.entity.enums.WishStatusEnum;
+
 import javax.persistence.*;
 import java.util.Objects;
 
+@Getter
+@Setter
 @Entity
 @Table(name = "wish_status", schema = "uni", catalog = "smartuniversity")
 public class WishStatusEntity {
@@ -13,23 +19,7 @@ public class WishStatusEntity {
 
     @Basic
     @Column(name = "name", nullable = true, length = -1)
-    private String name;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
+    private WishStatusEnum name;
 
     @Override
     public boolean equals(Object o) {

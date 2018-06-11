@@ -1,9 +1,15 @@
 package ru.kpfu.itis.entity;
 
+import lombok.Getter;
+import lombok.Setter;
+import ru.kpfu.itis.entity.enums.UserRoleEnum;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Objects;
 
+@Getter
+@Setter
 @Entity
 @Table(schema = "uni", name = "user_role", catalog = "smartuniversity")
 public class UserRoleEntity implements Serializable {
@@ -17,34 +23,6 @@ public class UserRoleEntity implements Serializable {
 
     @Column(name = "name")
     private String name;
-
-    @Basic
-    @Column(name = "code", nullable = true, length = -1)
-    public String getCode() {
-        return code;
-    }
-
-    public void setCode(String code) {
-        this.code = code;
-    }
-
-    @Basic
-    @Column(name = "name", nullable = true, length = -1)
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     @Override
     public boolean equals(Object o) {

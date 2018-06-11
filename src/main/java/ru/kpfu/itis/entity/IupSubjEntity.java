@@ -1,8 +1,13 @@
 package ru.kpfu.itis.entity;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import javax.persistence.*;
 import java.util.Objects;
 
+@Getter
+@Setter
 @Entity
 @Table(name = "iup_subj", schema = "uni", catalog = "smartuniversity")
 public class IupSubjEntity extends IdObject<Long> {
@@ -14,22 +19,6 @@ public class IupSubjEntity extends IdObject<Long> {
     @ManyToOne
     @JoinColumn(name = "subj_id", referencedColumnName = "id")
     private SubjectEntity subject;
-
-    public UserEntity getUser() {
-        return user;
-    }
-
-    public void setUser(UserEntity user) {
-        this.user = user;
-    }
-
-    public SubjectEntity getSubject() {
-        return subject;
-    }
-
-    public void setSubject(SubjectEntity subject) {
-        this.subject = subject;
-    }
 
     @Override
     public boolean equals(Object o) {

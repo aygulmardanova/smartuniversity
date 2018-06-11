@@ -1,8 +1,13 @@
 package ru.kpfu.itis.entity;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import javax.persistence.*;
 import java.util.Objects;
 
+@Getter
+@Setter
 @Entity
 @Table(name = "interest", schema = "uni", catalog = "smartuniversity")
 public class InterestEntity extends IdObject<Long> {
@@ -10,14 +15,6 @@ public class InterestEntity extends IdObject<Long> {
     @Basic
     @Column(name = "name", nullable = true, length = -1)
     private String name;
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
 
     @Override
     public boolean equals(Object o) {
@@ -31,5 +28,18 @@ public class InterestEntity extends IdObject<Long> {
     @Override
     public int hashCode() {
         return Objects.hash(getId(), name);
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    @Override
+    public String toString() {
+        return name;
     }
 }

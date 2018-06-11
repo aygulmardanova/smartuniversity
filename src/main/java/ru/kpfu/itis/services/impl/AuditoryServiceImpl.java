@@ -40,10 +40,6 @@ public class AuditoryServiceImpl implements AuditoryService {
         return (double) (intersection.size() / developedCompetences.size());
     }
 
-    private List<CompetenceEntity> getIntersection(List<CompetenceEntity> auditoryCompetences, List<CompetenceEntity> developedCompetences) {
-        return developedCompetences.stream().filter(auditoryCompetences::contains).collect(Collectors.toList());
-    }
-
     @Override
     public Boolean isAuditoryHaveEquipment(AuditoryEntity auditory, List<EquipmentEntity> requiredEquipment) {
         List<EquipmentEntity> auditoryEquipment = new ArrayList<>();

@@ -3,28 +3,31 @@ package ru.kpfu.itis.entity;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 import java.util.Objects;
 
 @Getter
 @Setter
 @Entity
-@Table(name = "user_interest", schema = "uni", catalog = "smartuniversity")
-public class UserInterestEntity extends IdObject<Long> {
+@Table(name = "user_subj", schema = "uni", catalog = "smartuniversity")
+public class UserSubjEntity extends IdObject<Long> {
 
     @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")
-    private UserEntity user;
+    private UserEntity teacher;
 
     @ManyToOne
-    @JoinColumn(name = "interest_id", referencedColumnName = "id")
-    private InterestEntity interest;
+    @JoinColumn(name = "subject_id", referencedColumnName = "id")
+    private @Getter @Setter SubjectEntity subject;
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        UserInterestEntity that = (UserInterestEntity) o;
+        UserSubjEntity that = (UserSubjEntity) o;
         return Objects.equals(getId(), that.getId());
     }
 

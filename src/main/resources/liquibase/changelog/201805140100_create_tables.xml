@@ -209,10 +209,10 @@
         </sql>
     </changeSet>
 
-    <changeSet id="14_create_user_wish_table" author="amardanova" dbms="postgresql">
+    <changeSet id="14_create_wish_table" author="amardanova" dbms="postgresql">
         <preConditions onFail="MARK_RAN">
             <not>
-                <tableExists schemaName="uni" tableName="user_wish"/>
+                <tableExists schemaName="uni" tableName="wish"/>
             </not>
         </preConditions>
         <comment>Таблица для пользовательских пожеланий</comment>
@@ -227,7 +227,8 @@
             week_day     INTEGER,
             pair_st_num  INTEGER REFERENCES uni.pair_num ("id"),
             pair_end_num INTEGER REFERENCES uni.pair_num ("id"),
-            wish_info_id      INTEGER REFERENCES uni.wish_info ("id"),
+            wish_info_id INTEGER REFERENCES uni.wish_info ("id"),
+            wish_status_id INTEGER REFERENCES uni.wish_status ("id"),
             equip_id     INTEGER REFERENCES uni.equipment ("id")
             )
         </sql>
@@ -292,6 +293,22 @@
             id      SERIAL PRIMARY KEY,
             aud_id INTEGER REFERENCES uni.auditory ("id"),
             comp_id INTEGER REFERENCES uni.competence ("id")
+            )
+        </sql>
+    </changeSet>
+
+    <changeSet id="19_create_user_subj_table" author="amardanova" dbms="postgresql">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists schemaName="uni" tableName="user_subj"/>
+            </not>
+        </preConditions>
+        <comment>Таблица для предметов, которые ведет преподаватель</comment>
+        <sql>
+            CREATE TABLE uni.user_subj (
+            id           SERIAL PRIMARY KEY,
+            user_id      INTEGER REFERENCES uni.user ("id"),
+            subject_id   INTEGER REFERENCES uni.subject ("id")
             )
         </sql>
     </changeSet>

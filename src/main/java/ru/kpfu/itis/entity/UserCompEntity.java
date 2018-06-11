@@ -1,8 +1,13 @@
 package ru.kpfu.itis.entity;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import javax.persistence.*;
 import java.util.Objects;
 
+@Getter
+@Setter
 @Entity
 @Table(name = "user_comp", schema = "uni", catalog = "smartuniversity")
 public class UserCompEntity extends IdObject<Long> {
@@ -13,7 +18,7 @@ public class UserCompEntity extends IdObject<Long> {
 
     @ManyToOne
     @JoinColumn(name = "comp_id", referencedColumnName = "id")
-    private CompetenceEntity competence;
+    private @Getter @Setter CompetenceEntity competence;
 
     @Override
     public boolean equals(Object o) {
@@ -26,21 +31,5 @@ public class UserCompEntity extends IdObject<Long> {
     @Override
     public int hashCode() {
         return Objects.hash(getId());
-    }
-
-    public UserEntity getUserBy() {
-        return userBy;
-    }
-
-    public void setUserBy(UserEntity userBy) {
-        this.userBy = userBy;
-    }
-
-    public CompetenceEntity getCompetence() {
-        return competence;
-    }
-
-    public void setCompetence(CompetenceEntity competence) {
-        this.competence = competence;
     }
 }

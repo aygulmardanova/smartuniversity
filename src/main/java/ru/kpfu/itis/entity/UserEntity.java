@@ -1,5 +1,7 @@
 package ru.kpfu.itis.entity;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
@@ -7,6 +9,8 @@ import javax.persistence.*;
 import java.util.List;
 import java.util.Objects;
 
+@Getter
+@Setter
 @Entity
 @Table(schema = "uni", name = "user", catalog = "smartuniversity")
 public class UserEntity extends IdObject<Long> {
@@ -43,29 +47,9 @@ public class UserEntity extends IdObject<Long> {
     @Fetch(value = FetchMode.SUBSELECT)
     private List<WishEntity> userWishes;
 
-    public String getSurname() {
-        return surname;
-    }
-
-    public void setSurname(String surname) {
-        this.surname = surname;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getPatronymic() {
-        return patronymic;
-    }
-
-    public void setPatronymic(String patronymic) {
-        this.patronymic = patronymic;
-    }
+    @OneToMany(mappedBy = "teacher", fetch = FetchType.EAGER)
+    @Fetch(value = FetchMode.SUBSELECT)
+    private List<UserSubjEntity> userSubjs;
 
     @Override
     public boolean equals(Object o) {
@@ -81,45 +65,5 @@ public class UserEntity extends IdObject<Long> {
     @Override
     public int hashCode() {
         return Objects.hash(getId(), surname, name, patronymic);
-    }
-
-    public List<IupSubjEntity> getIupSubjs() {
-        return iupSubjs;
-    }
-
-    public void setIupSubjs(List<IupSubjEntity> iupSubjs) {
-        this.iupSubjs = iupSubjs;
-    }
-
-    public UserRoleEntity getUserRole() {
-        return userRole;
-    }
-
-    public void setUserRole(UserRoleEntity userRole) {
-        this.userRole = userRole;
-    }
-
-    public List<UserCompEntity> getUserComps() {
-        return userComps;
-    }
-
-    public void setUserComps(List<UserCompEntity> userComps) {
-        this.userComps = userComps;
-    }
-
-    public List<UserInterestEntity> getUserInterests() {
-        return userInterests;
-    }
-
-    public void setUserInterests(List<UserInterestEntity> userInterests) {
-        this.userInterests = userInterests;
-    }
-
-    public List<WishEntity> getUserWishes() {
-        return userWishes;
-    }
-
-    public void setUserWishes(List<WishEntity> userWishes) {
-        this.userWishes = userWishes;
     }
 }

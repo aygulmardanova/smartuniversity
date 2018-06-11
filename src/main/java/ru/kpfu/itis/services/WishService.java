@@ -28,4 +28,6 @@ public interface WishService {
     void generateTeachToAudWishes();
 
     void generateSubjectToAudWishes();
+
+    Boolean isWishExist(WishEntity wish);
 }

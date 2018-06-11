@@ -19,6 +19,7 @@
         <mapping class="ru.kpfu.itis.entity.UserCompEntity"/>
         <mapping class="ru.kpfu.itis.entity.UserInterestEntity"/>
         <mapping class="ru.kpfu.itis.entity.UserRoleEntity"/>
+        <mapping class="ru.kpfu.itis.entity.UserSubjEntity"/>
         <mapping class="ru.kpfu.itis.entity.WishEntity"/>
         <mapping class="ru.kpfu.itis.entity.WishInfoEntity"/>
         <mapping class="ru.kpfu.itis.entity.WishStatusEntity"/>

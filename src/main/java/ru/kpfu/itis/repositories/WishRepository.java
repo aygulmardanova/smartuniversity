@@ -16,5 +16,7 @@ public interface WishRepository extends JpaRepository<WishEntity, Long> {
 
     List<WishEntity> findWishEntitiesByFromUser(UserEntity user);
 
+    List<WishEntity> findWishEntitiesByWishInfo(WishInfoEntity wishInfo);
+
     List<WishEntity> findWishEntitiesBySubjectAndWishInfo(SubjectEntity subject, WishInfoEntity wishInfo);
 }

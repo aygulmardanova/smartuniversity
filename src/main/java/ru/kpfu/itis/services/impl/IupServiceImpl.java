@@ -9,6 +9,7 @@ import ru.kpfu.itis.repositories.IupRepository;
 import ru.kpfu.itis.services.IupService;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class IupServiceImpl implements IupService {
@@ -27,7 +28,17 @@ public class IupServiceImpl implements IupService {
     }
 
     @Override
-    public List<IupSubjEntity> getIupSubjectsByUser(UserEntity user) {
+    public List<IupSubjEntity> getIupSubjectsByStudent(UserEntity user) {
         return iupRepository.findAllByUser(user);
+    }
+
+    @Override
+    public List<UserEntity> getStudentsByListOfIupSubjects(List<IupSubjEntity> iupSubjects) {
+        return iupSubjects.stream().map(iupSubject -> iupSubject.getUser()).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<SubjectEntity> getSubjectsByListOfIupSubjects(List<IupSubjEntity> iupSubjects) {
+        return iupSubjects.stream().map(iupSubject -> iupSubject.getSubject()).collect(Collectors.toList());
     }
 }

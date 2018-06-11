@@ -1,10 +1,14 @@
 package ru.kpfu.itis.entity;
 
+import lombok.Getter;
+import lombok.Setter;
 import ru.kpfu.itis.entity.enums.WishTypeEnum;
 
 import javax.persistence.*;
 import java.util.Objects;
 
+@Getter
+@Setter
 @Entity
 @Table(name = "wish_info", schema = "uni", catalog = "smartuniversity")
 public class WishInfoEntity {
@@ -20,30 +24,6 @@ public class WishInfoEntity {
     @Basic
     @Column(name = "name", nullable = true, length = -1)
     private String name;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public WishTypeEnum getType() {
-        return type;
-    }
-
-    public void setType(WishTypeEnum type) {
-        this.type = type;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
 
     @Override
     public boolean equals(Object o) {

@@ -5,8 +5,10 @@ import org.springframework.stereotype.Service;
 import ru.kpfu.itis.entity.IupSubjEntity;
 import ru.kpfu.itis.entity.SubjectEntity;
 import ru.kpfu.itis.entity.UserEntity;
+import ru.kpfu.itis.entity.enums.UserRoleEnum;
 import ru.kpfu.itis.repositories.UserRepository;
 import ru.kpfu.itis.services.IupService;
+import ru.kpfu.itis.services.UserRoleService;
 import ru.kpfu.itis.services.UserService;
 
 import java.util.ArrayList;
@@ -19,6 +21,9 @@ public class UserServiceImpl implements UserService {
     UserRepository userRepository;
 
     @Autowired
+    UserRoleService userRoleService;
+
+    @Autowired
     IupService iupService;
 
     @Override
@@ -29,6 +34,21 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<UserEntity> getAllUsers() {
         return userRepository.findAll();
+    }
+
+    @Override
+    public List<UserEntity> getAllStudents() {
+        return getAllUsersByUserRole(UserRoleEnum.STUDENT);
+    }
+
+    @Override
+    public List<UserEntity> getAllTeachers() {
+        return getAllUsersByUserRole(UserRoleEnum.TEACHER);
+    }
+
+    @Override
+    public List<UserEntity> getAllUsersByUserRole(UserRoleEnum userRole) {
+        return userRepository.findAllByUserRole(userRoleService.getByCode(userRole));
     }
 
     @Override

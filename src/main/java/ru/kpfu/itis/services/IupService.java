@@ -12,6 +12,10 @@ public interface IupService {
 
     List<IupSubjEntity> getIupSubjectsBySubject(SubjectEntity subject);
 
-    List<IupSubjEntity> getIupSubjectsByUser(UserEntity user);
+    List<IupSubjEntity> getIupSubjectsByStudent(UserEntity user);
+
+    List<UserEntity> getStudentsByListOfIupSubjects(List<IupSubjEntity> iupSubjects);
+
+    List<SubjectEntity> getSubjectsByListOfIupSubjects(List<IupSubjEntity> iupSubjects);
 
 }
