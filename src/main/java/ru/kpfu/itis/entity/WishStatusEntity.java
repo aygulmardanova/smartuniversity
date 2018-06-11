@@ -19,7 +19,7 @@ public class WishStatusEntity {
 
     @Basic
     @Column(name = "name", nullable = true, length = -1)
-    private WishStatusEnum name;
+    private String name;
 
     @Override
     public boolean equals(Object o) {

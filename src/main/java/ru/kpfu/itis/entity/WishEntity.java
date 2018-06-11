@@ -65,51 +65,51 @@ public class WishEntity extends IdObject<Long> {
         if (o == null || getClass() != o.getClass()) return false;
         WishEntity that = (WishEntity) o;
         switch (that.getWishInfo().getType()) {
-            case SUBJ_EQUIP:
+            case "SUBJ_EQUIP":
                 return Objects.equals(subject, that.subject) &&
                         Objects.equals(equipment, that.equipment);
-            case SUBJ_AUD:
+            case "SUBJ_AUD":
                 return Objects.equals(subject, that.subject) &&
                         Objects.equals(auditory, that.auditory);
-            case STUD_TO_STUD:
+            case "STUD_TO_STUD":
                 return Objects.equals(subject, that.subject) &&
                         Objects.equals(auditory, that.auditory);
-            case STUD_TO_STUD_ON_SUBJ:
+            case "STUD_TO_STUD_ON_SUBJ":
                 return Objects.equals(subject, that.subject) &&
                         Objects.equals(auditory, that.auditory);
-            case STUD_TO_TEACH:
+            case "STUD_TO_TEACH":
                 return Objects.equals(subject, that.subject) &&
                         Objects.equals(auditory, that.auditory);
-            case STUD_TO_TEACH_ON_SUBJ:
+            case "STUD_TO_TEACH_ON_SUBJ":
                 return Objects.equals(subject, that.subject) &&
                         Objects.equals(auditory, that.auditory);
-            case TEACH_TO_STUD:
+            case "TEACH_TO_STUD":
                 return Objects.equals(subject, that.subject) &&
                         Objects.equals(auditory, that.auditory);
-            case TEACH_TO_STUD_ON_SUBJ:
+            case "TEACH_TO_STUD_ON_SUBJ":
                 return Objects.equals(subject, that.subject) &&
                         Objects.equals(auditory, that.auditory);
-            case USER_START_TIME:
+            case "USER_START_TIME":
                 return Objects.equals(subject, that.subject) &&
                         Objects.equals(auditory, that.auditory);
-            case USER_START_TIME_ON_SUBJ:
+            case "USER_START_TIME_ON_SUBJ":
                 return Objects.equals(subject, that.subject) &&
                         Objects.equals(auditory, that.auditory);
-            case USER_END_TIME:
+            case "USER_END_TIME":
                 return Objects.equals(subject, that.subject) &&
                         Objects.equals(auditory, that.auditory);
-            case USER_END_TIME_ON_SUBJ:
+            case "USER_END_TIME_ON_SUBJ":
                 return Objects.equals(subject, that.subject) &&
                         Objects.equals(auditory, that.auditory);
-            case TEACH_SUBJ_AUD:
+            case "TEACH_SUBJ_AUD":
                 return Objects.equals(subject, that.subject) &&
                         Objects.equals(auditory, that.auditory);
-            case TEACH_SUBJ_AUD_EQUIP:
+            case "TEACH_SUBJ_AUD_EQUIP":
                 return Objects.equals(subject, that.subject) &&
                         Objects.equals(auditory, that.auditory);
 
         }
-        if (WishTypeEnum.SUBJ_EQUIP.equals(that.getWishInfo().getType()))
+        if (WishTypeEnum.SUBJ_EQUIP.name().equals(that.getWishInfo().getType()))
             return true;
         return Objects.equals(weekDay, that.weekDay) &&
                 Objects.equals(pairStNum, that.pairStNum) &&

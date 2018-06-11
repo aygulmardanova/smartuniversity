@@ -8,6 +8,8 @@ import java.util.List;
 
 public interface UserService {
 
+    UserEntity getById(Long id);
+
     UserEntity getBySurname(String surname);
 
     List<UserEntity> getAllUsers();

@@ -15,6 +15,6 @@ public class WishStatusServiceImpl implements WishStatusService {
 
     @Override
     public WishStatusEntity getWishStatusByName(WishStatusEnum name) {
-        return wishStatusRepository.findByName(name);
+        return wishStatusRepository.findByName(name.name());
     }
 }

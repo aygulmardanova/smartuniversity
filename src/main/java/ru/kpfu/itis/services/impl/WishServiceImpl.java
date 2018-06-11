@@ -40,6 +40,11 @@ public class WishServiceImpl implements WishService {
     }
 
     @Override
+    public void save(List<WishEntity> wishes) {
+        wishRepository.save(wishes);
+    }
+
+    @Override
     public List<WishEntity> getWishesForUser(UserEntity user) {
         return wishRepository.findWishEntitiesByFromUser(user);
     }

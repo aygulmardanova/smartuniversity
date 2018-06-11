@@ -8,5 +8,5 @@ import ru.kpfu.itis.entity.enums.WishStatusEnum;
 @Repository
 public interface WishStatusRepository extends JpaRepository<WishStatusEntity, Long> {
 
-    WishStatusEntity findByName(WishStatusEnum name);
+    WishStatusEntity findByName(String name);
 }

@@ -15,6 +15,6 @@ public class WishInfoServiceImpl implements WishInfoService {
 
     @Override
     public WishInfoEntity getWishInfoByType(WishTypeEnum type) {
-        return wishInfoRepository.findByType(type);
+        return wishInfoRepository.findByType(type.name());
     }
 }

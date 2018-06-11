@@ -9,5 +9,7 @@ public interface SubjectService {
 
     List<SubjectEntity> getAllSubjects();
 
+    SubjectEntity getByName(String name);
+
     List<SubjectEntity> getSubjectsByUser(UserEntity user);
 }

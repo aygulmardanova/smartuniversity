@@ -27,6 +27,11 @@ public class UserServiceImpl implements UserService {
     IupService iupService;
 
     @Override
+    public UserEntity getById(Long id) {
+        return userRepository.findOne(id);
+    }
+
+    @Override
     public UserEntity getBySurname(String surname) {
         return userRepository.findBySurname(surname);
     }

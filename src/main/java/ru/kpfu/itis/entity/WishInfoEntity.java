@@ -19,7 +19,7 @@ public class WishInfoEntity {
 
     @Basic
     @Column(name = "type", nullable = true, length = -1)
-    private WishTypeEnum type;
+    private String type;
 
     @Basic
     @Column(name = "name", nullable = true, length = -1)

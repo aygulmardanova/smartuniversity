@@ -8,6 +8,6 @@ import ru.kpfu.itis.entity.enums.WishTypeEnum;
 @Repository
 public interface WishInfoRepository extends JpaRepository<WishInfoEntity, Long> {
 
-    WishInfoEntity findByType(WishTypeEnum type);
+    WishInfoEntity findByType(String type);
 
 }

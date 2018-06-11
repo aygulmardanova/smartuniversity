@@ -11,6 +11,8 @@ public interface WishService {
 
     void save(WishEntity wish);
 
+    void save(List<WishEntity> wishes);
+
     List<EquipmentEntity> getRequiredEquipmentForSubject(SubjectEntity subject);
 
     List<WishEntity> getWishesForUser(UserEntity user);

@@ -6,4 +6,7 @@ import ru.kpfu.itis.entity.SubjectEntity;
 
 @Repository
 public interface SubjectRepository extends JpaRepository<SubjectEntity, Long> {
+
+    SubjectEntity findByName(String name);
+
 }

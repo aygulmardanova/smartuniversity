@@ -27,6 +27,11 @@ public class SubjectServiceImpl implements SubjectService {
     }
 
     @Override
+    public SubjectEntity getByName(String name) {
+        return subjectRepository.findByName(name);
+    }
+
+    @Override
     public List<SubjectEntity> getSubjectsByUser(UserEntity user) {
         List<IupSubjEntity> iupSubjects = iupService.getIupSubjectsByStudent(user);
         List<SubjectEntity> subjects = new ArrayList<>();
