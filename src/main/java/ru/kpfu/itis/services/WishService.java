@@ -13,11 +13,13 @@ public interface WishService {
 
     void save(List<WishEntity> wishes);
 
+    List<EquipmentEntity> getTeacherRequiredEquipmentForSubject(UserEntity teacher, SubjectEntity subject);
+
     List<EquipmentEntity> getRequiredEquipmentForSubject(SubjectEntity subject);
 
     List<WishEntity> getWishesForUser(UserEntity user);
 
-    void generateWishes(String wishType);
+    void generateWishes();
 
     void generateStudToStudWishes();
 
@@ -27,7 +29,7 @@ public interface WishService {
 
     void generateTeachToStudForSubjectWishes();
 
-    void generateTeachToAudWishes();
+    void generateTeachToSubjAudWishes();
 
     void generateSubjectToAudWishes();
 

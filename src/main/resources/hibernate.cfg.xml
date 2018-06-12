@@ -6,6 +6,7 @@
     <session-factory>
         <property name="hibernate.connection.url">jdbc:postgresql://localhost:5432/smartuniversity</property>
         <property name="connection.driver.class">org.postgresql.Driver</property>
+        <mapping class="ru.kpfu.itis.entity.AlliedInterestEntity"/>
         <mapping class="ru.kpfu.itis.entity.AudCompEntity"/>
         <mapping class="ru.kpfu.itis.entity.AudEquipEntity"/>
         <mapping class="ru.kpfu.itis.entity.AuditoryEntity"/>

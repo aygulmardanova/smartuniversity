@@ -313,4 +313,20 @@
         </sql>
     </changeSet>
 
+    <changeSet id="20_create_allied_interests_table" author="amardanova" dbms="postgresql">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists schemaName="uni" tableName="allied_interests"/>
+            </not>
+        </preConditions>
+        <comment>Таблица для смежных интересов</comment>
+        <sql>
+            CREATE TABLE uni.allied_interest (
+            id           SERIAL PRIMARY KEY,
+            interest_id      INTEGER REFERENCES uni.interest ("id"),
+            allied_interest_id  INTEGER REFERENCES uni.interest ("id")
+            )
+        </sql>
+    </changeSet>
+
 </databaseChangeLog>

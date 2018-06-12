@@ -32,8 +32,8 @@ public class SubjectServiceImpl implements SubjectService {
     }
 
     @Override
-    public List<SubjectEntity> getSubjectsByUser(UserEntity user) {
-        List<IupSubjEntity> iupSubjects = iupService.getIupSubjectsByStudent(user);
+    public List<SubjectEntity> getSubjectsByStudentFromIup(UserEntity student) {
+        List<IupSubjEntity> iupSubjects = iupService.getIupSubjectsByStudent(student);
         List<SubjectEntity> subjects = new ArrayList<>();
         iupSubjects.forEach(iupSubject -> subjects.add(iupSubject.getSubject()));
         return subjects;

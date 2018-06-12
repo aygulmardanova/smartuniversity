@@ -738,4 +738,32 @@
             'Введение в интернет-программирование'));
         </sql>
     </changeSet>
+
+    <changeSet id="16_insert_allied_interest" author="amardanova" dbms="postgresql">
+        <preConditions onFail="CONTINUE">
+            <tableExists schemaName="uni" tableName="allied_interest"/>
+            <tableExists schemaName="uni" tableName="interest"/>
+        </preConditions>
+        <comment>Пересекающиеся пользовательские интересы</comment>
+        <sql>
+            INSERT INTO uni.allied_interest (interest_id, allied_interest_id) VALUES ((SELECT id FROM uni.interest WHERE name = 'Робототехника'), (SELECT id FROM uni.interest WHERE name = 'Алгоритмы, обработка данных, модели вычислений')),
+            ((SELECT id FROM uni.interest WHERE name = 'Программная инженерия'), (SELECT id FROM uni.interest WHERE name = 'Инженерное образование, инженерные компетенции')),
+            ((SELECT id FROM uni.interest WHERE name = 'Инженерное образование, инженерные компетенции'), (SELECT id FROM uni.interest WHERE name = 'IT-образование, IT в образовании')),
+            ((SELECT id FROM uni.interest WHERE name = 'Инженерное образование, инженерные компетенции'), (SELECT id FROM uni.interest WHERE name = 'SMART-образование')),
+            ((SELECT id FROM uni.interest WHERE name = 'SMART-образование'), (SELECT id FROM uni.interest WHERE name = 'IT-образование, IT в образовании')),
+            ((SELECT id FROM uni.interest WHERE name = 'Олимпиады'), (SELECT id FROM uni.interest WHERE name = 'Конференции')),
+            ((SELECT id FROM uni.interest WHERE name = 'Публикация статей'), (SELECT id FROM uni.interest WHERE name = 'Конференции')),
+            ((SELECT id FROM uni.interest WHERE name = 'Многоагентные системы'), (SELECT id FROM uni.interest WHERE name = 'Алгоритмы, обработка данных, модели вычислений')),
+            ((SELECT id FROM uni.interest WHERE name = 'Классическая и квантовая криптография'), (SELECT id FROM uni.interest WHERE name = 'Алгоритмы, обработка данных, модели вычислений')),
+            ((SELECT id FROM uni.interest WHERE name = 'Разработка сайтов'), (SELECT id FROM uni.interest WHERE name = 'Проектирование сайтов')),
+            ((SELECT id FROM uni.interest WHERE name = 'Разработка сайтов'), (SELECT id FROM uni.interest WHERE name = 'Фронтенд')),
+            ((SELECT id FROM uni.interest WHERE name = 'Дизайн'), (SELECT id FROM uni.interest WHERE name = 'UI,UX-дизайн')),
+            ((SELECT id FROM uni.interest WHERE name = 'Дизайн'), (SELECT id FROM uni.interest WHERE name = 'Фронтенд')),
+            ((SELECT id FROM uni.interest WHERE name = 'Администрирование серверов'), (SELECT id FROM uni.interest WHERE name = 'Информационная безопасность')),
+            ((SELECT id FROM uni.interest WHERE name = 'Администрирование серверов'), (SELECT id FROM uni.interest WHERE name = 'Классическая и квантовая криптография')),
+            ((SELECT id FROM uni.interest WHERE name = 'Спорт'), (SELECT id FROM uni.interest WHERE name = 'Путешествия')),
+            ((SELECT id FROM uni.interest WHERE name = '3D-моделинг'), (SELECT id FROM uni.interest WHERE name = 'Разработка игр')),
+            ((SELECT id FROM uni.interest WHERE name = 'Нейробиология'), (SELECT id FROM uni.interest WHERE name = 'Биоинформатика'));
+        </sql>
+    </changeSet>
 </databaseChangeLog>

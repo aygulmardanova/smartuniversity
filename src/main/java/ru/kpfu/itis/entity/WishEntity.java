@@ -1,7 +1,6 @@
 package ru.kpfu.itis.entity;
 
 import lombok.*;
-import ru.kpfu.itis.entity.enums.WishTypeEnum;
 
 import javax.persistence.*;
 import java.util.Objects;
@@ -90,27 +89,29 @@ public class WishEntity extends IdObject<Long> {
                 return Objects.equals(subject, that.subject) &&
                         Objects.equals(auditory, that.auditory);
             case "USER_START_TIME":
-                return Objects.equals(subject, that.subject) &&
-                        Objects.equals(auditory, that.auditory);
+                return Objects.equals(fromUser, that.fromUser) &&
+                        Objects.equals(pairStNum, that.pairStNum);
             case "USER_START_TIME_ON_SUBJ":
-                return Objects.equals(subject, that.subject) &&
-                        Objects.equals(auditory, that.auditory);
+                return Objects.equals(fromUser, that.fromUser) &&
+                        Objects.equals(pairStNum, that.pairStNum) &&
+                        Objects.equals(subject, that.subject);
             case "USER_END_TIME":
-                return Objects.equals(subject, that.subject) &&
-                        Objects.equals(auditory, that.auditory);
+                return Objects.equals(fromUser, that.fromUser) &&
+                        Objects.equals(pairEndNum, that.pairEndNum);
             case "USER_END_TIME_ON_SUBJ":
-                return Objects.equals(subject, that.subject) &&
-                        Objects.equals(auditory, that.auditory);
+                return Objects.equals(fromUser, that.fromUser) &&
+                        Objects.equals(pairEndNum, that.pairEndNum) &&
+                        Objects.equals(subject, that.subject);
             case "TEACH_SUBJ_AUD":
-                return Objects.equals(subject, that.subject) &&
+                return Objects.equals(teachUser, that.teachUser) &&
+                        Objects.equals(subject, that.subject) &&
                         Objects.equals(auditory, that.auditory);
             case "TEACH_SUBJ_AUD_EQUIP":
-                return Objects.equals(subject, that.subject) &&
-                        Objects.equals(auditory, that.auditory);
+                return Objects.equals(teachUser, that.teachUser) &&
+                        Objects.equals(subject, that.subject) &&
+                        Objects.equals(equipment, that.equipment);
 
         }
-        if (WishTypeEnum.SUBJ_EQUIP.name().equals(that.getWishInfo().getType()))
-            return true;
         return Objects.equals(weekDay, that.weekDay) &&
                 Objects.equals(pairStNum, that.pairStNum) &&
                 Objects.equals(pairEndNum, that.pairEndNum) &&
@@ -122,6 +123,26 @@ public class WishEntity extends IdObject<Long> {
                 Objects.equals(wishInfo, that.wishInfo) &&
                 Objects.equals(wishStatus, that.wishStatus) &&
                 Objects.equals(equipment, that.equipment);
+    }
+
+    public Boolean similarWishes(WishEntity wish) {
+        if (wish == null || !wishInfo.getType().equals(wish.getWishInfo().getType()))
+            return false;
+        if (weekDay != null && wish.weekDay != null && !weekDay.equals(wish.weekDay))
+            return false;
+        switch (wishInfo.getType()) {
+            case "USER_START_TIME":
+                return Objects.equals(pairStNum, wish.pairStNum);
+            case "USER_START_TIME_ON_SUBJ":
+                return Objects.equals(pairStNum, wish.pairStNum) &&
+                        Objects.equals(subject, wish.subject);
+            case "USER_END_TIME":
+                return Objects.equals(pairEndNum, wish.pairEndNum);
+            case "USER_END_TIME_ON_SUBJ":
+                return Objects.equals(pairEndNum, wish.pairEndNum) &&
+                        Objects.equals(subject, wish.subject);
+        }
+        return false;
     }
 
     @Override

@@ -57,6 +57,69 @@ public class MainController {
         return "teachers";
     }
 
+    @RequestMapping(value = "/generate", method = RequestMethod.POST)
+    public String autoGenerate(ModelMap model, @RequestParam(required = false) List<String> wishTypes) throws IOException {
+        if (wishTypes == null || wishTypes.size() == 0 || wishTypes.contains("all"))
+            wishService.generateWishes();
+        else {
+            System.out.println("l");
+        }
+//            wishTypes.forEach(wishType -> {
+//                switch (wishType) {
+//                    case "STUD_TO_STUD_ON_SUBJ":
+//                        wishService.generateStudToStudForSubjectWishes();
+//                    case "STUD_TO_STUD":
+//                        wishService.generateStudToStudWishes();
+//                    case "TEACH_TO_STUD_ON_SUBJ":
+//                        wishService.generateTeachToStudForSubjectWishes();
+//                    case "TEACH_TO_STUD":
+//                        wishService.generateTeachToStudWishes();
+//                    case "SUBJ_AUD":
+//                        wishService.generateSubjectToAudWishes();
+//                    case "TEACH_SUBJ_AUD":
+//                        wishService.generateTeachToSubjAudWishes();
+//                }
+//            });
+        model.put("wishTypes", wishTypes);
+        return "redirect:auto-generate";
+    }
+
+    @RequestMapping(value = "/generateTeachToStudWishes", method = RequestMethod.GET)
+    public String generateTeachToStudWishes(ModelMap model) throws IOException {
+        wishService.generateStudToStudWishes();
+        return "redirect:auto-generate";
+    }
+
+    @RequestMapping(value = "/generateStudToStudForSubjectWishes", method = RequestMethod.GET)
+    public String generateStudToStudForSubjectWishes(ModelMap model) throws IOException {
+        wishService.generateStudToStudForSubjectWishes();
+        return "redirect:auto-generate";
+    }
+
+    @RequestMapping(value = "/generateTeachToStudForSubjectWishes", method = RequestMethod.GET)
+    public String generateTeachToStudForSubjectWishes(ModelMap model) throws IOException {
+        wishService.generateTeachToStudForSubjectWishes();
+        return "redirect:auto-generate";
+    }
+
+    @RequestMapping(value = "/auto-generate", method = RequestMethod.GET)
+    public String autoGeneratePage(ModelMap model, @RequestParam(required = false) List<String> wishTypes) throws IOException {
+        List<WishInfoEntity> wishes = new ArrayList<>();
+        wishes.add(wishInfoService.getWishInfoByType(WishTypeEnum.STUD_TO_STUD));
+        wishes.add(wishInfoService.getWishInfoByType(WishTypeEnum.STUD_TO_STUD_ON_SUBJ));
+        wishes.add(wishInfoService.getWishInfoByType(WishTypeEnum.TEACH_TO_STUD));
+        wishes.add(wishInfoService.getWishInfoByType(WishTypeEnum.TEACH_TO_STUD_ON_SUBJ));
+        wishes.add(wishInfoService.getWishInfoByType(WishTypeEnum.SUBJ_AUD));
+        model.put("wishes", wishes);
+        if (wishTypes != null && wishTypes.size() != 0) {
+            List<String> generatedWishTypes = new ArrayList<>();
+            wishTypes.forEach(wishType -> generatedWishTypes.add(wishInfoService.getWishInfoByType(WishTypeEnum.valueOf(wishType)).getName()));
+            model.put("generatedWishTypes", generatedWishTypes);
+        }
+        return "auto-generate";
+    }
+
+
     @RequestMapping(value = "/saveWish", method = RequestMethod.POST)
     public String saveStudToTeachWish(ModelMap model,
                                       @RequestParam("user_id") Long userId,
@@ -87,19 +150,6 @@ public class MainController {
         }
         wishService.save(wishes);
         return "redirect:teachers";
-    }
-
-    @RequestMapping(value = "/generate", method = RequestMethod.GET)
-    public String generateWishes(ModelMap model) throws IOException {
-        List<UserEntity> users = new ArrayList<>();
-        users.add(userService.getBySurname("Форсенко"));
-        users.add(userService.getBySurname("Зайнуллина"));
-        users.add(userService.getBySurname("Ионов"));
-        model.put("users", users);
-        List<AuditoryEntity> auditories = auditoryService.getAllAuditories();
-        List<SubjectEntity> subjects = subjectService.getAllSubjects();
-
-        return "main";
     }
 
 }
