@@ -1,10 +1,10 @@
 package ru.kpfu.itis.services.impl;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import ru.kpfu.itis.entity.CompetenceEntity;
-import ru.kpfu.itis.entity.IupSubjEntity;
-import ru.kpfu.itis.entity.UserEntity;
+import ru.kpfu.itis.entity.*;
 import ru.kpfu.itis.services.CompetenceService;
+import ru.kpfu.itis.services.SubjectService;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -13,6 +13,9 @@ import java.util.Set;
 
 @Service
 public class CompetenceServiceImpl implements CompetenceService {
+
+    @Autowired
+    SubjectService subjectService;
 
     @Override
     public List<CompetenceEntity> getCompetencesByUser(UserEntity user) {
@@ -32,5 +35,22 @@ public class CompetenceServiceImpl implements CompetenceService {
         }
         return new ArrayList<>(competences);
     }
+
+    @Override
+    public List<CompetenceEntity> getCompetencesBySubject(SubjectEntity subject) {
+        List<CompetenceEntity> competences = new ArrayList<>();
+        if (subject.getSubjComps() == null || subject.getSubjComps().size() == 0)
+            return null;
+        subject.getSubjComps().forEach(subjComp -> competences.add(subjComp.getCompetence()));
+        return competences;
+    }
+
+    @Override
+    public List<CompetenceEntity> getCompetencesByAuditory(AuditoryEntity auditory) {
+        List<CompetenceEntity> competences = new ArrayList<>();
+        if (auditory.getAudComps() == null || auditory.getAudComps().size() == 0)
+            return null;
+        auditory.getAudComps().forEach(audComp -> competences.add(audComp.getCompetence()));
+        return competences;    }
 
 }

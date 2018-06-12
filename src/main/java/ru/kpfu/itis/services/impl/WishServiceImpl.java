@@ -17,6 +17,9 @@ public class WishServiceImpl implements WishService {
     UserService userService;
 
     @Autowired
+    IupService iupService;
+
+    @Autowired
     WishInfoService wishInfoService;
 
     @Autowired
@@ -63,6 +66,12 @@ public class WishServiceImpl implements WishService {
 
     @Override
     public void generateWishes() {
+        generateSubjectToAudWishes();
+        generateTeachToSubjAudWishes();
+        generateStudToStudWishes();
+        generateStudToStudForSubjectWishes();
+        generateTeachToStudWishes();
+        generateTeachToStudForSubjectWishes();
     }
 
     @Override
@@ -77,23 +86,22 @@ public class WishServiceImpl implements WishService {
                 similarityCount += getPointForInterests(students.get(i), students.get(j));
                 similarityCount += getPointForStudCompetences(students.get(i), students.get(j));
 
-                similarityWithStud.put(students.get(j), similarityCount);
+                if (similarityCount > 0)
+                    similarityWithStud.put(students.get(j), similarityCount);
             }
             Map<UserEntity, Integer> similarityWithStudSorted = getSortedByValueSimilarityMap(similarityWithStud);
             int maxSimilarity = similarityWithStudSorted.values().stream().findFirst().orElse(0);
             int studFrom = i;
-            similarityWithStudSorted.keySet().forEach(stud -> {
-                if (maxSimilarity != 0
-                        && similarityWithStudSorted.get(stud) != 0
-                        && similarityWithStudSorted.get(stud) >= maxSimilarity / 2) {
-                    WishEntity wish = new WishEntity();
-                    wish.setFromUser(students.get(studFrom));
-                    wish.setStudUser(stud);
-                    wish.setWishStatus(wishStatusService.getWishStatusByName(WishStatusEnum.AUTO));
-                    wish.setWishInfo(wishInfoService.getWishInfoByType(WishTypeEnum.STUD_TO_STUD));
-                    wishes.add(wish);
-                }
-            });
+            similarityWithStudSorted.keySet().stream()
+                    .filter(stud -> similarityWithStudSorted.get(stud) >= maxSimilarity / 2)
+                    .forEach(stud -> {
+                        WishEntity wish = new WishEntity();
+                        wish.setFromUser(students.get(studFrom));
+                        wish.setStudUser(stud);
+                        wish.setWishStatus(wishStatusService.getWishStatusByName(WishStatusEnum.AUTO));
+                        wish.setWishInfo(wishInfoService.getWishInfoByType(WishTypeEnum.STUD_TO_STUD));
+                        wishes.add(wish);
+                    });
         }
         wishRepository.save(wishes);
     }
@@ -135,6 +143,43 @@ public class WishServiceImpl implements WishService {
 
     @Override
     public void generateStudToStudForSubjectWishes() {
+        List<WishEntity> wishes = new ArrayList<>();
+        List<UserEntity> students = userService.getAllStudents();
+        for (int i = 0; i < students.size() - 1; i++) {
+            List<IupSubjEntity> iupSubjForStud = iupService.getIupSubjectsByStudent(students.get(i));
+            int fromStudI = i;
+            iupSubjForStud.forEach(iupSubj -> {
+
+                Map<UserEntity, Integer> similarityWithStud = new HashMap<>();
+                for (int j = fromStudI + 1; j < students.size(); j++) {
+                    int similarityCount = 0;
+                    similarityCount += getPointForTimeWishes(students.get(fromStudI), students.get(j), iupSubj.getSubject());
+                    similarityCount += getPointForInterests(students.get(fromStudI), students.get(j));
+                    similarityCount += getPointForStudCompetences(students.get(fromStudI), students.get(j));
+
+                    List<SubjectEntity> stud1Subjects = iupService.getSubjectsByStudent(students.get(fromStudI));
+                    List<SubjectEntity> stud2Subjects = iupService.getSubjectsByStudent(students.get(j));
+                    similarityCount += stud1Subjects.stream().filter(stud2Subjects::contains).count();
+
+                    if (similarityCount > 0)
+                        similarityWithStud.put(students.get(j), similarityCount);
+                }
+                Map<UserEntity, Integer> similarityWithStudSorted = getSortedByValueSimilarityMap(similarityWithStud);
+                int maxSimilarity = similarityWithStudSorted.values().stream().findFirst().orElse(0);
+                similarityWithStudSorted.keySet().stream()
+                        .filter(stud -> similarityWithStudSorted.get(stud) >= maxSimilarity / 2)
+                        .forEach(stud -> {
+                            WishEntity wish = new WishEntity();
+                            wish.setFromUser(students.get(fromStudI));
+                            wish.setStudUser(stud);
+                            wish.setSubject(iupSubj.getSubject());
+                            wish.setWishStatus(wishStatusService.getWishStatusByName(WishStatusEnum.AUTO));
+                            wish.setWishInfo(wishInfoService.getWishInfoByType(WishTypeEnum.STUD_TO_STUD_ON_SUBJ));
+                            wishes.add(wish);
+                        });
+            });
+        }
+        wishRepository.save(wishes);
     }
 
     @Override
@@ -168,7 +213,6 @@ public class WishServiceImpl implements WishService {
             }
         });
         wishRepository.save(wishes);
-        System.out.println(maxSimilarity);
     }
 
     private Map<AbstractMap.SimpleEntry<UserEntity, UserEntity>, Integer> getSortedBySimilarityMap(Map<AbstractMap.SimpleEntry<UserEntity, UserEntity>, Integer> similarity) {
@@ -189,6 +233,17 @@ public class WishServiceImpl implements WishService {
         List<CompetenceEntity> studentIupCompetences = competenceService.getStudentIupCompetencesByUser(student);
         for (CompetenceEntity studentCompetence : studentIupCompetences) {
             if (teacherCompetences.contains(studentCompetence))
+                point++;
+        }
+        return point;
+    }
+
+    private Integer getPointForTeachSubjCompetences(UserEntity teacher, SubjectEntity subject) {
+        int point = 0;
+        List<CompetenceEntity> teacherCompetences = competenceService.getCompetencesByUser(teacher);
+        List<CompetenceEntity> subjectCompetences = competenceService.getCompetencesBySubject(subject);
+        for (CompetenceEntity subjectCompetence : subjectCompetences) {
+            if (teacherCompetences.contains(subjectCompetence))
                 point++;
         }
         return point;
@@ -262,6 +317,43 @@ public class WishServiceImpl implements WishService {
 
     @Override
     public void generateTeachToStudForSubjectWishes() {
+        List<WishEntity> wishes = new ArrayList<>();
+        List<UserEntity> teachers = userService.getAllTeachers();
+        List<UserEntity> students = userService.getAllStudents();
+        Map<AbstractMap.SimpleEntry<UserEntity, UserEntity>, Integer> similarity = new HashMap<>();
+        for (UserEntity teacher : teachers) {
+            List<SubjectEntity> teacherSubjects = userSubjService.getAllSubjectsByTeacher(teacher);
+            teacherSubjects.forEach(teacherSubj -> {
+
+                Map<UserEntity, Integer> similarityWithStudForSubj = new HashMap<>();
+                for (UserEntity student : students) {
+                    List<SubjectEntity> studentSubjects = iupService.getSubjectsByStudent(student);
+                    if (studentSubjects.contains(teacherSubj)) {
+                        int similarityCount = 0;
+                        similarityCount += getPointForTimeWishes(teacher, student, teacherSubj);
+                        similarityCount += getPointForInterests(teacher, student);
+                        similarityCount += getPointForTeachSubjCompetences(teacher, teacherSubj);
+
+                        if (similarityCount > 0)
+                            similarityWithStudForSubj.put(student, similarityCount);
+                    }
+                }
+                Map<UserEntity, Integer> similarityWithStudForSubjSorted = getSortedByValueSimilarityMap(similarityWithStudForSubj);
+                int maxSimilarity = similarityWithStudForSubjSorted.values().stream().findFirst().orElse(0);
+                similarityWithStudForSubjSorted.keySet().stream()
+                        .filter(stud -> similarityWithStudForSubjSorted.get(stud) >= maxSimilarity / 2)
+                        .forEach(stud -> {
+                            WishEntity wish = new WishEntity();
+                            wish.setFromUser(teacher);
+                            wish.setStudUser(stud);
+                            wish.setSubject(teacherSubj);
+                            wish.setWishStatus(wishStatusService.getWishStatusByName(WishStatusEnum.AUTO));
+                            wish.setWishInfo(wishInfoService.getWishInfoByType(WishTypeEnum.TEACH_TO_STUD_ON_SUBJ));
+                            wishes.add(wish);
+                        });
+            });
+        }
+        wishRepository.save(wishes);
     }
 
     @Override
@@ -270,21 +362,69 @@ public class WishServiceImpl implements WishService {
 
         for (UserEntity teacher : userService.getAllTeachers()) {
             for (SubjectEntity subject : userSubjService.getAllSubjectsByTeacher(teacher)) {
+                List<CompetenceEntity> subjectCompetences = competenceService.getCompetencesBySubject(subject);
+                List<CompetenceEntity> teacherCompetences = competenceService.getCompetencesByUser(teacher);
                 List<EquipmentEntity> teacherRequiredEquipmentForSubject = getTeacherRequiredEquipmentForSubject(teacher, subject);
                 List<AuditoryEntity> auditories = audEquipService.getAllAuditoriesByListOfEquipment(teacherRequiredEquipmentForSubject);
+                Map<AuditoryEntity, Integer> similarityWithAud = new HashMap<>();
                 auditories.forEach(auditory -> {
-                    WishEntity wish = new WishEntity();
-                    wish.setSubject(subject);
-                    wish.setTeachUser(teacher);
-                    wish.setAuditory(auditory);
-                    wish.setWishStatus(wishStatusService.getWishStatusByName(WishStatusEnum.AUTO));
-                    wish.setWishInfo(wishInfoService.getWishInfoByType(WishTypeEnum.TEACH_SUBJ_AUD));
-                    wishes.add(wish);
+                    int similarityCount;
+                    List<CompetenceEntity> auditoryCompetences = competenceService.getCompetencesByAuditory(auditory);
+                    similarityCount = (int) subjectCompetences.stream().filter(auditoryCompetences::contains).count();
+                    similarityCount += subjectCompetences.stream().filter(auditoryCompetences::contains).filter(teacherCompetences::contains).count();
+                    similarityWithAud.put(auditory, similarityCount);
+                });
+                Map<AuditoryEntity, Integer> similarityWithAudSorted = getSimilarityMapSortedByValue(similarityWithAud);
+                int maxSimilarity = similarityWithAudSorted.values().stream().findFirst().orElse(0);
+
+                similarityWithAudSorted.keySet().forEach(auditory -> {
+                    if (maxSimilarity != 0
+                            && similarityWithAudSorted.get(auditory) != 0
+                            && similarityWithAudSorted.get(auditory) >= maxSimilarity / 2) {
+                        WishEntity wish = new WishEntity();
+                        wish.setSubject(subject);
+                        wish.setTeachUser(teacher);
+                        wish.setAuditory(auditory);
+                        wish.setWishStatus(wishStatusService.getWishStatusByName(WishStatusEnum.AUTO));
+                        wish.setWishInfo(wishInfoService.getWishInfoByType(WishTypeEnum.TEACH_SUBJ_AUD));
+                        wishes.add(wish);
+                    }
                 });
             }
         }
         wishRepository.save(wishes);
     }
+
+    /*public void generateSubjectToAudWishes2() {
+        List<WishEntity> wishes = new ArrayList<>();
+        for (SubjectEntity subject : subjectService.getAllSubjects()) {
+            List<CompetenceEntity> subjectCompetences = competenceService.getCompetencesBySubject(subject);
+            List<EquipmentEntity> requiredEquipmentForSubject = getRequiredEquipmentForSubject(subject);
+            List<AuditoryEntity> auditories = audEquipService.getAllAuditoriesByListOfEquipment(requiredEquipmentForSubject);
+            Map<AuditoryEntity, Integer> similarityWithAud = new HashMap<>();
+            auditories.forEach((AuditoryEntity auditory) -> {
+                int similarityCount;
+                List<CompetenceEntity> auditoryCompetences = competenceService.getCompetencesByAuditory(auditory);
+                similarityCount = (int) subjectCompetences.stream().filter(auditoryCompetences::contains).count();
+                similarityWithAud.put(auditory, similarityCount);
+            });
+            Map<AuditoryEntity, Integer> similarityWithAudSorted = getSimilarityMapSortedByValue(similarityWithAud);
+            int maxSimilarity = similarityWithAudSorted.values().stream().findFirst().orElse(0);
+            similarityWithAudSorted.keySet().forEach(auditory -> {
+                if (maxSimilarity != 0
+                        && similarityWithAudSorted.get(auditory) != 0
+                        && similarityWithAudSorted.get(auditory) >= maxSimilarity / 2) {
+                    WishEntity wish = new WishEntity();
+                    wish.setSubject(subject);
+                    wish.setAuditory(auditory);
+                    wish.setWishStatus(wishStatusService.getWishStatusByName(WishStatusEnum.AUTO));
+                    wish.setWishInfo(wishInfoService.getWishInfoByType(WishTypeEnum.SUBJ_AUD));
+                    wishes.add(wish);
+                }
+            });
+        }
+        wishRepository.save(wishes);
+    }*/
 
     @Override
     public List<EquipmentEntity> getTeacherRequiredEquipmentForSubject(UserEntity teacher, SubjectEntity subject) {
@@ -314,7 +454,7 @@ public class WishServiceImpl implements WishService {
 
     @Override
     public void generateSubjectToAudWishes() {
-        List<WishEntity> wishEntities = new ArrayList<>();
+        List<WishEntity> wishes = new ArrayList<>();
         for (SubjectEntity subject : subjectService.getAllSubjects()) {
             List<EquipmentEntity> requiredEquipmentForSubject = getRequiredEquipmentForSubject(subject);
             List<AuditoryEntity> auditories = audEquipService.getAllAuditoriesByListOfEquipment(requiredEquipmentForSubject);
@@ -324,10 +464,22 @@ public class WishServiceImpl implements WishService {
                 wish.setAuditory(auditory);
                 wish.setWishStatus(wishStatusService.getWishStatusByName(WishStatusEnum.AUTO));
                 wish.setWishInfo(wishInfoService.getWishInfoByType(WishTypeEnum.SUBJ_AUD));
-                wishEntities.add(wish);
+                wishes.add(wish);
             });
         }
-        wishRepository.save(wishEntities);
+        wishRepository.save(wishes);
+    }
+
+    private Map<AuditoryEntity, Integer> getSimilarityMapSortedByValue(Map<AuditoryEntity, Integer> similarity) {
+        List<Map.Entry<AuditoryEntity, Integer>> list = new LinkedList<>(similarity.entrySet());
+        list.sort(Comparator.comparing(Map.Entry::getValue));
+        Collections.reverse(list);
+
+        Map<AuditoryEntity, Integer> similaritySorted = new LinkedHashMap<>();
+        for (Map.Entry<AuditoryEntity, Integer> entry : list) {
+            similaritySorted.put(entry.getKey(), entry.getValue());
+        }
+        return similaritySorted;
     }
 
     @Override

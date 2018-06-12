@@ -41,4 +41,16 @@ public class IupServiceImpl implements IupService {
     public List<SubjectEntity> getSubjectsByListOfIupSubjects(List<IupSubjEntity> iupSubjects) {
         return iupSubjects.stream().map(iupSubject -> iupSubject.getSubject()).collect(Collectors.toList());
     }
+
+    @Override
+    public List<SubjectEntity> getSubjectsByStudent(UserEntity student) {
+        List<IupSubjEntity> iupSubjEntities = getIupSubjectsByStudent(student);
+        return getSubjectsByListOfIupSubjects(iupSubjEntities);
+    }
+
+    @Override
+    public List<UserEntity> getStudentsBySubject(SubjectEntity subject) {
+        List<IupSubjEntity> iupSubjEntities = getIupSubjectsBySubject(subject);
+        return getStudentsByListOfIupSubjects(iupSubjEntities);
+    }
 }
