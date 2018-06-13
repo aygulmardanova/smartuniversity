@@ -51,6 +51,7 @@ public class CompetenceServiceImpl implements CompetenceService {
         if (auditory.getAudComps() == null || auditory.getAudComps().size() == 0)
             return null;
         auditory.getAudComps().forEach(audComp -> competences.add(audComp.getCompetence()));
-        return competences;    }
+        return competences;
+    }
 
 }

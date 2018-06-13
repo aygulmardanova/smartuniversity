@@ -229,10 +229,10 @@ public class WishServiceImpl implements WishService {
             }
         }
         Map<AbstractMap.SimpleEntry<UserEntity, UserEntity>, Integer> similaritySorted = getSortedBySimilarityMap(similarity);
-        int maxSimilarity = similaritySorted.values().stream().findFirst().orElse(0);
+        double average = similaritySorted.values().stream().mapToInt(Integer::intValue).sum() / similaritySorted.size();
         List<WishEntity> wishes = new ArrayList<>();
         similaritySorted.keySet().forEach(keyPair -> {
-            if (similaritySorted.get(keyPair) >= maxSimilarity / 2) {
+            if (similaritySorted.get(keyPair) >= average) {
                 System.out.println(similaritySorted.get(keyPair) + " teacher:" + keyPair.getKey().getSurname() + ". student: " + keyPair.getValue().getSurname());
                 WishEntity wish = new WishEntity();
                 wish.setFromUser(keyPair.getKey());
