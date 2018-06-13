@@ -32,6 +32,11 @@ public class SubjectServiceImpl implements SubjectService {
     }
 
     @Override
+    public SubjectEntity getById(Long id) {
+        return subjectRepository.getOne(id);
+    }
+
+    @Override
     public List<SubjectEntity> getSubjectsByStudentFromIup(UserEntity student) {
         List<IupSubjEntity> iupSubjects = iupService.getIupSubjectsByStudent(student);
         List<SubjectEntity> subjects = new ArrayList<>();

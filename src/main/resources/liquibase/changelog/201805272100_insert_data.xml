@@ -766,4 +766,33 @@
             ((SELECT id FROM uni.interest WHERE name = 'Нейробиология'), (SELECT id FROM uni.interest WHERE name = 'Биоинформатика'));
         </sql>
     </changeSet>
+
+    <changeSet id="17_insert_stud_iup" author="amardanova" dbms="postgresql">
+        <preConditions onFail="CONTINUE">
+            <tableExists schemaName="uni" tableName="iup_subj"/>
+        </preConditions>
+        <comment>ИУП</comment>
+        <sql>
+            INSERT into uni.iup_subj (user_id, subj_id) VALUES ((SELECT id from uni."user" where surname = 'Иванов'), (SELECT id from uni.subject WHERE name = 'Программирование на Java')),
+            ((SELECT id from uni."user" where surname = 'Иванов'), (SELECT id from uni.subject WHERE name = 'Разработка корпоративных приложений')),
+            ((SELECT id from uni."user" where surname = 'Иванов'), (SELECT id from uni.subject WHERE name = 'Введение в интернет-программирование')),
+            ((SELECT id from uni."user" where surname = 'Иванов'), (SELECT id from uni.subject WHERE name = 'Верификация программного обеспечения')),
+            ((SELECT id from uni."user" where surname = 'Иванов'), (SELECT id from uni.subject WHERE name = 'Информатика')),
+            ((SELECT id from uni."user" where surname = 'Иванов'), (SELECT id from uni.subject WHERE name = 'Теория систем и системный анализ')),
+            ((SELECT id from uni."user" where surname = 'Иванов'), (SELECT id from uni.subject WHERE name = 'Управление качеством разработки информационных систем')),
+            ((SELECT id from uni."user" where surname = 'Мальков'), (SELECT id from uni.subject WHERE name = 'Управление качеством разработки информационных систем')),
+            ((SELECT id from uni."user" where surname = 'Мальков'), (SELECT id from uni.subject WHERE name = 'Физика')),
+            ((SELECT id from uni."user" where surname = 'Мальков'), (SELECT id from uni.subject WHERE name = 'Механизмы защиты удаленного доступа')),
+            ((SELECT id from uni."user" where surname = 'Мальков'), (SELECT id from uni.subject WHERE name = 'Основы информационного поиска')),
+            ((SELECT id from uni."user" where surname = 'Мальков'), (SELECT id from uni.subject WHERE name = 'Математический анализ')),
+            ((SELECT id from uni."user" where surname = 'Мальков'), (SELECT id from uni.subject WHERE name = 'Проектирование человеко-машинных интерфейсов')),
+            ((SELECT id from uni."user" where surname = 'Мальков'), (SELECT id from uni.subject WHERE name = 'Аналитическая геометрия')),
+            ((SELECT id from uni."user" where surname = 'Мальков'), (SELECT id from uni.subject WHERE name = 'Линейная алгебра')),
+            ((SELECT id from uni."user" where surname = 'Зайнуллина'), (SELECT id from uni.subject WHERE name = 'Администрирование Linux')),
+            ((SELECT id from uni."user" where surname = 'Зайнуллина'), (SELECT id from uni.subject WHERE name = 'Операционные системы ОС')),
+            ((SELECT id from uni."user" where surname = 'Зайнуллина'), (SELECT id from uni.subject WHERE name = 'Информационная безопасность')),
+            ((SELECT id from uni."user" where surname = 'Зайнуллина'), (SELECT id from uni.subject WHERE name = 'Робототехника')),
+            ((SELECT id from uni."user" where surname = 'Зайнуллина'), (SELECT id from uni.subject WHERE name = 'Механизмы защиты удаленного доступа'));
+        </sql>
+    </changeSet>
 </databaseChangeLog>

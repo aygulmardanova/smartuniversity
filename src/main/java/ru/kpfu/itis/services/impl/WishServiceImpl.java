@@ -60,6 +60,36 @@ public class WishServiceImpl implements WishService {
     }
 
     @Override
+    public void saveTimeWish(Long fromUserId, Integer pairStNum, Integer pairEndNum, Integer weekDay, Long subjectId) {
+        WishTypeEnum wishType;
+        WishEntity wish = new WishEntity();
+        if (pairStNum != null) {
+            wish.setPairStNum(pairStNum);
+            if (subjectId != null) {
+                wishType = WishTypeEnum.USER_START_TIME_ON_SUBJ;
+            } else {
+                wishType = WishTypeEnum.USER_START_TIME;
+            }
+        } else if (pairEndNum != null) {
+            wish.setPairEndNum(pairEndNum);
+            if (subjectId != null) {
+                wishType = WishTypeEnum.USER_END_TIME_ON_SUBJ;
+            } else {
+                wishType = WishTypeEnum.USER_END_TIME;
+            }
+        } else
+            return;
+
+        wish.setFromUser(userService.getById(fromUserId));
+        wish.setWishInfo(wishInfoService.getWishInfoByType(wishType));
+        if (weekDay != null)
+            wish.setWeekDay(weekDay);
+        if (subjectId != null)
+            wish.setSubject(subjectService.getById(subjectId));
+        wishRepository.save(wish);
+    }
+
+    @Override
     public List<WishEntity> getWishesForUser(UserEntity user) {
         return wishRepository.findWishEntitiesByFromUser(user);
     }
@@ -90,10 +120,10 @@ public class WishServiceImpl implements WishService {
                     similarityWithStud.put(students.get(j), similarityCount);
             }
             Map<UserEntity, Integer> similarityWithStudSorted = getSortedByValueSimilarityMap(similarityWithStud);
-            int maxSimilarity = similarityWithStudSorted.values().stream().findFirst().orElse(0);
+            double average = similarityWithStudSorted.values().stream().mapToInt(Integer::intValue).sum() / similarityWithStudSorted.size();
             int studFrom = i;
             similarityWithStudSorted.keySet().stream()
-                    .filter(stud -> similarityWithStudSorted.get(stud) >= maxSimilarity / 2)
+                    .filter(stud -> similarityWithStudSorted.get(stud) >= average)
                     .forEach(stud -> {
                         WishEntity wish = new WishEntity();
                         wish.setFromUser(students.get(studFrom));
@@ -165,9 +195,9 @@ public class WishServiceImpl implements WishService {
                         similarityWithStud.put(students.get(j), similarityCount);
                 }
                 Map<UserEntity, Integer> similarityWithStudSorted = getSortedByValueSimilarityMap(similarityWithStud);
-                int maxSimilarity = similarityWithStudSorted.values().stream().findFirst().orElse(0);
+                double average = similarityWithStudSorted.values().stream().mapToInt(Integer::intValue).sum() / similarityWithStudSorted.size();
                 similarityWithStudSorted.keySet().stream()
-                        .filter(stud -> similarityWithStudSorted.get(stud) >= maxSimilarity / 2)
+                        .filter(stud -> similarityWithStudSorted.get(stud) >= average)
                         .forEach(stud -> {
                             WishEntity wish = new WishEntity();
                             wish.setFromUser(students.get(fromStudI));
@@ -339,9 +369,9 @@ public class WishServiceImpl implements WishService {
                     }
                 }
                 Map<UserEntity, Integer> similarityWithStudForSubjSorted = getSortedByValueSimilarityMap(similarityWithStudForSubj);
-                int maxSimilarity = similarityWithStudForSubjSorted.values().stream().findFirst().orElse(0);
+                double average = similarityWithStudForSubjSorted.values().stream().mapToInt(Integer::intValue).sum() / similarityWithStudForSubjSorted.size();
                 similarityWithStudForSubjSorted.keySet().stream()
-                        .filter(stud -> similarityWithStudForSubjSorted.get(stud) >= maxSimilarity / 2)
+                        .filter(stud -> similarityWithStudForSubjSorted.get(stud) >= average)
                         .forEach(stud -> {
                             WishEntity wish = new WishEntity();
                             wish.setFromUser(teacher);
@@ -366,8 +396,9 @@ public class WishServiceImpl implements WishService {
                 List<CompetenceEntity> teacherCompetences = competenceService.getCompetencesByUser(teacher);
                 List<EquipmentEntity> teacherRequiredEquipmentForSubject = getTeacherRequiredEquipmentForSubject(teacher, subject);
                 List<AuditoryEntity> auditories = audEquipService.getAllAuditoriesByListOfEquipment(teacherRequiredEquipmentForSubject);
+                List<AuditoryEntity> auditoriesForSubject = audEquipService.getAllAuditoriesByListOfEquipment(getRequiredEquipmentForSubject(subject));
                 Map<AuditoryEntity, Integer> similarityWithAud = new HashMap<>();
-                auditories.forEach(auditory -> {
+                auditories.stream().filter(auditoriesForSubject::contains).forEach(auditory -> {
                     int similarityCount;
                     List<CompetenceEntity> auditoryCompetences = competenceService.getCompetencesByAuditory(auditory);
                     similarityCount = (int) subjectCompetences.stream().filter(auditoryCompetences::contains).count();
@@ -375,12 +406,12 @@ public class WishServiceImpl implements WishService {
                     similarityWithAud.put(auditory, similarityCount);
                 });
                 Map<AuditoryEntity, Integer> similarityWithAudSorted = getSimilarityMapSortedByValue(similarityWithAud);
-                int maxSimilarity = similarityWithAudSorted.values().stream().findFirst().orElse(0);
+                double average = similarityWithAudSorted.values().stream().mapToInt(Integer::intValue).sum() / similarityWithAudSorted.size();
 
                 similarityWithAudSorted.keySet().forEach(auditory -> {
-                    if (maxSimilarity != 0
+                    if (average != 0
                             && similarityWithAudSorted.get(auditory) != 0
-                            && similarityWithAudSorted.get(auditory) >= maxSimilarity / 2) {
+                            && similarityWithAudSorted.get(auditory) >= average) {
                         WishEntity wish = new WishEntity();
                         wish.setSubject(subject);
                         wish.setTeachUser(teacher);

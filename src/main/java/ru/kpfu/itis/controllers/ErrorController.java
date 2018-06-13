@@ -25,7 +25,7 @@ public class ErrorController {
                     "You do not have permission to access this page!");
         }
 
-        model.setViewName("403");
+        model.setViewName("errorPage");
         return model;
     }
 

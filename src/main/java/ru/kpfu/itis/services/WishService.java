@@ -17,6 +17,8 @@ public interface WishService {
 
     List<EquipmentEntity> getRequiredEquipmentForSubject(SubjectEntity subject);
 
+    void saveTimeWish(Long fromUserId, Integer pairStNum, Integer pairEndNum, Integer weekDay, Long subjectId);
+
     List<WishEntity> getWishesForUser(UserEntity user);
 
     void generateWishes();

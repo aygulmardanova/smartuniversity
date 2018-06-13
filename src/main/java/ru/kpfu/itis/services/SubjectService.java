@@ -11,5 +11,7 @@ public interface SubjectService {
 
     SubjectEntity getByName(String name);
 
+    SubjectEntity getById(Long id);
+
     List<SubjectEntity> getSubjectsByStudentFromIup(UserEntity student);
 }

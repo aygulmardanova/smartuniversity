@@ -1,5 +1,8 @@
 package ru.kpfu.itis.controllers;
 
+import freemarker.ext.beans.BeansWrapper;
+import freemarker.template.TemplateHashModel;
+import freemarker.template.TemplateModelException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,15 +12,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import ru.kpfu.itis.entity.*;
+import ru.kpfu.itis.entity.enums.WeekDayEnum;
 import ru.kpfu.itis.entity.enums.WishStatusEnum;
 import ru.kpfu.itis.entity.enums.WishTypeEnum;
 import ru.kpfu.itis.services.*;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Controller
 public class MainController {
@@ -45,6 +46,9 @@ public class MainController {
     @Autowired
     WishStatusService wishStatusService;
 
+    @Autowired
+    PairNumService pairNumService;
+
     @RequestMapping(value = "/main", method = RequestMethod.GET)
     public String returnIndex(ModelMap model) throws IOException {
         return "main";
@@ -58,29 +62,65 @@ public class MainController {
         return "teachers";
     }
 
+    @RequestMapping(value = "/time-wishes", method = RequestMethod.GET)
+    public String returnTimeWishesPage(ModelMap model) throws IOException {
+        List<UserEntity> teachers = userService.getAllTeachers();
+        UserEntity user = userService.getAllStudents().stream().findFirst().orElse(null);
+        model.put("user", user);
+        model.put("subjects", subjectService.getSubjectsByStudentFromIup(user));
+        model.put("pairNums", pairNumService.getAll());
+        List<WeekDayEnum> weekDays = new ArrayList<>();
+        for (int i = 1; i <= 7; i++)
+            weekDays.add(WeekDayEnum.valueOf(i));
+        model.put("weekDays", weekDays);
+        try {
+            TemplateHashModel enumModels = BeansWrapper.getDefaultInstance().getEnumModels();
+            TemplateHashModel weekDaysEnumModel = (TemplateHashModel) enumModels.get("ru.kpfu.itis.entity.enums.WeekDayEnum");
+            model.put("weekDaysModel", weekDaysEnumModel);
+        } catch (TemplateModelException e) {
+            e.printStackTrace();
+        }
+        return "time-wishes";
+    }
+
+    @RequestMapping(value = "/save-time-wish", method = RequestMethod.POST)
+    public String saveTimeWish(ModelMap model,
+                               @RequestParam(name = "user_id") Long fromUserId,
+                               @RequestParam(name = "pair_st_num", required = false) Integer pairStNum,
+                               @RequestParam(name = "pair_end_num", required = false) Integer pairEndNum,
+                               @RequestParam(name = "week_day", required = false) Integer weekDay,
+                               @RequestParam(name = "subject_id", required = false) Long subjectId) throws IOException {
+        if (pairStNum != null && pairEndNum != null) {
+            wishService.saveTimeWish(fromUserId, pairStNum, null, weekDay, subjectId);
+            wishService.saveTimeWish(fromUserId, null, pairEndNum, weekDay, subjectId);
+        } else
+            wishService.saveTimeWish(fromUserId, pairStNum, pairEndNum, weekDay, subjectId);
+
+        return "redirect:time-wishes";
+    }
+
     @RequestMapping(value = "/generate", method = RequestMethod.POST)
     public String autoGenerate(ModelMap model, @RequestParam(required = false) List<String> wishTypes) throws IOException {
         if (wishTypes == null || wishTypes.size() == 0 || wishTypes.contains("all"))
             wishService.generateWishes();
         else {
-            System.out.println("l");
+            wishTypes.forEach(wishType -> {
+                switch (wishType) {
+                    case "STUD_TO_STUD_ON_SUBJ":
+                        wishService.generateStudToStudForSubjectWishes();
+                    case "STUD_TO_STUD":
+                        wishService.generateStudToStudWishes();
+                    case "TEACH_TO_STUD_ON_SUBJ":
+                        wishService.generateTeachToStudForSubjectWishes();
+                    case "TEACH_TO_STUD":
+                        wishService.generateTeachToStudWishes();
+                    case "SUBJ_AUD":
+                        wishService.generateSubjectToAudWishes();
+                    case "TEACH_SUBJ_AUD":
+                        wishService.generateTeachToSubjAudWishes();
+                }
+            });
         }
-//            wishTypes.forEach(wishType -> {
-//                switch (wishType) {
-//                    case "STUD_TO_STUD_ON_SUBJ":
-//                        wishService.generateStudToStudForSubjectWishes();
-//                    case "STUD_TO_STUD":
-//                        wishService.generateStudToStudWishes();
-//                    case "TEACH_TO_STUD_ON_SUBJ":
-//                        wishService.generateTeachToStudForSubjectWishes();
-//                    case "TEACH_TO_STUD":
-//                        wishService.generateTeachToStudWishes();
-//                    case "SUBJ_AUD":
-//                        wishService.generateSubjectToAudWishes();
-//                    case "TEACH_SUBJ_AUD":
-//                        wishService.generateTeachToSubjAudWishes();
-//                }
-//            });
         model.put("wishTypes", wishTypes);
         return "redirect:auto-generate";
     }
@@ -111,6 +151,7 @@ public class MainController {
         wishes.add(wishInfoService.getWishInfoByType(WishTypeEnum.TEACH_TO_STUD));
         wishes.add(wishInfoService.getWishInfoByType(WishTypeEnum.TEACH_TO_STUD_ON_SUBJ));
         wishes.add(wishInfoService.getWishInfoByType(WishTypeEnum.SUBJ_AUD));
+        wishes.add(wishInfoService.getWishInfoByType(WishTypeEnum.TEACH_SUBJ_AUD));
         model.put("wishes", wishes);
         if (wishTypes != null && wishTypes.size() != 0) {
             List<String> generatedWishTypes = new ArrayList<>();

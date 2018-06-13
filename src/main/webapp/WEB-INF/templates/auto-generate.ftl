@@ -10,7 +10,6 @@
 
 <body>
 <div class="container">
-    <!-- Image and text -->
     <nav class="navbar navbar-dark bg-dark">
         <a class="navbar-brand" href="#">
             Пожелания
@@ -23,6 +22,9 @@
         </li>
         <li class="nav-item">
             <a class="nav-link" href="/teachers">Преподаватели</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="/time-wishes">Пожелания ко времени</a>
         </li>
     </ul>
     <div class="border">
@@ -39,7 +41,7 @@
                     <legend>Автоматическая генерация пожеланий</legend>
                     <input type="submit" value="Сгенерировать пожелания" class="btn btn-secondary w-100">
                     <label for="wishTypes"> Выберите типы пожеланий </label>
-                    <select name="wishTypes" id="wishTypes" multiple size="7">
+                    <select name="wishTypes" id="wishTypes" multiple size="8">
                         <option selected></option>
                         <option value="all">Все пожелания</option>
         <#if wishes?has_content>

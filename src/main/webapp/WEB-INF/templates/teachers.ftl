@@ -9,7 +9,6 @@
 </head>
 <body>
 <div class="container">
-    <!-- Image and text -->
     <nav class="navbar navbar-dark bg-dark">
         <a class="navbar-brand" href="#">
             Пожелания
@@ -22,6 +21,9 @@
         </li>
         <li class="nav-item">
             <a class="nav-link active" href="/teachers">Преподаватели</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="/time-wishes">Пожелания ко времени</a>
         </li>
     </ul>
     <#if teachers?has_content>
