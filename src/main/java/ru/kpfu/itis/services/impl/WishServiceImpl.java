@@ -225,7 +225,8 @@ public class WishServiceImpl implements WishService {
                 similarityCount += getPointForInterests(teacher, student);
                 similarityCount += getPointForTeachStudCompetences(teacher, student);
 
-                similarity.put(new AbstractMap.SimpleEntry<>(teacher, student), similarityCount);
+                if (similarityCount > 0)
+                    similarity.put(new AbstractMap.SimpleEntry<>(teacher, student), similarityCount);
             }
         }
         Map<AbstractMap.SimpleEntry<UserEntity, UserEntity>, Integer> similaritySorted = getSortedBySimilarityMap(similarity);
@@ -233,7 +234,6 @@ public class WishServiceImpl implements WishService {
         List<WishEntity> wishes = new ArrayList<>();
         similaritySorted.keySet().forEach(keyPair -> {
             if (similaritySorted.get(keyPair) >= average) {
-                System.out.println(similaritySorted.get(keyPair) + " teacher:" + keyPair.getKey().getSurname() + ". student: " + keyPair.getValue().getSurname());
                 WishEntity wish = new WishEntity();
                 wish.setFromUser(keyPair.getKey());
                 wish.setStudUser(keyPair.getValue());
@@ -350,7 +350,6 @@ public class WishServiceImpl implements WishService {
         List<WishEntity> wishes = new ArrayList<>();
         List<UserEntity> teachers = userService.getAllTeachers();
         List<UserEntity> students = userService.getAllStudents();
-        Map<AbstractMap.SimpleEntry<UserEntity, UserEntity>, Integer> similarity = new HashMap<>();
         for (UserEntity teacher : teachers) {
             List<SubjectEntity> teacherSubjects = userSubjService.getAllSubjectsByTeacher(teacher);
             teacherSubjects.forEach(teacherSubj -> {
