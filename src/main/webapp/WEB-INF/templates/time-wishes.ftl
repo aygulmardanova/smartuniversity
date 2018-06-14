@@ -18,13 +18,16 @@
 
     <ul class="nav nav-tabs">
         <li class="nav-item">
-            <a class="nav-link" href="/auto-generate">Авто-генерация</a>
+            <a class="nav-link" href="/students">Студенты</a>
         </li>
         <li class="nav-item">
             <a class="nav-link" href="/teachers">Преподаватели</a>
         </li>
         <li class="nav-item">
             <a class="nav-link active" href="/time-wishes">Пожелания ко времени</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="/auto-generate">Авто-генерация</a>
         </li>
     </ul>
     <div class="border">
@@ -33,31 +36,25 @@
                 <fieldset>
                     <legend>Пожелания ко времени</legend>
 
-                    <label for="pair_st_num">Выберите время начала первого занятия</label>
+                    <label for="pair_st_num">Время начала занятий</label>
                     <select name="pair_st_num" id="pair_st_num">
                         <option selected></option>
-                        <option value="1">1: 8.30-10.00</option>
-                        <option value="2">1: 10.10-11.40</option>
-                        <option value="3">1: 11.50-13.20</option>
-                        <option value="4">1: 13.35-15.05</option>
-                        <option value="5">1: 15.20-16.50</option>
-                        <option value="6">1: 17.00-18.30</option>
-                        <option value="7">1: 18.40-20.10</option>
+                    <#list pairNums as pairNum>
+                        <option value="${pairNum.id}">${pairNum.id}: ${pairNum.pairStTime}
+                            - ${pairNum.pairEndTime}</option>
+                    </#list>
                     </select>
 
-                    <label for="pair_end_num">Выберите время окончания последнего занятия</label>
+                    <label for="pair_end_num">Время окончания занятий</label>
                     <select name="pair_end_num" id="pair_end_num">
                         <option selected></option>
-                        <option value="1">1: 8.30-10.00</option>
-                        <option value="2">1: 10.10-11.40</option>
-                        <option value="3">1: 11.50-13.20</option>
-                        <option value="4">1: 13.35-15.05</option>
-                        <option value="5">1: 15.20-16.50</option>
-                        <option value="6">1: 17.00-18.30</option>
-                        <option value="7">1: 18.40-20.10</option>
+                    <#list pairNums as pairNum>
+                        <option value="${pairNum.id}">${pairNum.id}: ${pairNum.pairStTime}
+                            - ${pairNum.pairEndTime}</option>
+                    </#list>
                     </select>
 
-                    <label for="week_day">Выберите день недели</label>
+                    <label for="week_day">День недели</label>
                     <select name="week_day" id="week_day">
                         <option selected></option>
                         <option value="1">Понедельник</option>
@@ -70,7 +67,7 @@
                     </select>
 
                     <br/>
-                    <label for="subject_id">Выберите занятие</label>
+                    <label for="subject_id">Занятие</label>
                     <select name="subject_id" id="subject_id">
                         <option selected></option>
                     <#if subjects?has_content>

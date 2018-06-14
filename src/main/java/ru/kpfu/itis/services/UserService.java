@@ -16,9 +16,17 @@ public interface UserService {
 
     List<UserEntity> getAllStudents();
 
+    List<UserEntity> getAllStudentsOrderBySurname();
+
+    List<UserEntity> getAllStudentsOrderBySimilarity(UserEntity student);
+
     List<UserEntity> getAllTeachers();
 
+    List<UserEntity> getAllTeachersOrderBySurname();
+
     List<UserEntity> getAllUsersByUserRole(UserRoleEnum userRole);
+
+    List<UserEntity> getAllUsersByUserRoleOrderBySurname(UserRoleEnum userRole);
 
     List<UserEntity> getUsersBySubjectInIup(SubjectEntity subject);
 

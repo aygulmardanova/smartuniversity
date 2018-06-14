@@ -223,7 +223,7 @@
             ('Иностранный язык'),
             ('Физкультура'),
             ('Методология научных исследований'),
-            ('Управление качеством разработки информационных систем'),
+            ('Управление качеством разработки ИС'),
             ('Основы написания технической документации'),
             ('Механизмы защиты удаленного доступа'),
             ('Основы информационного поиска'),
@@ -272,21 +272,21 @@
             name = 'Знание JUnit')),
             ((SELECT id FROM uni.subject where name = 'Программирование на Java'), (SELECT id FROM uni.competence WHERE
             name = 'Знание SQL')),
-            ((SELECT id FROM uni.subject where name = 'Управление качеством разработки информационных систем'), (SELECT
+            ((SELECT id FROM uni.subject where name = 'Управление качеством разработки ИС'), (SELECT
             id FROM uni.competence WHERE name = 'Знание JUnit')),
-            ((SELECT id FROM uni.subject where name = 'Управление качеством разработки информационных систем'), (SELECT
+            ((SELECT id FROM uni.subject where name = 'Управление качеством разработки ИС'), (SELECT
             id FROM uni.competence WHERE name = 'Аналитическое мышление')),
-            ((SELECT id FROM uni.subject where name = 'Управление качеством разработки информационных систем'), (SELECT
+            ((SELECT id FROM uni.subject where name = 'Управление качеством разработки ИС'), (SELECT
             id FROM uni.competence WHERE name = 'Знание SQL')),
-            ((SELECT id FROM uni.subject where name = 'Управление качеством разработки информационных систем'), (SELECT
+            ((SELECT id FROM uni.subject where name = 'Управление качеством разработки ИС'), (SELECT
             id FROM uni.competence WHERE name = 'Знание JUnit')),
-            ((SELECT id FROM uni.subject where name = 'Управление качеством разработки информационных систем'), (SELECT
+            ((SELECT id FROM uni.subject where name = 'Управление качеством разработки ИС'), (SELECT
             id FROM uni.competence WHERE name = 'Ручное тестирование')),
-            ((SELECT id FROM uni.subject where name = 'Управление качеством разработки информационных систем'), (SELECT
+            ((SELECT id FROM uni.subject where name = 'Управление качеством разработки ИС'), (SELECT
             id FROM uni.competence WHERE name = 'Основы автотестирования')),
-            ((SELECT id FROM uni.subject where name = 'Управление качеством разработки информационных систем'), (SELECT
+            ((SELECT id FROM uni.subject where name = 'Управление качеством разработки ИС'), (SELECT
             id FROM uni.competence WHERE name = 'Selenium')),
-            ((SELECT id FROM uni.subject where name = 'Управление качеством разработки информационных систем'), (SELECT
+            ((SELECT id FROM uni.subject where name = 'Управление качеством разработки ИС'), (SELECT
             id FROM uni.competence WHERE name = 'Написание документации для тестирования')),
             ((SELECT id FROM uni.subject where name = 'Информационная безопасность'), (SELECT id FROM uni.competence
             WHERE name = 'Основы ОС Linux')),
@@ -779,8 +779,8 @@
             ((SELECT id from uni."user" where surname = 'Иванов'), (SELECT id from uni.subject WHERE name = 'Верификация программного обеспечения')),
             ((SELECT id from uni."user" where surname = 'Иванов'), (SELECT id from uni.subject WHERE name = 'Информатика')),
             ((SELECT id from uni."user" where surname = 'Иванов'), (SELECT id from uni.subject WHERE name = 'Теория систем и системный анализ')),
-            ((SELECT id from uni."user" where surname = 'Иванов'), (SELECT id from uni.subject WHERE name = 'Управление качеством разработки информационных систем')),
-            ((SELECT id from uni."user" where surname = 'Мальков'), (SELECT id from uni.subject WHERE name = 'Управление качеством разработки информационных систем')),
+            ((SELECT id from uni."user" where surname = 'Иванов'), (SELECT id from uni.subject WHERE name = 'Управление качеством разработки ИС')),
+            ((SELECT id from uni."user" where surname = 'Мальков'), (SELECT id from uni.subject WHERE name = 'Управление качеством разработки ИС')),
             ((SELECT id from uni."user" where surname = 'Мальков'), (SELECT id from uni.subject WHERE name = 'Физика')),
             ((SELECT id from uni."user" where surname = 'Мальков'), (SELECT id from uni.subject WHERE name = 'Механизмы защиты удаленного доступа')),
             ((SELECT id from uni."user" where surname = 'Мальков'), (SELECT id from uni.subject WHERE name = 'Основы информационного поиска')),
@@ -795,4 +795,21 @@
             ((SELECT id from uni."user" where surname = 'Зайнуллина'), (SELECT id from uni.subject WHERE name = 'Механизмы защиты удаленного доступа'));
         </sql>
     </changeSet>
+
+    <changeSet id="18_insert_pair_num" author="amardanova" dbms="postgresql">
+        <preConditions onFail="CONTINUE">
+            <tableExists schemaName="uni" tableName="pair_num"/>
+        </preConditions>
+        <comment>Время занятий</comment>
+        <sql>
+            INSERT INTO uni.pair_num (id, pair_st_time, pair_end_time) VALUES (1, '8.30', '10.00'),
+            (2, '10.10', '11.40'),
+            (3, '11.50', '13.20'),
+            (4, '13.35', '15.05'),
+            (5, '15.20', '16.50'),
+            (6, '17.00', '18.30'),
+            (7, '18.40', '20.10');
+        </sql>
+    </changeSet>
+
 </databaseChangeLog>

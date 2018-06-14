@@ -18,13 +18,16 @@
 
     <ul class="nav nav-tabs">
         <li class="nav-item">
-            <a class="nav-link active" href="/auto-generate">Авто-генерация</a>
+            <a class="nav-link" href="/students">Студенты</a>
         </li>
         <li class="nav-item">
             <a class="nav-link" href="/teachers">Преподаватели</a>
         </li>
         <li class="nav-item">
             <a class="nav-link" href="/time-wishes">Пожелания ко времени</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link active" href="/auto-generate">Авто-генерация</a>
         </li>
     </ul>
     <div class="border">

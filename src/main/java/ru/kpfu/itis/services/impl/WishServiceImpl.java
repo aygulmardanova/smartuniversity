@@ -136,7 +136,8 @@ public class WishServiceImpl implements WishService {
         wishRepository.save(wishes);
     }
 
-    private int getPointForStudCompetences(UserEntity stud1, UserEntity stud2) {
+    @Override
+    public int getPointForStudCompetences(UserEntity stud1, UserEntity stud2) {
         int point = 0;
         List<CompetenceEntity> stud1Competences = competenceService.getCompetencesByUser(stud1);
         List<CompetenceEntity> stud2Competences = competenceService.getCompetencesByUser(stud2);
@@ -158,7 +159,8 @@ public class WishServiceImpl implements WishService {
         return point;
     }
 
-    private Map<UserEntity, Integer> getSortedByValueSimilarityMap(Map<UserEntity, Integer> similarity) {
+    @Override
+    public Map<UserEntity, Integer> getSortedByValueSimilarityMap(Map<UserEntity, Integer> similarity) {
         List<Map.Entry<UserEntity, Integer>> list = new LinkedList<>(similarity.entrySet());
         list.sort(Comparator.comparing(Map.Entry::getValue));
         Collections.reverse(list);
@@ -268,7 +270,8 @@ public class WishServiceImpl implements WishService {
         return point;
     }
 
-    private Integer getPointForTeachSubjCompetences(UserEntity teacher, SubjectEntity subject) {
+    @Override
+    public Integer getPointForTeachSubjCompetences(UserEntity teacher, SubjectEntity subject) {
         int point = 0;
         List<CompetenceEntity> teacherCompetences = competenceService.getCompetencesByUser(teacher);
         List<CompetenceEntity> subjectCompetences = competenceService.getCompetencesBySubject(subject);
@@ -279,7 +282,8 @@ public class WishServiceImpl implements WishService {
         return point;
     }
 
-    private Integer getPointForInterests(UserEntity user1, UserEntity user2) {
+    @Override
+    public Integer getPointForInterests(UserEntity user1, UserEntity user2) {
         int point = 0;
         if (user1.getUserInterests() == null || user1.getUserInterests().size() == 0
                 || user2.getUserInterests() == null || user2.getUserInterests().size() == 0)
@@ -293,7 +297,8 @@ public class WishServiceImpl implements WishService {
         return point;
     }
 
-    private Integer getPointForTimeWishes(UserEntity user1, UserEntity user2, SubjectEntity subject) {
+    @Override
+    public Integer getPointForTimeWishes(UserEntity user1, UserEntity user2, SubjectEntity subject) {
         WishInfoEntity userStartTimeWishInfo = wishInfoService.getWishInfoByType(WishTypeEnum.USER_START_TIME);
         WishInfoEntity userEndTimeWishInfo = wishInfoService.getWishInfoByType(WishTypeEnum.USER_END_TIME);
         WishInfoEntity userStartTimeOnSubjWishInfo;
@@ -335,7 +340,8 @@ public class WishServiceImpl implements WishService {
         return point;
     }
 
-    private int getPointForTwoTimeValues(int user1Time, int user2Time) {
+    @Override
+    public int getPointForTwoTimeValues(int user1Time, int user2Time) {
         if (user1Time == user2Time)
             return 2;
         if (Math.abs(user1Time - user2Time) <= 2)

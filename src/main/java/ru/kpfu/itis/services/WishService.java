@@ -6,6 +6,7 @@ import ru.kpfu.itis.entity.UserEntity;
 import ru.kpfu.itis.entity.WishEntity;
 
 import java.util.List;
+import java.util.Map;
 
 public interface WishService {
 
@@ -25,9 +26,21 @@ public interface WishService {
 
     void generateStudToStudWishes();
 
+    int getPointForStudCompetences(UserEntity stud1, UserEntity stud2);
+
+    Map<UserEntity, Integer> getSortedByValueSimilarityMap(Map<UserEntity, Integer> similarity);
+
     void generateStudToStudForSubjectWishes();
 
     void generateTeachToStudWishes();
+
+    Integer getPointForTeachSubjCompetences(UserEntity teacher, SubjectEntity subject);
+
+    Integer getPointForInterests(UserEntity user1, UserEntity user2);
+
+    Integer getPointForTimeWishes(UserEntity user1, UserEntity user2, SubjectEntity subject);
+
+    int getPointForTwoTimeValues(int user1Time, int user2Time);
 
     void generateTeachToStudForSubjectWishes();
 

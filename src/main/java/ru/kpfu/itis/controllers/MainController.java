@@ -54,32 +54,71 @@ public class MainController {
         return "main";
     }
 
+    @RequestMapping(value = "/profile", method = RequestMethod.GET)
+    public String returnProfilePage(ModelMap model) throws IOException {
+        UserEntity currentUser = userService.getBySurname("Мальков");
+        model.put("user", currentUser);
+        model.put("timeWishes", wishService.getWishesForUser(currentUser).stream().filter(wish ->
+                (
+                        wishStatusService.getWishStatusByName(WishStatusEnum.STUDENT).equals(wish.getWishStatus())
+                        || wishStatusService.getWishStatusByName(WishStatusEnum.REQUIRED).equals(wish.getWishStatus())
+                )
+                        && (wishInfoService.getWishInfoByType(WishTypeEnum.USER_START_TIME).equals(wish.getWishInfo())
+                        || wishInfoService.getWishInfoByType(WishTypeEnum.USER_START_TIME_ON_SUBJ).equals(wish.getWishInfo())
+                        || wishInfoService.getWishInfoByType(WishTypeEnum.USER_END_TIME).equals(wish.getWishInfo())
+                        || wishInfoService.getWishInfoByType(WishTypeEnum.USER_END_TIME_ON_SUBJ).equals(wish.getWishInfo())
+                )
+        ));
+        model.put("teacherWishes", wishService.getWishesForUser(currentUser).stream().filter(wish ->
+                (
+                        wishStatusService.getWishStatusByName(WishStatusEnum.STUDENT).equals(wish.getWishStatus())
+                                || wishStatusService.getWishStatusByName(WishStatusEnum.REQUIRED).equals(wish.getWishStatus())
+                )
+                        && (wishInfoService.getWishInfoByType(WishTypeEnum.STUD_TO_TEACH).equals(wish.getWishInfo())
+                        || wishInfoService.getWishInfoByType(WishTypeEnum.STUD_TO_TEACH_ON_SUBJ).equals(wish.getWishInfo())
+                )
+        ));
+        model.put("studentWishes", wishService.getWishesForUser(currentUser).stream().filter(wish ->
+                (
+                        wishStatusService.getWishStatusByName(WishStatusEnum.STUDENT).equals(wish.getWishStatus())
+                                || wishStatusService.getWishStatusByName(WishStatusEnum.REQUIRED).equals(wish.getWishStatus())
+                )
+                        && (wishInfoService.getWishInfoByType(WishTypeEnum.STUD_TO_STUD).equals(wish.getWishInfo())
+                        || wishInfoService.getWishInfoByType(WishTypeEnum.STUD_TO_STUD_ON_SUBJ).equals(wish.getWishInfo())
+                )
+        ));
+        return "profile";
+    }
+
     @RequestMapping(value = "/teachers", method = RequestMethod.GET)
-    public String returnTrainersPage(ModelMap model) throws IOException {
+    public String returnTeachersPage(ModelMap model) throws IOException {
         List<UserEntity> teachers = userService.getAllTeachers();
         model.put("teachers", teachers);
         model.put("user", userService.getBySurname("Мальков"));
         return "teachers";
     }
 
+    @RequestMapping(value = "/students", method = RequestMethod.GET)
+    public String returnStudentsPage(ModelMap model,
+                                     @RequestParam(required = false) String sort) throws IOException {
+        UserEntity currentUser = userService.getBySurname("Мальков");
+        List<UserEntity> students = new ArrayList<>();
+        if (sort == null || "".equals(sort) || "fio".equals(sort))
+            students = userService.getAllStudentsOrderBySurname();
+        if ("similarity".equals(sort)) {
+            students = userService.getAllStudentsOrderBySimilarity(currentUser);
+        }
+        model.put("students", students);
+        model.put("user", currentUser);
+        return "students";
+    }
+
     @RequestMapping(value = "/time-wishes", method = RequestMethod.GET)
     public String returnTimeWishesPage(ModelMap model) throws IOException {
-        List<UserEntity> teachers = userService.getAllTeachers();
         UserEntity user = userService.getAllStudents().stream().findFirst().orElse(null);
         model.put("user", user);
         model.put("subjects", subjectService.getSubjectsByStudentFromIup(user));
         model.put("pairNums", pairNumService.getAll());
-        List<WeekDayEnum> weekDays = new ArrayList<>();
-        for (int i = 1; i <= 7; i++)
-            weekDays.add(WeekDayEnum.valueOf(i));
-        model.put("weekDays", weekDays);
-        try {
-            TemplateHashModel enumModels = BeansWrapper.getDefaultInstance().getEnumModels();
-            TemplateHashModel weekDaysEnumModel = (TemplateHashModel) enumModels.get("ru.kpfu.itis.entity.enums.WeekDayEnum");
-            model.put("weekDaysModel", weekDaysEnumModel);
-        } catch (TemplateModelException e) {
-            e.printStackTrace();
-        }
         return "time-wishes";
     }
 
