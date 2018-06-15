@@ -17,7 +17,7 @@
         </a>
     </nav>
 
-    <div class="border">
+    <div class="border shadow">
         <ul class="nav nav-tabs">
             <li class="nav-item">
                 <a class="nav-link active" href="/auto-generate">Авто-генерация</a>

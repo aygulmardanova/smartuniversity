@@ -4,11 +4,14 @@
 <head>
     <meta charset='UTF-8'>
     <title> Студенты </title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css"
-          integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/main.css">
 </head>
+
 <body>
-<div class="container">
+<div class="container shadow p-0">
     <nav class="navbar navbar-dark bg-info">
         <a class="navbar-brand" href="#">
             Пожелания
@@ -26,24 +29,23 @@
             <a class="nav-link" href="/time-wishes">Пожелания ко времени</a>
         </li>
     </ul>
-    <div class="dropdown">
-        <button class="btn btn-info dropdown-toggle" type="button" data-toggle="dropdown">
+    <div class="dropright m-3">
+        <button class="btn btn-info dropdown-toggle rounded-0" type="button" data-toggle="dropdown">
             Сортировка
             <span class="caret"></span>
         </button>
-        <ul class="dropdown-menu">
-            <li><a href="/students?sort=fio">По алфавиту</a></li>
-            <li class="divider"></li>
-            <li><a href="/students?sort=similarity">По совместимости</a></li>
-        </ul>
+        <div class="dropdown-menu">
+            <a class="dropdown-item" href="/students?sort=fio">По алфавиту</a>
+            <a class="dropdown-item" href="/students?sort=similarity">По совместимости</a>
+        </div>
     </div>
 <#if success_msg??>
-    <div class="alert alert-success" role="alert">
+    <div class="alert alert-success mt-3 m-1" role="alert">
         Пожелание успешно сохранено!
     </div>
 </#if>
     <#if students?has_content>
-    <table class="table table-striped border">
+    <table class="table table-striped m-0 mt-3">
         <#list students as student>
             <tr>
                 <td>
@@ -53,7 +55,6 @@
                     <p>${student.surname} ${student.name} ${student.patronymic}</p>
                 </td>
                 <td>
-                    <div style="display: flex;">
                 <#if (student.userInterests)??>
                     <ul>
                     <#list student.userInterests as userInterest>
@@ -62,15 +63,14 @@
                     </ul>
                 </#if>
                 </td>
-                <td>
+                <td class="w-50">
                     <form action="/saveWish" method="post">
                         <input type="hidden" name="user_from_id" value="${user.id}">
                         <input type="hidden" name="user_to_id" value="${student.id}">
                         <input type="submit" value="Хочу учиться с ${student.surname} ${student.name}"
-                               class="btn btn-info w-100">
-                        <select class="w-100" name="subjects" id="subjects" multiple>
+                               class="btn btn-info w-100 rounded-0">
+                        <select class="w-100 bg-none border-0 overflow-hidden custom-select" name="subjects" id="subjects" multiple  size="${student.iupSubjs?size}">
                         <#if (student.iupSubjs)??>
-                            <option></option>
                             <#list student.iupSubjs as iupSubj>
                                 <option value="${iupSubj.subject.name}">${iupSubj.subject.name}</option>
                             </#list>
@@ -78,7 +78,6 @@
                         </#if>
                         </select>
                     </form>
-                    </div>
                 </td>
             </tr>
         </#list>

@@ -11,36 +11,35 @@
 </head>
 
 <body>
-<div class="container">
-    <nav class="navbar navbar-dark bg-info">
+<div class="container shadow p-0 border">
+    <nav class="navbar navbar-dark bg-info m-0">
         <a class="navbar-brand" href="#">
             Пожелания
         </a>
     </nav>
 
-    <div class="border">
-        <ul class="nav nav-tabs">
-            <li class="nav-item">
-                <a class="nav-link" href="/students">Студенты</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link active" href="/teachers">Преподаватели</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="/time-wishes">Пожелания ко времени</a>
-            </li>
-        </ul>
+    <ul class="nav nav-tabs">
+        <li class="nav-item">
+            <a class="nav-link" href="/students">Студенты</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link active" href="/teachers">Преподаватели</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="/time-wishes">Пожелания ко времени</a>
+        </li>
+    </ul>
     <#if success_msg??>
-    <div class="alert alert-success m-3" role="alert">
+    <div class="alert alert-success mt-3" role="alert">
         Пожелание успешно сохранено!
     </div>
     </#if>
-        <div class="row justify-content-center m-3">
+    <div class="mt-3">
 
         <#if teachers?has_content>
             <table class="table table-striped m-0">
             <#list teachers as teacher>
-                <tr class="border">
+                <tr>
                     <td>
                         <img src="../../resources/images/no_photo.jpg" width="100" height="150">
                     </td>
@@ -63,7 +62,8 @@
                             <input type="hidden" name="user_to_id" value="${teacher.id}">
                             <input type="submit" value="Хочу учиться у ${teacher.name} ${teacher.patronymic}"
                                    class="btn btn-info w-100 rounded-0">
-                            <select class="w-100 bg-none border-0 overflow-hidden non-shadow custom-select" name="subjects" id="subjects" multiple size="${teacher.userSubjs?size}">
+                            <select class="w-100 bg-none border-0 overflow-hidden non-shadow custom-select"
+                                    name="subjects" id="subjects" multiple size="${teacher.userSubjs?size}">
                         <#if (teacher.userSubjs)??>
                             <#list teacher.userSubjs as userSubj>
                                 <option value="${userSubj.subject.name}">${userSubj.subject.name}</option>
@@ -77,7 +77,6 @@
             </#list>
             </table>
         </#if>
-        </div>
     </div>
 </div>
 </body>
