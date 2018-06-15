@@ -36,7 +36,7 @@
                 <form action="/generate" method="post" class="w-100">
                     <fieldset>
                         <label class="h4" for="wishTypes"> Выберите типы пожеланий: </label>
-                        <select style="overflow: hidden;" class="custom-select custom-select mb-3 border-0"
+                        <select class="custom-select custom-select mb-3 border-0 overflow-hidden"
                                 name="wishTypes" id="wishTypes" multiple size="7">
                             <option value="all">Все пожелания</option>
                             <#if wishes?has_content>
