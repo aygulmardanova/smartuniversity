@@ -20,20 +20,11 @@
     <div class="border">
         <ul class="nav nav-tabs">
             <li class="nav-item">
-                <a class="nav-link" href="/students">Студенты</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="/teachers">Преподаватели</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="/time-wishes">Пожелания ко времени</a>
-            </li>
-            <li class="nav-item">
                 <a class="nav-link active" href="/auto-generate">Авто-генерация</a>
             </li>
         </ul>
         <div class="row justify-content-center m-5">
-            <div class="col-11">
+            <div class="col-7">
                     <#if generatedWishTypes?has_content>
                     <div class="alert alert-success" role="alert">
                         <h5>Успешно сгенерированы следующие типы пожеланий:</h5>

@@ -28,15 +28,12 @@
             <li class="nav-item">
                 <a class="nav-link active" href="/time-wishes">Пожелания ко времени</a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link" href="/auto-generate">Авто-генерация</a>
-            </li>
         </ul>
         <div class="row justify-content-center m-5">
             <div class="col-8">
                 <form action="/save-time-wish" method="post" class="w-100">
                     <fieldset>
-                        <legend class="h3 w-100 text-center">Пожелания ко времени</legend>
+                        <legend class="h4 w-100 text-center">Пожелания ко времени</legend>
 
                         <div class="alert alert-success" role="alert">
                             Успешно!

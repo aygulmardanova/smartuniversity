@@ -9,7 +9,7 @@
 </head>
 <body>
 <div class="container">
-    <nav class="navbar navbar-dark bg-dark">
+    <nav class="navbar navbar-dark bg-info">
         <a class="navbar-brand" href="#">
             Пожелания
         </a>
@@ -25,12 +25,9 @@
         <li class="nav-item">
             <a class="nav-link" href="/time-wishes">Пожелания ко времени</a>
         </li>
-        <li class="nav-item">
-            <a class="nav-link" href="/auto-generate">Авто-генерация</a>
-        </li>
     </ul>
     <div class="dropdown">
-        <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">
+        <button class="btn btn-info dropdown-toggle" type="button" data-toggle="dropdown">
             Сортировка
             <span class="caret"></span>
         </button>
@@ -65,7 +62,7 @@
                         <input type="hidden" name="user_id" value="${user.id}">
                         <input type="hidden" name="student_id" value="${student.id}">
                         <input type="submit" value="Хочу учиться с ${student.surname} ${student.name}"
-                               class="btn btn-secondary w-100">
+                               class="btn btn-info w-100">
                         <select class="w-100" name="subjects" id="subjects" multiple>
                         <#if (student.iupSubjs)??>
                             <option></option>

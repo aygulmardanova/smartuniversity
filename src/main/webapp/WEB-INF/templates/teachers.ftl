@@ -9,7 +9,7 @@
 </head>
 <body>
 <div class="container">
-    <nav class="navbar navbar-dark bg-dark">
+    <nav class="navbar navbar-dark bg-info">
         <a class="navbar-brand" href="#">
             Пожелания
         </a>
@@ -24,9 +24,6 @@
         </li>
         <li class="nav-item">
             <a class="nav-link" href="/time-wishes">Пожелания ко времени</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="/auto-generate">Авто-генерация</a>
         </li>
     </ul>
     <#if teachers?has_content>
@@ -54,7 +51,7 @@
                         <input type="hidden" name="user_id" value="${user.id}">
                         <input type="hidden" name="teacher_id" value="${teacher.id}">
                         <input type="submit" value="Хочу учиться у ${teacher.name} ${teacher.patronymic}"
-                               class="btn btn-secondary w-100">
+                               class="btn btn-info w-100">
                         <select class="w-100" name="subjects" id="subjects" multiple>
                         <#if (teacher.userSubjs)??>
                             <#list teacher.userSubjs as userSubj>
