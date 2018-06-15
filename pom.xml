@@ -68,7 +68,6 @@
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
             <version>${postgres.version}</version>
-            <scope>test</scope>
         </dependency>
 
         <!--JDBC Connection pooling-->
@@ -103,9 +102,9 @@
             <version>${logback.version}</version>
         </dependency>
         <!--<dependency>-->
-            <!--<groupId>org.slf4j</groupId>-->
-            <!--<artifactId>slf4j-log4j12</artifactId>-->
-            <!--<version>${slf4j.version}</version>-->
+        <!--<groupId>org.slf4j</groupId>-->
+        <!--<artifactId>slf4j-log4j12</artifactId>-->
+        <!--<version>${slf4j.version}</version>-->
         <!--</dependency>-->
 
         <!--Spring-->

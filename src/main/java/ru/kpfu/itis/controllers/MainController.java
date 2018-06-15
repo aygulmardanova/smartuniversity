@@ -49,6 +49,10 @@ public class MainController {
     @Autowired
     PairNumService pairNumService;
 
+    @RequestMapping(value = "/", method = RequestMethod.GET)
+    public String getIndex() throws IOException {
+        return "redirect:teachers";
+    }
     @RequestMapping(value = "/main", method = RequestMethod.GET)
     public String returnIndex(ModelMap model) throws IOException {
         return "main";
@@ -124,7 +128,7 @@ public class MainController {
 
     @RequestMapping(value = "/save-time-wish", method = RequestMethod.POST)
     public String saveTimeWish(ModelMap model,
-                               @RequestParam(name = "user_id") Long fromUserId,
+                               @RequestParam(name = "user_id", required = false) Long fromUserId,
                                @RequestParam(name = "pair_st_num", required = false) Integer pairStNum,
                                @RequestParam(name = "pair_end_num", required = false) Integer pairEndNum,
                                @RequestParam(name = "week_day", required = false) Integer weekDay,
