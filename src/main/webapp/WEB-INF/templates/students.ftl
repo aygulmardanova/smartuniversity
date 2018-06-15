@@ -37,6 +37,11 @@
             <li><a href="/students?sort=similarity">По совместимости</a></li>
         </ul>
     </div>
+<#if success_msg??>
+    <div class="alert alert-success" role="alert">
+        Пожелание успешно сохранено!
+    </div>
+</#if>
     <#if students?has_content>
     <table class="table table-striped border">
         <#list students as student>
@@ -59,8 +64,8 @@
                 </td>
                 <td>
                     <form action="/saveWish" method="post">
-                        <input type="hidden" name="user_id" value="${user.id}">
-                        <input type="hidden" name="student_id" value="${student.id}">
+                        <input type="hidden" name="user_from_id" value="${user.id}">
+                        <input type="hidden" name="user_to_id" value="${student.id}">
                         <input type="submit" value="Хочу учиться с ${student.surname} ${student.name}"
                                class="btn btn-info w-100">
                         <select class="w-100" name="subjects" id="subjects" multiple>

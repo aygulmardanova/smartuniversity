@@ -27,7 +27,7 @@
             <div class="col-7">
                     <#if generatedWishTypes?has_content>
                     <div class="alert alert-success" role="alert">
-                        <h5>Успешно сгенерированы следующие типы пожеланий:</h5>
+                        <h6>Успешно сгенерированы следующие типы пожеланий:</h6>
                     <#list generatedWishTypes as generatedWishType>
                         <li>${generatedWishType}</li>
                     </#list>

@@ -35,9 +35,11 @@
                     <fieldset>
                         <legend class="h4 w-100 text-center">Пожелания ко времени</legend>
 
-                        <div class="alert alert-success" role="alert">
-                            Успешно!
-                        </div>
+                        <#if success_msg??>
+                            <div class="alert alert-success" role="alert">
+                                Пожелание успешно сохранено!
+                            </div>
+                        </#if>
 
                         <div class="input-group mb-3">
                             <div class="input-group-prepend w-50">
@@ -57,7 +59,7 @@
                                 <label class="input-group-text w-100" for="pair_end_num">Время окончания занятий</label>
                             </div>
                             <select class="custom-select" name="pair_end_num" id="pair_end_num">
-                                <option selected  label="Не выбрано"></option>
+                                <option selected label="Не выбрано"></option>
                             <#list pairNums as pairNum>
                             <option value="${pairNum.id}">${pairNum.id}: ${pairNum.pairStTime}
                                 - ${pairNum.pairEndTime}</option>
@@ -70,7 +72,7 @@
                                 <label class="input-group-text w-100" for="week_day">День недели</label>
                             </div>
                             <select class="custom-select" name="week_day" id="week_day">
-                                <option selected  label="Не выбрано"></option>
+                                <option selected label="Не выбрано"></option>
                                 <option value="1">Понедельник</option>
                                 <option value="2">Вторник</option>
                                 <option value="3">Среда</option>
@@ -98,7 +100,7 @@
 
 
                         <input type="hidden" name="user_id" value="${user.id}"/>
-                        <input  type="submit" value="Сохранить пожелание ко времени" class="btn btn-info w-100 border">
+                        <input type="submit" value="Сохранить пожелание ко времени" class="btn btn-info w-100 border">
                     </fieldset>
                 </form>
             </div>

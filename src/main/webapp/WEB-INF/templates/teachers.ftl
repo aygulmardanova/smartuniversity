@@ -26,6 +26,11 @@
             <a class="nav-link" href="/time-wishes">Пожелания ко времени</a>
         </li>
     </ul>
+<#if success_msg??>
+    <div class="alert alert-success" role="alert">
+        Пожелание успешно сохранено!
+    </div>
+</#if>
     <#if teachers?has_content>
     <table class="table table-striped border">
         <#list teachers as teacher>
@@ -48,8 +53,8 @@
                 </td>
                 <td>
                     <form action="/saveWish" method="post">
-                        <input type="hidden" name="user_id" value="${user.id}">
-                        <input type="hidden" name="teacher_id" value="${teacher.id}">
+                        <input type="hidden" name="user_from_id" value="${user.id}">
+                        <input type="hidden" name="user_to_id" value="${teacher.id}">
                         <input type="submit" value="Хочу учиться у ${teacher.name} ${teacher.patronymic}"
                                class="btn btn-info w-100">
                         <select class="w-100" name="subjects" id="subjects" multiple>

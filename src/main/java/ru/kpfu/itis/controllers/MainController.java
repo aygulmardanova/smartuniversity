@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import ru.kpfu.itis.entity.*;
+import ru.kpfu.itis.entity.enums.UserRoleEnum;
 import ru.kpfu.itis.entity.enums.WeekDayEnum;
 import ru.kpfu.itis.entity.enums.WishStatusEnum;
 import ru.kpfu.itis.entity.enums.WishTypeEnum;
@@ -53,6 +54,7 @@ public class MainController {
     public String getIndex() throws IOException {
         return "redirect:teachers";
     }
+
     @RequestMapping(value = "/main", method = RequestMethod.GET)
     public String returnIndex(ModelMap model) throws IOException {
         return "main";
@@ -65,7 +67,7 @@ public class MainController {
         model.put("timeWishes", wishService.getWishesForUser(currentUser).stream().filter(wish ->
                 (
                         wishStatusService.getWishStatusByName(WishStatusEnum.STUDENT).equals(wish.getWishStatus())
-                        || wishStatusService.getWishStatusByName(WishStatusEnum.REQUIRED).equals(wish.getWishStatus())
+                                || wishStatusService.getWishStatusByName(WishStatusEnum.REQUIRED).equals(wish.getWishStatus())
                 )
                         && (wishInfoService.getWishInfoByType(WishTypeEnum.USER_START_TIME).equals(wish.getWishInfo())
                         || wishInfoService.getWishInfoByType(WishTypeEnum.USER_START_TIME_ON_SUBJ).equals(wish.getWishInfo())
@@ -95,16 +97,19 @@ public class MainController {
     }
 
     @RequestMapping(value = "/teachers", method = RequestMethod.GET)
-    public String returnTeachersPage(ModelMap model) throws IOException {
+    public String returnTeachersPage(ModelMap model,
+                                     @RequestParam(name = "success_msg", required = false) Boolean success_msg) throws IOException {
         List<UserEntity> teachers = userService.getAllTeachers();
         model.put("teachers", teachers);
         model.put("user", userService.getBySurname("Мальков"));
+        model.put("success_msg", success_msg);
         return "teachers";
     }
 
     @RequestMapping(value = "/students", method = RequestMethod.GET)
     public String returnStudentsPage(ModelMap model,
-                                     @RequestParam(required = false) String sort) throws IOException {
+                                     @RequestParam(required = false) String sort,
+                                     @RequestParam(name = "success_msg", required = false) Boolean success_msg) throws IOException {
         UserEntity currentUser = userService.getBySurname("Мальков");
         List<UserEntity> students = new ArrayList<>();
         if (sort == null || "".equals(sort) || "fio".equals(sort))
@@ -114,15 +119,18 @@ public class MainController {
         }
         model.put("students", students);
         model.put("user", currentUser);
+        model.put("success_msg", success_msg);
         return "students";
     }
 
     @RequestMapping(value = "/time-wishes", method = RequestMethod.GET)
-    public String returnTimeWishesPage(ModelMap model) throws IOException {
+    public String returnTimeWishesPage(ModelMap model,
+                                       @RequestParam(name = "success_msg", required = false) Boolean success_msg) throws IOException {
         UserEntity user = userService.getAllStudents().stream().findFirst().orElse(null);
         model.put("user", user);
         model.put("subjects", subjectService.getSubjectsByStudentFromIup(user));
         model.put("pairNums", pairNumService.getAll());
+        model.put("success_msg", success_msg);
         return "time-wishes";
     }
 
@@ -138,7 +146,7 @@ public class MainController {
             wishService.saveTimeWish(fromUserId, null, pairEndNum, weekDay, subjectId);
         } else
             wishService.saveTimeWish(fromUserId, pairStNum, pairEndNum, weekDay, subjectId);
-
+        model.put("success_msg", true);
         return "redirect:time-wishes";
     }
 
@@ -207,34 +215,47 @@ public class MainController {
 
     @RequestMapping(value = "/saveWish", method = RequestMethod.POST)
     public String saveStudToTeachWish(ModelMap model,
-                                      @RequestParam("user_id") Long userId,
-                                      @RequestParam("teacher_id") Long teacherId,
+                                      @RequestParam("user_from_id") Long userFromId,
+                                      @RequestParam("user_to_id") Long userToId,
                                       @RequestParam(required = false, name = "subjects") List<String> subjects) throws IOException {
 
         WishInfoEntity type;
         List<WishEntity> wishes = new ArrayList<>();
+        UserEntity userFrom = userService.getById(userFromId);
+        UserEntity userTo = userService.getById(userToId);
+        WishStatusEntity wishStatus = wishStatusService.getWishStatusByName(WishStatusEnum.STUDENT);
+
         if (subjects == null || subjects.size() == 0) {
-            type = wishInfoService.getWishInfoByType(WishTypeEnum.STUD_TO_TEACH);
+            if (UserRoleEnum.TEACHER.name().equals(userTo.getUserRole().getCode()))
+                type = wishInfoService.getWishInfoByType(WishTypeEnum.STUD_TO_TEACH);
+            else
+                type = wishInfoService.getWishInfoByType(WishTypeEnum.STUD_TO_STUD);
             WishEntity wish = new WishEntity();
-            wish.setFromUser(userService.getById(userId));
-            wish.setTeachUser(userService.getById(teacherId));
+            wish.setFromUser(userFrom);
+            wish.setTeachUser(userTo);
             wish.setWishInfo(type);
-            wish.setWishStatus(wishStatusService.getWishStatusByName(WishStatusEnum.STUDENT));
+            wish.setWishStatus(wishStatus);
             wishes.add(wish);
         } else {
-            type = wishInfoService.getWishInfoByType(WishTypeEnum.STUD_TO_TEACH_ON_SUBJ);
+            if (UserRoleEnum.TEACHER.name().equals(userTo.getUserRole().getCode()))
+                type = wishInfoService.getWishInfoByType(WishTypeEnum.STUD_TO_TEACH_ON_SUBJ);
+            else
+                type = wishInfoService.getWishInfoByType(WishTypeEnum.STUD_TO_STUD_ON_SUBJ);
             subjects.forEach(subject -> {
                 WishEntity wish = new WishEntity();
-                wish.setFromUser(userService.getById(userId));
-                wish.setTeachUser(userService.getById(teacherId));
+                wish.setFromUser(userFrom);
+                wish.setTeachUser(userTo);
                 wish.setSubject(subjectService.getByName(subject));
                 wish.setWishInfo(type);
-                wish.setWishStatus(wishStatusService.getWishStatusByName(WishStatusEnum.STUDENT));
+                wish.setWishStatus(wishStatus);
                 wishes.add(wish);
             });
         }
         wishService.save(wishes);
-        return "redirect:teachers";
+        model.put("success_msg", true);
+        if (UserRoleEnum.TEACHER.name().equals(userTo.getUserRole().getCode()))
+            return "redirect:teachers";
+        else
+            return "redirect:students";
     }
-
 }

@@ -119,6 +119,8 @@ public class WishServiceImpl implements WishService {
                 if (similarityCount > 0)
                     similarityWithStud.put(students.get(j), similarityCount);
             }
+            if (similarityWithStud.size() == 0)
+                return;
             Map<UserEntity, Integer> similarityWithStudSorted = getSortedByValueSimilarityMap(similarityWithStud);
             double average = similarityWithStudSorted.values().stream().mapToInt(Integer::intValue).sum() / similarityWithStudSorted.size();
             int studFrom = i;
@@ -196,6 +198,8 @@ public class WishServiceImpl implements WishService {
                     if (similarityCount > 0)
                         similarityWithStud.put(students.get(j), similarityCount);
                 }
+                if (similarityWithStud.size() == 0)
+                    return;
                 Map<UserEntity, Integer> similarityWithStudSorted = getSortedByValueSimilarityMap(similarityWithStud);
                 double average = similarityWithStudSorted.values().stream().mapToInt(Integer::intValue).sum() / similarityWithStudSorted.size();
                 similarityWithStudSorted.keySet().stream()
@@ -231,6 +235,8 @@ public class WishServiceImpl implements WishService {
                     similarity.put(new AbstractMap.SimpleEntry<>(teacher, student), similarityCount);
             }
         }
+        if (similarity.size() == 0)
+            return;
         Map<AbstractMap.SimpleEntry<UserEntity, UserEntity>, Integer> similaritySorted = getSortedBySimilarityMap(similarity);
         double average = similaritySorted.values().stream().mapToInt(Integer::intValue).sum() / similaritySorted.size();
         List<WishEntity> wishes = new ArrayList<>();
@@ -373,6 +379,8 @@ public class WishServiceImpl implements WishService {
                             similarityWithStudForSubj.put(student, similarityCount);
                     }
                 }
+                if (similarityWithStudForSubj.size() == 0)
+                    return;
                 Map<UserEntity, Integer> similarityWithStudForSubjSorted = getSortedByValueSimilarityMap(similarityWithStudForSubj);
                 double average = similarityWithStudForSubjSorted.values().stream().mapToInt(Integer::intValue).sum() / similarityWithStudForSubjSorted.size();
                 similarityWithStudForSubjSorted.keySet().stream()
@@ -410,6 +418,8 @@ public class WishServiceImpl implements WishService {
                     similarityCount += subjectCompetences.stream().filter(auditoryCompetences::contains).filter(teacherCompetences::contains).count();
                     similarityWithAud.put(auditory, similarityCount);
                 });
+                if (similarityWithAud.size() == 0)
+                    return;
                 Map<AuditoryEntity, Integer> similarityWithAudSorted = getSimilarityMapSortedByValue(similarityWithAud);
                 double average = similarityWithAudSorted.values().stream().mapToInt(Integer::intValue).sum() / similarityWithAudSorted.size();
 
