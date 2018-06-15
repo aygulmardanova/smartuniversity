@@ -4,59 +4,62 @@
 <head>
     <meta charset='UTF-8'>
     <title> Сгенерировать пожелания </title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css"
-          integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
 </head>
 
 <body>
 <div class="container">
-    <nav class="navbar navbar-dark bg-dark">
+    <nav class="navbar navbar-dark bg-info">
         <a class="navbar-brand" href="#">
-            Пожелания
+            Автоматическая генерация пожеланий
         </a>
     </nav>
 
-    <ul class="nav nav-tabs">
-        <li class="nav-item">
-            <a class="nav-link" href="/students">Студенты</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="/teachers">Преподаватели</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="/time-wishes">Пожелания ко времени</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link active" href="/auto-generate">Авто-генерация</a>
-        </li>
-    </ul>
     <div class="border">
-        <div class="col-6">
-    <#if generatedWishTypes?has_content>
-<h6>Успешно сгенерированы следующие типы пожеланий:</h6>
-        <#list generatedWishTypes as generatedWishType>
-    <li>${generatedWishType}</li>
-        </#list>
-    <#else>
-    </#if>
-            <form action="/generate" method="post" class="w-100">
-                <fieldset>
-                    <legend>Автоматическая генерация пожеланий</legend>
-                    <input type="submit" value="Сгенерировать пожелания" class="btn btn-secondary w-100">
-                    <label for="wishTypes"> Выберите типы пожеланий </label>
-                    <select name="wishTypes" id="wishTypes" multiple size="8">
-                        <option selected></option>
-                        <option value="all">Все пожелания</option>
-        <#if wishes?has_content>
-            <#list wishes as wish>
-                <option value="${wish.type}">${wish.name}</option>
-            </#list>
-        <#else>
-        </#if>
-                    </select>
+        <ul class="nav nav-tabs">
+            <li class="nav-item">
+                <a class="nav-link" href="/students">Студенты</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/teachers">Преподаватели</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/time-wishes">Пожелания ко времени</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link active" href="/auto-generate">Авто-генерация</a>
+            </li>
+        </ul>
+        <div class="row justify-content-center m-5">
+            <div class="col-11">
+                    <#if generatedWishTypes?has_content>
+                    <div class="alert alert-success" role="alert">
+                        <h5>Успешно сгенерированы следующие типы пожеланий:</h5>
+                    <#list generatedWishTypes as generatedWishType>
+                        <li>${generatedWishType}</li>
+                    </#list>
+                    </div>
+                    </#if>
+                <form action="/generate" method="post" class="w-100">
+                    <fieldset>
+                        <label class="h4" for="wishTypes"> Выберите типы пожеланий: </label>
+                        <select style="overflow: hidden;" class="custom-select custom-select mb-3 border-0"
+                                name="wishTypes" id="wishTypes" multiple size="7">
+                            <option value="all">Все пожелания</option>
+                            <#if wishes?has_content>
+                                <#list wishes as wish>
+                            <option value="${wish.type}">${wish.name}</option>
+                                </#list>
+                            <#else>
+                            </#if>
+                        </select>
+                        <input type="submit" value="Сгенерировать пожелания" class="btn btn-info w-100">
 
-                </fieldset>
-            </form>
+                    </fieldset>
+                </form>
+            </div>
         </div>
     </div>
 </div>

@@ -36,7 +36,7 @@
             <div class="col-8">
                 <form action="/save-time-wish" method="post" class="w-100">
                     <fieldset>
-                        <legend class="h2 w-100 text-center">Пожелания ко времени</legend>
+                        <legend class="h3 w-100 text-center">Пожелания ко времени</legend>
 
                         <div class="alert alert-success" role="alert">
                             Успешно!
