@@ -40,7 +40,12 @@
                                 Пожелание успешно сохранено!
                             </div>
                         </#if>
-
+                        <#--<div class="alert alert-danger" role="alert">-->
+                            <#--Пожелание дублирует введенное ранее.-->
+                        <#--</div>-->
+                        <#--<div class="alert alert-warning" role="alert">-->
+                            <#--Пожелание дублирует введенное ранее.-->
+                        <#--</div>-->
                         <div class="input-group mb-3">
                             <div class="input-group-prepend w-50">
                                 <label class="input-group-text w-100" for="pair_st_num">Время начала занятий</label>
