@@ -14,19 +14,19 @@
 <div class="container shadow p-0">
     <nav class="navbar navbar-dark bg-info">
         <a class="navbar-brand" href="#">
-            Пожелания
+            Все пожелания
         </a>
     </nav>
 
     <ul class="nav nav-tabs">
         <li class="nav-item">
-            <a class="nav-link active" href="/students">Студенты</a>
+            <a class="nav-link active" href="/view/students">Студенты</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="/teachers">Преподаватели</a>
+            <a class="nav-link" href="/view/teachers">Преподаватели</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="/time-wishes">Пожелания ко времени</a>
+            <a class="nav-link" href="/view/time-wishes">Ко времени</a>
         </li>
     </ul>
     <div class="dropright m-3">
@@ -55,29 +55,10 @@
                     <p>${student.surname} ${student.name} ${student.patronymic}</p>
                 </td>
                 <td>
-                <#if (student.userInterests)??>
-                    <ul>
-                    <#list student.userInterests as userInterest>
-                        <li>${userInterest.interest.name}</li>
-                    </#list>
-                    </ul>
-                </#if>
+
                 </td>
                 <td class="w-50">
-                    <form action="/saveWish" method="post">
-                        <input type="hidden" name="user_from_id" value="${user.id}">
-                        <input type="hidden" name="user_to_id" value="${student.id}">
-                        <input type="submit" value="Хочу учиться с ${student.surname} ${student.name}"
-                               class="btn btn-info w-100 rounded-0">
-                        <select class="w-100 bg-none border-0 overflow-hidden custom-select" name="subjects" id="subjects" multiple  size="${student.iupSubjs?size}">
-                        <#if (student.iupSubjs)??>
-                            <#list student.iupSubjs as iupSubj>
-                                <option value="${iupSubj.subject.name}">${iupSubj.subject.name}</option>
-                            </#list>
-                        <#else>
-                        </#if>
-                        </select>
-                    </form>
+
                 </td>
             </tr>
         </#list>

@@ -26,11 +26,12 @@
         <div class="row justify-content-center m-5">
             <div class="col-7">
                     <#if generatedWishTypes?has_content>
-                    <div class="alert alert-success" role="alert">
-                        <h6>Успешно сгенерированы следующие типы пожеланий:</h6>
+                    <div class="alert alert-warning" role="alert">
+                        <h6>Генерация следующих типов пожеланий недоступна:</h6>
                     <#list generatedWishTypes as generatedWishType>
                         <li>${generatedWishType}</li>
                     </#list>
+                        <h6 class="mt-2">Удалите результаты предыдущей генерации.</h6>
                     </div>
                     </#if>
                 <form action="/generate" method="post" class="w-100">

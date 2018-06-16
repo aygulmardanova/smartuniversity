@@ -281,10 +281,12 @@ public class WishServiceImpl implements WishService {
         int point = 0;
         List<CompetenceEntity> teacherCompetences = competenceService.getCompetencesByUser(teacher);
         List<CompetenceEntity> subjectCompetences = competenceService.getCompetencesBySubject(subject);
-        for (CompetenceEntity subjectCompetence : subjectCompetences) {
-            if (teacherCompetences.contains(subjectCompetence))
-                point++;
-        }
+        if (teacherCompetences != null && teacherCompetences.size() != 0 &&
+                subjectCompetences != null && subjectCompetences.size() != 0)
+            for (CompetenceEntity subjectCompetence : subjectCompetences) {
+                if (teacherCompetences.contains(subjectCompetence))
+                    point++;
+            }
         return point;
     }
 
