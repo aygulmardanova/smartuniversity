@@ -3,7 +3,7 @@
 <html lang="en" xmlns="http://www.w3.org/1999/html">
 <head>
     <meta charset='UTF-8'>
-    <title> Студенты </title>
+    <title> Пожелания к студентам </title>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -14,7 +14,7 @@
 <div class="container shadow p-0 w-75">
     <nav class="navbar navbar-dark bg-info">
         <a class="navbar-brand" href="#">
-            Все пожелания
+            Просмотр всех пожеланий
         </a>
     </nav>
 
@@ -41,7 +41,7 @@
         <#list toStudWishes as toStudWish>
             <tr>
                 <td style="width: 15%">
-                    <img src="../../resources/images/no_photo.jpg" width="100" height="150">
+                    <img src="../../resources/images/no_photo.jpg" width="100" height="125">
                 </td>
                 <td class="w-35">
                     <p>${toStudWish.studUser.surname} ${toStudWish.studUser.name} ${toStudWish.studUser.patronymic}</p>

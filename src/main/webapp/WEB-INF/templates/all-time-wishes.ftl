@@ -11,10 +11,10 @@
 </head>
 
 <body>
-<div class="container shadow p-0">
+<div class="container shadow p-0 w-75">
     <nav class="navbar navbar-dark bg-info">
         <a class="navbar-brand" href="#">
-            Все пожелания
+            Просмотр всех пожеланий
         </a>
     </nav>
 
