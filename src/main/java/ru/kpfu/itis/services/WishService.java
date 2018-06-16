@@ -22,6 +22,8 @@ public interface WishService {
 
     List<WishEntity> getWishesForUser(UserEntity user);
 
+    List<WishEntity> getWishesForUserOrderByWeekDay(UserEntity user);
+
     void generateWishes();
 
     void generateStudToStudWishes();

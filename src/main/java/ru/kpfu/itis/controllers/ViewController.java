@@ -13,7 +13,6 @@ import ru.kpfu.itis.entity.enums.WishTypeEnum;
 import ru.kpfu.itis.services.*;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -78,10 +77,10 @@ public class ViewController {
     @RequestMapping(value = "/time-wishes", method = RequestMethod.GET)
     public String returnViewTimeWishesPage(ModelMap model,
                                            @RequestParam(name = "filter", required = false) String filter) throws IOException {
-        UserEntity currentUser = userService.getAllStudents().stream().findFirst().orElse(null);
+        UserEntity currentUser = userService.getBySurname("Мальков");
         List<WishEntity> timeWishes;
         if (filter == null || "".equals(filter)) {
-            timeWishes = wishService.getWishesForUser(currentUser).stream()
+            timeWishes = wishService.getWishesForUserOrderByWeekDay(currentUser).stream()
                     .filter(wish -> WishStatusEnum.STUDENT.name().equals(wish.getWishStatus().getName()))
                     .filter(wish ->
                             WishTypeEnum.USER_START_TIME.name().equals(wish.getWishInfo().getType())

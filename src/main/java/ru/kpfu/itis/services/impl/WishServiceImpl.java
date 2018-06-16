@@ -3,12 +3,14 @@ package ru.kpfu.itis.services.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.kpfu.itis.entity.*;
+import ru.kpfu.itis.entity.enums.UserRoleEnum;
 import ru.kpfu.itis.entity.enums.WishStatusEnum;
 import ru.kpfu.itis.entity.enums.WishTypeEnum;
 import ru.kpfu.itis.repositories.WishRepository;
 import ru.kpfu.itis.services.*;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class WishServiceImpl implements WishService {
@@ -80,8 +82,13 @@ public class WishServiceImpl implements WishService {
         } else
             return;
 
-        wish.setFromUser(userService.getById(fromUserId));
+        UserEntity fromUser = userService.getById(fromUserId);
+        wish.setFromUser(fromUser);
         wish.setWishInfo(wishInfoService.getWishInfoByType(wishType));
+        if (UserRoleEnum.TEACHER.name().equals(fromUser.getUserRole().getCode()))
+            wish.setWishStatus(wishStatusService.getWishStatusByName(WishStatusEnum.TEACHER));
+        else
+            wish.setWishStatus(wishStatusService.getWishStatusByName(WishStatusEnum.STUDENT));
         if (weekDay != null)
             wish.setWeekDay(weekDay);
         if (subjectId != null)
@@ -92,6 +99,11 @@ public class WishServiceImpl implements WishService {
     @Override
     public List<WishEntity> getWishesForUser(UserEntity user) {
         return wishRepository.findWishEntitiesByFromUser(user);
+    }
+
+    @Override
+    public List<WishEntity> getWishesForUserOrderByWeekDay(UserEntity user) {
+        return wishRepository.findWishEntitiesByOrderByWeekDayAsc().stream().filter(wish -> wish.getFromUser() != null && wish.getFromUser().equals(user)).collect(Collectors.toList());
     }
 
     @Override

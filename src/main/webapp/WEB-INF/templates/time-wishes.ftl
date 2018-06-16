@@ -3,7 +3,7 @@
 <html lang="en">
 <head>
     <meta charset='UTF-8'>
-    <title> Сгенерировать пожелания </title>
+    <title> Оставить пожелание ко времени занятий</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -102,7 +102,6 @@
                             </#if>
                             </select>
                         </div>
-
 
                         <input type="hidden" name="user_id" value="${user.id}"/>
                         <input type="submit" value="Сохранить пожелание ко времени" class="btn btn-info w-100 border">

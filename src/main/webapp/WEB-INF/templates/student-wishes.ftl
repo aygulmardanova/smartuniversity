@@ -11,7 +11,7 @@
 </head>
 
 <body>
-<div class="container shadow p-0">
+<div class="container shadow p-0 w-75">
     <nav class="navbar navbar-dark bg-info">
         <a class="navbar-brand" href="#">
             Все пожелания
@@ -29,43 +29,45 @@
             <a class="nav-link" href="/view/time-wishes">Ко времени</a>
         </li>
     </ul>
-    <div class="dropright m-3">
-        <button class="btn btn-info dropdown-toggle rounded-0" type="button" data-toggle="dropdown">
-            Сортировка
-            <span class="caret"></span>
-        </button>
-        <div class="dropdown-menu">
-            <a class="dropdown-item" href="/students?sort=fio">По алфавиту</a>
-            <a class="dropdown-item" href="/students?sort=similarity">По совместимости</a>
-        </div>
-    </div>
-<#--<#if success_msg??>-->
-    <div class="alert alert-success mt-3 m-1" role="alert">
-        Пожелание успешно сохранено!
-    </div>
-<#--</#if>-->
-    <#if students?has_content>
+
+    <#if toStudWishes?has_content>
     <table class="table table-striped m-0 mt-3">
-        <#list students as student>
+        <tr>
+            <th>Фото студента</th>
+            <th>ФИО студента</th>
+            <th>Занятие</th>
+            <th></th>
+        </tr>
+        <#list toStudWishes as toStudWish>
             <tr>
-                <td>
+                <td style="width: 15%">
                     <img src="../../resources/images/no_photo.jpg" width="100" height="150">
                 </td>
-                <td>
-                    <p>${student.surname} ${student.name} ${student.patronymic}</p>
-                </td>
-                <td>
-
+                <td class="w-35">
+                    <p>${toStudWish.studUser.surname} ${toStudWish.studUser.name} ${toStudWish.studUser.patronymic}</p>
                 </td>
                 <td class="w-50">
-
+                    <#if toStudWish.subject??>
+                        <p>${toStudWish.subject.name}</p>
+                    </#if>
+                </td>
+                <td>
+                    <button class="btn btn-info rounded-0" type="button">
+                        Удалить
+                    </button>
                 </td>
             </tr>
         </#list>
     </table>
     </#if>
 </div>
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
+        integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+        crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"
+        integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T"
+        crossorigin="anonymous"></script>
 </body>

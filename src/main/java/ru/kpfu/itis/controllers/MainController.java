@@ -122,7 +122,7 @@ public class MainController {
     @RequestMapping(value = "/time-wishes", method = RequestMethod.GET)
     public String returnTimeWishesPage(ModelMap model,
                                        @RequestParam(name = "success_msg", required = false) Boolean success_msg) throws IOException {
-        UserEntity user = userService.getAllStudents().stream().findFirst().orElse(null);
+        UserEntity user = userService.getBySurname("Мальков");
         model.put("user", user);
         model.put("subjects", subjectService.getSubjectsByStudentFromIup(user));
         model.put("pairNums", pairNumService.getAll());
